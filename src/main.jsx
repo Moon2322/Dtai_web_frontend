@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Login from './views/Login';
+import Dashboard_profesor from './views/Dashboard_profesor';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -9,6 +10,7 @@ root.render(
   <Routes>
     <Route path="/" element={<Login />} />
     <Route path="/login" element={<Login />} />
+    <Route path="/profesor/dashboard_profesor" element={<Dashboard_profesor />} />
 
     {/* Add more routes here as needed */}
 
