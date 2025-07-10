@@ -1,5 +1,4 @@
-
-.modal-asignaciones {
+.modalAsignaciones {
     background: #FFFFFF;
     border-radius: 12px;
     width: 95%;
@@ -11,7 +10,7 @@
     flex-direction: column;
 }
 
-.modal-header {
+.modalHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,13 +20,13 @@
     color: #FFFFFF;
 }
 
-.modal-header h3 {
+.modalHeader h3 {
     font-size: 18px;
     font-weight: 600;
     margin: 0;
 }
 
-.close-btn {
+.closeBtn {
     background: none;
     border: none;
     font-size: 24px;
@@ -38,10 +37,11 @@
     transition: all 0.2s ease;
 }
 
-.close-btn:hover {
+.closeBtn:hover {
     background: rgba(255, 255, 255, 0.1);
 }
-.tabs-container {
+
+.tabsContainer {
     background: #F0F6FF;
     border-bottom: 1px solid #F0F6FF;
 }
@@ -77,13 +77,13 @@
     background: rgba(59, 166, 255, 0.05);
 }
 
-.modal-content-tabs {
+.modalContentTabs {
     flex: 1;
     overflow-y: auto;
     padding: 24px;
 }
 
-.tab-content {
+.tabContent {
     animation: fadeIn 0.3s ease-out;
 }
 
@@ -92,20 +92,20 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-.info-grid {
+.infoGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
 }
 
-.info-card {
+.infoCard {
     background: #F0F6FF;
     border-radius: 12px;
     padding: 20px;
     border: 1px solid #F0F6FF;
 }
 
-.info-card h4 {
+.infoCard h4 {
     font-size: 16px;
     font-weight: 600;
     color: #2C2C2C;
@@ -114,7 +114,7 @@
     border-bottom: 2px solid #3BA6FF;
 }
 
-.info-item {
+.infoItem {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -122,23 +122,23 @@
     border-bottom: 1px solid rgba(59, 166, 255, 0.1);
 }
 
-.info-item:last-child {
+.infoItem:last-child {
     border-bottom: none;
 }
 
-.info-item label {
+.infoItem label {
     font-weight: 500;
     color: #2C2C2C;
     font-size: 14px;
 }
 
-.info-item span {
+.infoItem span {
     color: #6E6E6E;
     font-size: 14px;
     text-align: right;
 }
 
-.asignar-materia-section {
+.asignarMateriaSection {
     background: #F0F6FF;
     border-radius: 12px;
     padding: 20px;
@@ -146,34 +146,34 @@
     border: 1px solid #3BA6FF;
 }
 
-.asignar-materia-section h4 {
+.asignarMateriaSection h4 {
     font-size: 16px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 16px 0;
 }
 
-.asignar-form .form-row {
+.asignarForm .formRow {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr auto;
     gap: 16px;
     align-items: end;
 }
 
-.form-group {
+.formGroup {
     display: flex;
     flex-direction: column;
 }
 
-.form-group label {
+.formGroup label {
     font-size: 14px;
     font-weight: 500;
     color: #2C2C2C;
     margin-bottom: 6px;
 }
 
-.form-group select,
-.form-group input {
+.formGroup select,
+.formGroup input {
     padding: 10px 12px;
     border: 1px solid #F0F6FF;
     border-radius: 6px;
@@ -183,14 +183,14 @@
     transition: all 0.2s ease;
 }
 
-.form-group select:focus,
-.form-group input:focus {
+.formGroup select:focus,
+.formGroup input:focus {
     outline: none;
     border-color: #3BA6FF;
     box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
 }
 
-.btn-assign {
+.btnAssign {
     background: #2E4A7D;
     color: #FFFFFF;
     border: none;
@@ -203,23 +203,23 @@
     height: fit-content;
 }
 
-.btn-assign:hover:not(:disabled) {
+.btnAssign:hover:not(:disabled) {
     background: #1C2A44;
 }
 
-.btn-assign:disabled {
+.btnAssign:disabled {
     opacity: 0.6;
     cursor: not-allowed;
 }
 
-.asignaturas-asignadas h4 {
+.asignaturasAsignadas h4 {
     font-size: 18px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 16px 0;
 }
 
-.empty-state {
+.emptyState {
     text-align: center;
     padding: 40px 20px;
     color: #6E6E6E;
@@ -227,13 +227,13 @@
     border-radius: 12px;
 }
 
-.asignaturas-list {
+.asignaturasList {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.asignatura-card {
+.asignaturaCard {
     background: #FFFFFF;
     border: 1px solid #F0F6FF;
     border-radius: 12px;
@@ -241,7 +241,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.asignatura-header {
+.asignaturaHeader {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -250,25 +250,25 @@
     border-bottom: 1px solid #F0F6FF;
 }
 
-.asignatura-info h5 {
+.asignaturaInfo h5 {
     font-size: 16px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 4px 0;
 }
 
-.asignatura-info p {
+.asignaturaInfo p {
     font-size: 14px;
     color: #6E6E6E;
     margin: 0;
 }
 
-.asignatura-actions {
+.asignaturaActions {
     display: flex;
     gap: 8px;
 }
 
-.btn-remove {
+.btnRemove {
     background: none;
     border: none;
     cursor: pointer;
@@ -278,30 +278,30 @@
     font-size: 16px;
 }
 
-.btn-remove:hover {
+.btnRemove:hover {
     background: #FEF2F2;
 }
 
-.horario-form {
+.horarioForm {
     margin-bottom: 20px;
 }
 
-.horario-form h6 {
+.horarioForm h6 {
     font-size: 14px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 12px 0;
 }
 
-.horario-form-grid {
+.horarioFormGrid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto;
     gap: 12px;
     align-items: center;
 }
 
-.horario-form-grid select,
-.horario-form-grid input {
+.horarioFormGrid select,
+.horarioFormGrid input {
     padding: 8px 10px;
     border: 1px solid #F0F6FF;
     border-radius: 6px;
@@ -310,7 +310,7 @@
     color: #2C2C2C;
 }
 
-.btn-add-horario {
+.btnAddHorario {
     background: #3BA6FF;
     color: #FFFFFF;
     border: none;
@@ -326,29 +326,29 @@
     justify-content: center;
 }
 
-.btn-add-horario:hover:not(:disabled) {
+.btnAddHorario:hover:not(:disabled) {
     background: #2E4A7D;
 }
 
-.btn-add-horario:disabled {
+.btnAddHorario:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-.horarios-list h6 {
+.horariosList h6 {
     font-size: 14px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 12px 0;
 }
 
-.horarios-grid {
+.horariosGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 12px;
 }
 
-.horario-item {
+.horarioItem {
     background: #F0F6FF;
     border: 1px solid #3BA6FF;
     border-radius: 8px;
@@ -358,32 +358,32 @@
     align-items: center;
 }
 
-.horario-info {
+.horarioInfo {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.horario-info .dia {
+.horarioInfo .dia {
     font-weight: 600;
     color: #2C2C2C;
     font-size: 13px;
 }
 
-.horario-info .hora {
+.horarioInfo .hora {
     color: #3BA6FF;
     font-weight: 500;
     font-size: 13px;
 }
 
-.horario-info .aula,
-.horario-info .tipo {
+.horarioInfo .aula,
+.horarioInfo .tipo {
     color: #6E6E6E;
     font-size: 12px;
     text-transform: capitalize;
 }
 
-.btn-remove-horario {
+.btnRemoveHorario {
     background: none;
     border: none;
     color: #DC2626;
@@ -394,11 +394,11 @@
     font-size: 14px;
 }
 
-.btn-remove-horario:hover {
+.btnRemoveHorario:hover {
     background: #FEF2F2;
 }
 
-.no-horarios {
+.noHorarios {
     text-align: center;
     color: #6E6E6E;
     font-style: italic;
@@ -409,42 +409,42 @@
 }
 
 @media (max-width: 1024px) {
-    .modal-asignaciones {
+    .modalAsignaciones {
         width: 95%;
         max-width: 900px;
     }
     
-    .info-grid {
+    .infoGrid {
         grid-template-columns: 1fr;
     }
     
-    .asignar-form .form-row {
+    .asignarForm .formRow {
         grid-template-columns: 1fr 1fr;
         gap: 12px;
     }
     
-    .btn-assign {
+    .btnAssign {
         grid-column: span 2;
     }
     
-    .horario-form-grid {
+    .horarioFormGrid {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
     }
     
-    .btn-add-horario {
+    .btnAddHorario {
         grid-column: span 2;
         width: 100%;
     }
 }
 
 @media (max-width: 768px) {
-    .modal-asignaciones {
+    .modalAsignaciones {
         width: 98%;
         height: 95vh;
     }
     
-    .modal-content-tabs {
+    .modalContentTabs {
         padding: 16px;
     }
     
@@ -457,24 +457,24 @@
         font-size: 13px;
     }
     
-    .asignar-form .form-row {
+    .asignarForm .formRow {
         grid-template-columns: 1fr;
     }
     
-    .btn-assign {
+    .btnAssign {
         grid-column: span 1;
     }
     
-    .horario-form-grid {
+    .horarioFormGrid {
         grid-template-columns: 1fr;
         gap: 8px;
     }
     
-    .horarios-grid {
+    .horariosGrid {
         grid-template-columns: 1fr;
     }
     
-    .asignatura-header {
+    .asignaturaHeader {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
@@ -482,23 +482,23 @@
 }
 
 @media (max-width: 480px) {
-    .modal-header {
+    .modalHeader {
         padding: 16px;
     }
     
-    .modal-header h3 {
+    .modalHeader h3 {
         font-size: 16px;
     }
     
-    .info-card {
+    .infoCard {
         padding: 16px;
     }
     
-    .asignar-materia-section {
+    .asignarMateriaSection {
         padding: 16px;
     }
     
-    .asignatura-card {
+    .asignaturaCard {
         padding: 16px;
     }
 }

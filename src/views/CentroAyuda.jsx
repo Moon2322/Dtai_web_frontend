@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderDirectivo from '../components/HeaderDirectivo';
-import '../css/CentroAyuda.css';
+import styles from '../css/CentroAyuda.module.css'; 
 
 const CentroAyuda = () => {
     const [solicitudes, setSolicitudes] = useState([]);
@@ -90,9 +90,9 @@ const CentroAyuda = () => {
 
     if (loading) {
         return (
-            <div className="dashboard-loading">
-                <div className="loading-spinner">
-                    <div className="spinner"></div>
+            <div className={styles.dashboardLoading}>
+                <div className={styles.loadingSpinner}>
+                    <div className={styles.spinner}></div>
                     <p>Cargando solicitudes...</p>
                 </div>
             </div>
@@ -100,34 +100,34 @@ const CentroAyuda = () => {
     }
 
     return (
-        <div className="dashboard-container">
+        <div className={styles.dashboardContainer}>
             <HeaderDirectivo activeSection="ayuda" />
             
-            <main className="dashboard-main">
-                <div className="ayuda-content">
-                    <div className="page-header">
-                        <div className="header-info">
+            <main className={styles.dashboardMain}>
+                <div className={styles.ayudaContent}>
+                    <div className={styles.pageHeader}>
+                        <div className={styles.headerInfo}>
                             <h2>Centro de ayuda al alumno</h2>
                             <p>Visualiza las solicitudes</p>
                         </div>
                     </div>
 
-                    <div className="controls-section">
-                        <div className="search-box">
+                    <div className={styles.controlsSection}>
+                        <div className={styles.searchBox}>
                             <input
                                 type="text"
                                 placeholder="Buscar por nombre, matrícula o email..."
                                 value={filters.search}
                                 onChange={(e) => handleFilterChange('search', e.target.value)}
                             />
-                            <span className="search-icon">🔍</span>
+                            <span className={styles.searchIcon}>🔍</span>
                         </div>
                         
-                        <div className="filters">
+                        <div className={styles.filters}>
                             <select
                                 value={filters.grupo}
                                 onChange={(e) => handleFilterChange('grupo', e.target.value)}
-                                className="filter-select"
+                                className={styles.filterSelect}
                             >
                                 <option value="todos">Todos los grupos</option>
                                 {grupos.map(grupo => (
@@ -140,7 +140,7 @@ const CentroAyuda = () => {
                             <select
                                 value={filters.cuatrimestre}
                                 onChange={(e) => handleFilterChange('cuatrimestre', e.target.value)}
-                                className="filter-select"
+                                className={styles.filterSelect}
                             >
                                 <option value="todos">Todos los cuatrimestres</option>
                                 {[1,2,3,4,5,6,7,8,9].map(n => (
@@ -150,8 +150,8 @@ const CentroAyuda = () => {
                         </div>
                     </div>
 
-                    <div className="table-container">
-                        <table className="ayuda-table">
+                    <div className={styles.tableContainer}>
+                        <table className={styles.ayudaTable}>
                             <thead>
                                 <tr>
                                     <th>Estudiante</th>
@@ -167,20 +167,20 @@ const CentroAyuda = () => {
                                     const estadoInfo = getEstadoBadge(solicitud.estado);
                                     return (
                                         <tr key={solicitud.id}>
-                                            <td className="estudiante-name">
+                                            <td className={styles.estudianteName}>
                                                 {solicitud.nombre} {solicitud.apellido}
                                             </td>
                                             <td>{solicitud.matricula}</td>
                                             <td>{solicitud.correo}</td>
                                             <td>{solicitud.grupo_codigo || 'Sin grupo'}</td>
                                             <td>
-                                                <span className={`status-badge ${estadoInfo.class}`}>
+                                                <span className={`${styles.statusBadge} ${styles[estadoInfo.class]}`}>
                                                     {estadoInfo.text}
                                                 </span>
                                             </td>
-                                            <td className="actions">
+                                            <td className={styles.actions}>
                                                 <button
-                                                    className="btn-view"
+                                                    className={styles.btnView}
                                                     onClick={() => handleViewSolicitud(solicitud.id)}
                                                     title="Ver solicitud"
                                                 >
@@ -194,8 +194,8 @@ const CentroAyuda = () => {
                         </table>
                         
                         {solicitudes.length === 0 && (
-                            <div className="empty-state">
-                                <div className="empty-icon">🎧</div>
+                            <div className={styles.emptyState}>
+                                <div className={styles.emptyIcon}>🎧</div>
                                 <h3>No hay solicitudes</h3>
                                 <p>No se encontraron solicitudes de ayuda con los filtros aplicados</p>
                             </div>

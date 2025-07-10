@@ -1,31 +1,30 @@
-
-.horarios-content {
+.horariosContent {
     display: flex;
     flex-direction: column;
     gap: 25px;
 }
 
-.page-header {
+.pageHeader {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 10px;
 }
 
-.header-info h2 {
+.headerInfo h2 {
     font-size: 32px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 8px 0;
 }
 
-.header-info p {
+.headerInfo p {
     font-size: 16px;
     color: #6E6E6E;
     margin: 0;
 }
 
-.btn-back {
+.btnBack {
     background: #2E4A7D;
     color: #FFFFFF;
     border: none;
@@ -37,12 +36,12 @@
     transition: all 0.2s ease;
 }
 
-.btn-back:hover {
+.btnBack:hover {
     background: #1C2A44;
     transform: translateY(-1px);
 }
 
-.filters-section {
+.filtersSection {
     display: flex;
     gap: 15px;
     align-items: center;
@@ -50,13 +49,13 @@
     margin-bottom: 20px;
 }
 
-.search-box {
+.searchBox {
     position: relative;
     flex: 1;
     min-width: 250px;
 }
 
-.search-box input {
+.searchBox input {
     width: 100%;
     padding: 12px 16px;
     border: 1px solid #F0F6FF;
@@ -68,13 +67,13 @@
     box-sizing: border-box;
 }
 
-.search-box input:focus {
+.searchBox input:focus {
     outline: none;
     border-color: #3BA6FF;
     box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
 }
 
-.filter-select {
+.filterSelect {
     padding: 12px 16px;
     border: 1px solid #F0F6FF;
     border-radius: 8px;
@@ -86,13 +85,13 @@
     min-width: 160px;
 }
 
-.filter-select:focus {
+.filterSelect:focus {
     outline: none;
     border-color: #3BA6FF;
     box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
 }
 
-.horario-grid-container {
+.horarioGridContainer {
     background: #FFFFFF;
     border-radius: 12px;
     overflow: hidden;
@@ -100,17 +99,17 @@
     border: 1px solid #F0F6FF;
 }
 
-.horario-table {
+.horarioTable {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
 }
 
-.horario-table thead {
+.horarioTable thead {
     background: #1C2A44;
 }
 
-.horario-table th {
+.horarioTable th {
     padding: 16px 12px;
     text-align: center;
     font-size: 14px;
@@ -119,24 +118,24 @@
     border: none;
 }
 
-.hora-header {
+.horaHeader {
     width: 80px;
     background: #2E4A7D;
 }
 
-.dia-header {
+.diaHeader {
     width: calc((100% - 80px) / 6);
 }
 
-.horario-table tbody tr {
+.horarioTable tbody tr {
     border-bottom: 1px solid #F0F6FF;
 }
 
-.horario-table tbody tr:last-child {
+.horarioTable tbody tr:last-child {
     border-bottom: none;
 }
 
-.hora-cell {
+.horaCell {
     background: #F0F6FF;
     padding: 12px;
     text-align: center;
@@ -146,14 +145,14 @@
     vertical-align: middle;
 }
 
-.horario-slot {
+.horarioSlot {
     padding: 8px;
     height: 120px;
     vertical-align: top;
     position: relative;
 }
 
-.horario-cell {
+.horarioCell {
     width: 100%;
     height: 100%;
     border-radius: 12px;
@@ -168,13 +167,13 @@
     border-left: 4px solid #3BA6FF;
 }
 
-.horario-cell.occupied {
+.horarioCell.occupied {
     background: #FFFFFF;
     color: #2C2C2C;
     border-left: 4px solid #3BA6FF;
 }
 
-.horario-cell.empty {
+.horarioCell.empty {
     background: #F0F6FF;
     color: #6E6E6E;
     border: 2px dashed #3BA6FF;
@@ -184,14 +183,14 @@
     justify-content: center;
 }
 
-.empty-text {
+.emptyText {
     font-size: 12px;
     font-weight: 500;
     opacity: 0.7;
     color: #6E6E6E;
 }
 
-.materia-nombre {
+.materiaNombre {
     font-weight: 700;
     font-size: 14px;
     margin-bottom: 8px;
@@ -201,14 +200,14 @@
     color: #2C2C2C;
 }
 
-.profesor-nombre {
+.profesorNombre {
     font-size: 12px;
     margin-bottom: 4px;
     color: #6E6E6E;
     font-weight: 500;
 }
 
-.grupo-codigo {
+.grupoCodigo {
     font-size: 11px;
     font-weight: 600;
     margin-bottom: 6px;
@@ -225,7 +224,7 @@
     margin-top: auto;
 }
 
-.dashboard-loading {
+.dashboardLoading {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -233,7 +232,7 @@
     background: #F0F6FF;
 }
 
-.loading-spinner {
+.loadingSpinner {
     text-align: center;
     color: #6E6E6E;
 }
@@ -254,34 +253,34 @@
 }
 
 @media (max-width: 1024px) {
-    .filters-section {
+    .filtersSection {
         flex-direction: column;
         align-items: stretch;
     }
     
-    .search-box {
+    .searchBox {
         min-width: auto;
     }
     
-    .horario-table th,
-    .horario-table td {
+    .horarioTable th,
+    .horarioTable td {
         padding: 6px 4px;
     }
     
-    .horario-slot {
+    .horarioSlot {
         height: 100px;
         padding: 6px;
     }
     
-    .materia-nombre {
+    .materiaNombre {
         font-size: 12px;
     }
     
-    .profesor-nombre {
+    .profesorNombre {
         font-size: 10px;
     }
     
-    .grupo-codigo {
+    .grupoCodigo {
         font-size: 10px;
     }
     
@@ -292,72 +291,72 @@
 }
 
 @media (max-width: 768px) {
-    .page-header {
+    .pageHeader {
         flex-direction: column;
         gap: 16px;
         align-items: stretch;
     }
     
-    .btn-back {
+    .btnBack {
         align-self: flex-start;
     }
     
-    .horario-grid-container {
+    .horarioGridContainer {
         overflow-x: auto;
     }
     
-    .horario-table {
+    .horarioTable {
         min-width: 700px;
     }
     
-    .hora-cell {
+    .horaCell {
         font-size: 10px;
     }
     
-    .horario-slot {
+    .horarioSlot {
         height: 90px;
         padding: 4px;
     }
     
-    .horario-cell {
+    .horarioCell {
         padding: 8px;
     }
 }
 
 @media (max-width: 480px) {
-    .header-info h2 {
+    .headerInfo h2 {
         font-size: 24px;
     }
     
-    .filters-section {
+    .filtersSection {
         gap: 12px;
     }
     
-    .filter-select {
+    .filterSelect {
         min-width: 140px;
     }
     
-    .horario-slot {
+    .horarioSlot {
         height: 80px;
         padding: 3px;
     }
     
-    .horario-cell {
+    .horarioCell {
         padding: 6px;
         border-radius: 8px;
     }
     
-    .materia-nombre {
+    .materiaNombre {
         font-size: 11px;
         margin-bottom: 6px;
     }
     
-    .profesor-nombre {
+    .profesorNombre {
         font-size: 9px;
         margin-bottom: 3px;
     }
     
-    .grupo-codigo {
+    .grupoCodigo {
         font-size: 9px;
         margin-bottom: 4px;
     }

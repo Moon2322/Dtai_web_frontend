@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HeaderEstudiante from '../components/HeaderEstudiante.jsx';
 import axios from '../api/axiosConfig.js';
-import '../css/CalificacionesEstudiante.css';
+import styles from '../css/CalificacionesEstudiante.module.css'; 
 
 const CalificacionesEstudiante = () => {
     const [loading, setLoading] = useState(true);
@@ -67,10 +67,10 @@ const CalificacionesEstudiante = () => {
 
     if (loading) {
         return (
-            <div className="calificaciones-estudiante">
+            <div className={styles.calificacionesEstudiante}>
                 <HeaderEstudiante activeSection="calificaciones" />
-                <div className="loading-container">
-                    <div className="loading-spinner"></div>
+                <div className={styles.loadingContainer}>
+                    <div className={styles.loadingSpinner}></div>
                     <p>Cargando calificaciones...</p>
                 </div>
             </div>
@@ -79,11 +79,11 @@ const CalificacionesEstudiante = () => {
 
     if (error) {
         return (
-            <div className="calificaciones-estudiante">
+            <div className={styles.calificacionesEstudiante}>
                 <HeaderEstudiante activeSection="calificaciones" />
-                <div className="error-container">
-                    <p className="error-message">{error}</p>
-                    <button onClick={cargarCalificaciones} className="retry-button">
+                <div className={styles.errorContainer}>
+                    <p className={styles.errorMessage}>{error}</p>
+                    <button onClick={cargarCalificaciones} className={styles.retryButton}>
                         Reintentar
                     </button>
                 </div>
@@ -92,24 +92,23 @@ const CalificacionesEstudiante = () => {
     }
 
     return (
-        <div className="calificaciones-estudiante">
+        <div className={styles.calificacionesEstudiante}>
             <HeaderEstudiante activeSection="calificaciones" />
             
-            <div className="calificaciones-content">
-                <div className="header-section">
+            <div className={styles.calificacionesContent}>
+                <div className={styles.headerSection}>
                     <h1>Calificaciones</h1>
-                    <div className="tabs">
-                        
+                    <div className={styles.tabs}>
+                        {/* Aquí puedes agregar tabs si necesitas */}
                     </div>
                 </div>
 
-                <div className="calificaciones-section">
-                    
-                    <div className="filtros">
+                <div className={styles.calificacionesSection}>
+                    <div className={styles.filtros}>
                         <select 
                             value={filtroEstado} 
                             onChange={(e) => setFiltroEstado(e.target.value)}
-                            className="filtro-select"
+                            className={styles.filtroSelect}
                         >
                             <option value="todos">Todos los estados</option>
                             <option value="cursando">Cursando</option>
@@ -121,7 +120,7 @@ const CalificacionesEstudiante = () => {
                         <select 
                             value={filtroCuatrimestre} 
                             onChange={(e) => setFiltroCuatrimestre(e.target.value)}
-                            className="filtro-select"
+                            className={styles.filtroSelect}
                         >
                             <option value="todos">Todos los cuatrimestres</option>
                             {cuatrimestresDisponibles.map(cuatri => (
@@ -132,44 +131,44 @@ const CalificacionesEstudiante = () => {
                         </select>
                     </div>
 
-                    <div className="calificaciones-table">
-                        <div className="table-header">
-                            <div className="header-cell">Materia</div>
-                            <div className="header-cell">Calificaciones</div>
-                            <div className="header-cell">Cuatrimestre</div>
-                            <div className="header-cell">Estado</div>
+                    <div className={styles.calificacionesTable}>
+                        <div className={styles.tableHeader}>
+                            <div className={styles.headerCell}>Materia</div>
+                            <div className={styles.headerCell}>Calificaciones</div>
+                            <div className={styles.headerCell}>Cuatrimestre</div>
+                            <div className={styles.headerCell}>Estado</div>
                         </div>
 
                         {calificacionesFiltradas.length > 0 ? (
                             calificacionesFiltradas.map((cal) => (
-                                <div key={cal.id} className="table-row">
-                                    <div className="table-cell materia">
-                                        <div className="materia-info">
+                                <div key={cal.id} className={styles.tableRow}>
+                                    <div className={`${styles.tableCell} ${styles.materia}`}>
+                                        <div className={styles.materiaInfo}>
                                             <h4>{cal.asignatura}</h4>
-                                            <span className="codigo">{cal.codigo_asignatura}</span>
-                                            <span className="profesor">Prof. {cal.profesor}</span>
+                                            <span className={styles.codigo}>{cal.codigo_asignatura}</span>
+                                            <span className={styles.profesor}>Prof. {cal.profesor}</span>
                                         </div>
                                     </div>
                                     
-                                    <div className="table-cell calificaciones">
-                                        <div className="calificacion-badge">
+                                    <div className={`${styles.tableCell} ${styles.calificaciones}`}>
+                                        <div className={styles.calificacionBadge}>
                                             {cal.calificacion_final ? cal.calificacion_final.toFixed(1) : 'N/A'}
                                         </div>
                                     </div>
                                     
-                                    <div className="table-cell cuatrimestre">
+                                    <div className={`${styles.tableCell} ${styles.cuatrimestre}`}>
                                         {cal.cuatrimestre}°
                                     </div>
                                     
-                                    <div className="table-cell estado">
-                                        <span className={`estado-badge ${obtenerEstadoClase(cal.estatus)}`}>
+                                    <div className={`${styles.tableCell} ${styles.estado}`}>
+                                        <span className={`${styles.estadoBadge} ${styles[obtenerEstadoClase(cal.estatus)]}`}>
                                             {obtenerEstadoTexto(cal.estatus)}
                                         </span>
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <div className="no-data">
+                            <div className={styles.noData}>
                                 <p>No se encontraron calificaciones con los filtros seleccionados</p>
                             </div>
                         )}

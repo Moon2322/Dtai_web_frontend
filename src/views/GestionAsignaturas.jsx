@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderDirectivo from '../components/HeaderDirectivo';
-import '../css/GestionAsignaturas.css';
+import styles from '../css/GestionAsignaturas.module.css';
 
 const GestionAsignaturas = () => {
     const [asignaturas, setAsignaturas] = useState([]);
@@ -194,9 +194,9 @@ const GestionAsignaturas = () => {
 
     if (loading) {
         return (
-            <div className="dashboard-loading">
-                <div className="loading-spinner">
-                    <div className="spinner"></div>
+            <div className={styles.dashboardLoading}>
+                <div className={styles.loadingSpinner}>
+                    <div className={styles.spinner}></div>
                     <p>Cargando asignaturas...</p>
                 </div>
             </div>
@@ -204,39 +204,39 @@ const GestionAsignaturas = () => {
     }
 
     return (
-        <div className="dashboard-container">
+        <div className={styles.dashboardContainer}>
             <HeaderDirectivo activeSection="asignaturas" />
             
-            <main className="dashboard-main">
-                <div className="asignaturas-content">
-                    <div className="page-header">
-                        <div className="header-info">
+            <main className={styles.dashboardMain}>
+                <div className={styles.asignaturasContent}>
+                    <div className={styles.pageHeader}>
+                        <div className={styles.headerInfo}>
                             <h2>Gestión de asignaturas</h2>
                             <p>Administra el catálogo académico de la división</p>
                             <small>Registra, modifica y elimina asignaturas del plan de estudios</small>
                         </div>
                     </div>
-                    <div className="controls-section">
-                        <button className="btn-new" onClick={handleNewAsignatura}>
-                            <span className="plus-icon">+</span>
+                    <div className={styles.controlsSection}>
+                        <button className={styles.btnNew} onClick={handleNewAsignatura}>
+                            <span className={styles.plusIcon}>+</span>
                             Nueva Materia
                         </button>
                         
-                        <div className="filters">
-                            <div className="search-box">
+                        <div className={styles.filters}>
+                            <div className={styles.searchBox}>
                                 <input
                                     type="text"
                                     placeholder="Buscar materias por nombre o código..."
                                     value={filters.search}
                                     onChange={(e) => handleFilterChange('search', e.target.value)}
                                 />
-                                <span className="search-icon">🔍</span>
+                                <span className={styles.searchIcon}>🔍</span>
                             </div>
                             
                             <select
                                 value={filters.area}
                                 onChange={(e) => handleFilterChange('area', e.target.value)}
-                                className="filter-select"
+                                className={styles.filterSelect}
                             >
                                 <option value="todas">Todas las áreas</option>
                                 {carreras.map(carrera => (
@@ -249,7 +249,7 @@ const GestionAsignaturas = () => {
                             <select
                                 value={filters.estado}
                                 onChange={(e) => handleFilterChange('estado', e.target.value)}
-                                className="filter-select"
+                                className={styles.filterSelect}
                             >
                                 <option value="todos">Todos los estados</option>
                                 <option value="activa">Activa</option>
@@ -258,8 +258,8 @@ const GestionAsignaturas = () => {
                         </div>
                     </div>
 
-                    <div className="table-container">
-                        <table className="asignaturas-table">
+                    <div className={styles.tableContainer}>
+                        <table className={styles.asignaturasTable}>
                             <thead>
                                 <tr>
                                     <th>Nombre de asignaturas</th>
@@ -272,24 +272,24 @@ const GestionAsignaturas = () => {
                             <tbody>
                                 {asignaturas.map(asignatura => (
                                     <tr key={asignatura.id}>
-                                        <td className="asignatura-name">{asignatura.nombre}</td>
+                                        <td className={styles.asignaturaName}>{asignatura.nombre}</td>
                                         <td>{asignatura.carrera_codigo}</td>
                                         <td>{asignatura.cuatrimestre}°</td>
                                         <td>
-                                            <span className={`status-badge ${asignatura.activa ? 'active' : 'inactive'}`}>
+                                            <span className={`${styles.statusBadge} ${asignatura.activa ? styles.active : styles.inactive}`}>
                                                 {asignatura.activa ? 'Activa' : 'Inactiva'}
                                             </span>
                                         </td>
-                                        <td className="actions">
+                                        <td className={styles.actions}>
                                             <button
-                                                className="btn-edit"
+                                                className={styles.btnEdit}
                                                 onClick={() => handleEditAsignatura(asignatura)}
                                                 title="Editar"
                                             >
                                                 ✏️
                                             </button>
                                             <button
-                                                className={`btn-toggle ${asignatura.activa ? 'btn-deactivate' : 'btn-activate'}`}
+                                                className={`${styles.btnToggle} ${asignatura.activa ? styles.btnDeactivate : styles.btnActivate}`}
                                                 onClick={() => handleDelete(asignatura.id, asignatura.activa)}
                                                 title={asignatura.activa ? 'Desactivar' : 'Reactivar'}
                                             >
@@ -305,16 +305,16 @@ const GestionAsignaturas = () => {
             </main>
 
             {showModal && (
-                <div className="modal-overlay" onClick={() => setShowModal(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-header">
+                <div className={styles.modalOverlay} onClick={() => setShowModal(false)}>
+                    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.modalHeader}>
                             <h3>{editingAsignatura ? 'Editar Asignatura' : 'Nueva Asignatura'}</h3>
-                            <button className="close-btn" onClick={() => setShowModal(false)}>×</button>
+                            <button className={styles.closeBtn} onClick={() => setShowModal(false)}>×</button>
                         </div>
                         
-                        <form onSubmit={handleSubmit} className="modal-form">
-                            <div className="form-row">
-                                <div className="form-group">
+                        <form onSubmit={handleSubmit} className={styles.modalForm}>
+                            <div className={styles.formRow}>
+                                <div className={styles.formGroup}>
                                     <label>Código *</label>
                                     <input
                                         type="text"
@@ -323,7 +323,7 @@ const GestionAsignaturas = () => {
                                         required
                                     />
                                 </div>
-                                <div className="form-group">
+                                <div className={styles.formGroup}>
                                     <label>Cuatrimestre *</label>
                                     <select
                                         value={formData.cuatrimestre}
@@ -337,7 +337,7 @@ const GestionAsignaturas = () => {
                                 </div>
                             </div>
                             
-                            <div className="form-group">
+                            <div className={styles.formGroup}>
                                 <label>Nombre *</label>
                                 <input
                                     type="text"
@@ -347,7 +347,7 @@ const GestionAsignaturas = () => {
                                 />
                             </div>
                             
-                            <div className="form-group">
+                            <div className={styles.formGroup}>
                                 <label>Carrera *</label>
                                 <select
                                     value={formData.carrera_id}
@@ -363,8 +363,8 @@ const GestionAsignaturas = () => {
                                 </select>
                             </div>
                             
-                            <div className="form-row">
-                                <div className="form-group">
+                            <div className={styles.formRow}>
+                                <div className={styles.formGroup}>
                                     <label>Créditos</label>
                                     <input
                                         type="number"
@@ -376,7 +376,7 @@ const GestionAsignaturas = () => {
                                 </div>
                             </div>
                             
-                            <div className="form-group">
+                            <div className={styles.formGroup}>
                                 <label>Descripción</label>
                                 <textarea
                                     rows="3"
@@ -385,11 +385,11 @@ const GestionAsignaturas = () => {
                                 />
                             </div>
                             
-                            <div className="modal-actions">
-                                <button type="button" className="btn-cancel" onClick={() => setShowModal(false)}>
+                            <div className={styles.modalActions}>
+                                <button type="button" className={styles.btnCancel} onClick={() => setShowModal(false)}>
                                     Cancelar
                                 </button>
-                                <button type="submit" className="btn-save">
+                                <button type="submit" className={styles.btnSave}>
                                     {editingAsignatura ? 'Actualizar' : 'Crear'}
                                 </button>
                             </div>
@@ -398,9 +398,9 @@ const GestionAsignaturas = () => {
                 </div>
             )}
             {showSuccessModal && (
-                <div className="success-modal-overlay">
-                    <div className="success-modal">
-                        <div className="success-icon">✅</div>
+                <div className={styles.successModalOverlay}>
+                    <div className={styles.successModal}>
+                        <div className={styles.successIcon}>✅</div>
                         <h3>¡Listo!</h3>
                         <p>{successMessage}</p>
                     </div>
@@ -409,4 +409,5 @@ const GestionAsignaturas = () => {
         </div>
     );
 };
+
 export default GestionAsignaturas;

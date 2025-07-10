@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HeaderEstudiante from '../components/HeaderEstudiante.jsx';
 import axios from '../api/axiosConfig.js';
-import '../css/DashboardEstudiante.css';
+import styles from '../css/DashboardEstudiante.module.css'; 
 
 const DashboardEstudiante = () => {
     const [loading, setLoading] = useState(true);
@@ -28,6 +28,7 @@ const DashboardEstudiante = () => {
                 window.location.href = '/login';
                 return;
             }
+            
             let datosTemp = {
                 alumno: null,
                 calificaciones: [],
@@ -45,6 +46,7 @@ const DashboardEstudiante = () => {
                     axios.get('/api/estudiante/horarios').catch(err => ({ data: [], error: err }))
                 ];
                 const [alumnoRes, calificacionesRes, reportesRes, noticiasRes, horariosRes] = await Promise.all(requests);
+                
                 datosTemp.alumno = alumnoRes.data || null;
                 datosTemp.calificaciones = Array.isArray(calificacionesRes.data) ? calificacionesRes.data : [];
                 datosTemp.reportes = Array.isArray(reportesRes.data) ? reportesRes.data : [];
@@ -112,10 +114,10 @@ const DashboardEstudiante = () => {
 
     if (loading) {
         return (
-            <div className="dashboard-estudiante">
+            <div className={styles.dashboardEstudiante}>
                 <HeaderEstudiante activeSection="dashboard" />
-                <div className="loading-container">
-                    <div className="loading-spinner"></div>
+                <div className={styles.loadingContainer}>
+                    <div className={styles.loadingSpinner}></div>
                     <p>Cargando información...</p>
                 </div>
             </div>
@@ -124,11 +126,11 @@ const DashboardEstudiante = () => {
 
     if (error) {
         return (
-            <div className="dashboard-estudiante">
+            <div className={styles.dashboardEstudiante}>
                 <HeaderEstudiante activeSection="dashboard" />
-                <div className="error-container">
-                    <p className="error-message">{error}</p>
-                    <button onClick={cargarDatosEstudiante} className="retry-button">
+                <div className={styles.errorContainer}>
+                    <p className={styles.errorMessage}>{error}</p>
+                    <button onClick={cargarDatosEstudiante} className={styles.retryButton}>
                         Reintentar
                     </button>
                 </div>
@@ -137,59 +139,51 @@ const DashboardEstudiante = () => {
     }
 
     return (
-        <div className="dashboard-estudiante">
+        <div className={styles.dashboardEstudiante}>
             <HeaderEstudiante activeSection="dashboard" />
             
-            <div className="dashboard-content">
-                <div className="welcome-section">
+            <div className={styles.dashboardContent}>
+                <div className={styles.welcomeSection}>
                     <h1>¡Bienvenido, {datos.alumno?.nombre}!</h1>
                 </div>
 
-                <div className="stats-grid">
-                    <div className="stat-card">
-                        <div className="stat-icon promedio">📊</div>
-                        <div className="stat-content">
+                <div className={styles.statsGrid}>
+                    <div className={styles.statCard}>
+                        <div className={`${styles.statIcon} ${styles.promedio}`}>📊</div>
+                        <div className={styles.statContent}>
                             <h3>Promedio General</h3>
-                            <span className="stat-number">{calcularPromedioActual()}</span>
+                            <span className={styles.statNumber}>{calcularPromedioActual()}</span>
                         </div>
                     </div>
 
-                    <div className="stat-card">
-                        <div className="stat-icon cuatrimestre">🎓</div>
-                        <div className="stat-content">
-                            <h3>Calificación del cuatrimestre Actual</h3>
-                            <span className="stat-number">{datos.alumno?.cuatrimestre_actual || 'N/A'}</span>
+                    <div className={styles.statCard}>
+                        <div className={`${styles.statIcon} ${styles.cuatrimestre}`}>🎓</div>
+                        <div className={styles.statContent}>
+                            <h3>Cuatrimestre Actual</h3>
+                            <span className={styles.statNumber}>{datos.alumno?.cuatrimestre_actual || 'N/A'}</span>
                         </div>
                     </div>
-
-                    
-
                 </div>
 
-                <div className="dashboard-grid">
-                    <div className="dashboard-section">
+                <div className={styles.dashboardGrid}>
+                    <div className={styles.dashboardSection}>
                         <h2>📅 Próximas Clases de Hoy</h2>
-                        <div className="clases-container">
+                        <div className={styles.clasesContainer}>
                             {obtenerProximasClases().length > 0 ? (
                                 obtenerProximasClases().map((clase, index) => (
-                                    <div key={index} className="clase-item">
-                                        <div className="clase-hora">{clase.hora_inicio} - {clase.hora_fin}</div>
-                                        <div className="clase-info">
-                                            <span className="materia">{clase.asignatura}</span>
-                                            <span className="aula">Aula: {clase.aula}</span>
+                                    <div key={index} className={styles.claseItem}>
+                                        <div className={styles.claseHora}>{clase.hora_inicio} - {clase.hora_fin}</div>
+                                        <div className={styles.claseInfo}>
+                                            <span className={styles.materia}>{clase.asignatura}</span>
+                                            <span className={styles.aula}>Aula: {clase.aula}</span>
                                         </div>
                                     </div>
                                 ))
                             ) : (
-                                <p className="no-data">No tienes clases programadas para hoy</p>
+                                <p className={styles.noData}>No tienes clases programadas para hoy</p>
                             )}
                         </div>
                     </div>
-
-                   
-
-                 
-
                 </div>
             </div>
         </div>

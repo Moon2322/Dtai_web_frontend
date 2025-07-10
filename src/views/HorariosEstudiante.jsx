@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HeaderEstudiante from '../components/HeaderEstudiante.jsx';
 import axios from '../api/axiosConfig.js';
-import '../css/HorariosEstudiante.css';
+import styles from '../css/HorariosEstudiante.module.css';
 
 const HorariosEstudiante = () => {
     const [loading, setLoading] = useState(true);
@@ -66,10 +66,10 @@ const HorariosEstudiante = () => {
 
     if (loading) {
         return (
-            <div className="horarios-estudiante">
+            <div className={styles.horariosEstudiante}>
                 <HeaderEstudiante activeSection="horarios" />
-                <div className="loading-container">
-                    <div className="loading-spinner"></div>
+                <div className={styles.loadingContainer}>
+                    <div className={styles.loadingSpinner}></div>
                     <p>Cargando horarios...</p>
                 </div>
             </div>
@@ -78,11 +78,11 @@ const HorariosEstudiante = () => {
 
     if (error) {
         return (
-            <div className="horarios-estudiante">
+            <div className={styles.horariosEstudiante}>
                 <HeaderEstudiante activeSection="horarios" />
-                <div className="error-container">
-                    <p className="error-message">{error}</p>
-                    <button onClick={cargarHorarios} className="retry-button">
+                <div className={styles.errorContainer}>
+                    <p className={styles.errorMessage}>{error}</p>
+                    <button onClick={cargarHorarios} className={styles.retryButton}>
                         Reintentar
                     </button>
                 </div>
@@ -91,52 +91,52 @@ const HorariosEstudiante = () => {
     }
 
     return (
-        <div className="horarios-estudiante">
+        <div className={styles.horariosEstudiante}>
             <HeaderEstudiante activeSection="horarios" />
             
-            <div className="horarios-content">
-                <div className="header-section">
+            <div className={styles.horariosContent}>
+                <div className={styles.headerSection}>
                     <h1>Horario</h1>
-                    <div className="horario-info">
+                    <div className={styles.horarioInfo}>
                         <h2>Horario del cuatrimestre {alumnoInfo?.cuatrimestre_actual || 'N/A'}</h2>
                         <p>{obtenerPeriodoActual()}</p>
                     </div>
                 </div>
 
-                <div className="horario-grid">
-                    <div className="horario-table">
-                        <div className="table-header">
-                            <div className="hora-header">Hora</div>
+                <div className={styles.horarioGrid}>
+                    <div className={styles.horarioTable}>
+                        <div className={styles.tableHeader}>
+                            <div className={styles.horaHeader}>Hora</div>
                             {diasSemana.map(dia => (
-                                <div key={dia} className="dia-header">
+                                <div key={dia} className={styles.diaHeader}>
                                     {dia.charAt(0).toUpperCase() + dia.slice(1)}
                                 </div>
                             ))}
                         </div>
 
                         {horasDisponibles.map(hora => (
-                            <div key={hora} className="table-row">
-                                <div className="hora-cell">
+                            <div key={hora} className={styles.tableRow}>
+                                <div className={styles.horaCell}>
                                     {formatearHora(hora)}
                                 </div>
                                 {diasSemana.map(dia => {
                                     const clase = obtenerClasePorDiaHora(dia, hora);
                                     return (
-                                        <div key={`${dia}-${hora}`} className="dia-cell">
+                                        <div key={`${dia}-${hora}`} className={styles.diaCell}>
                                             {clase ? (
-                                                <div className="clase-card">
-                                                    <div className="materia-nombre">
+                                                <div className={styles.claseCard}>
+                                                    <div className={styles.materiaNombre}>
                                                         {clase.asignatura}
                                                     </div>
-                                                    <div className="profesor-nombre">
+                                                    <div className={styles.profesorNombre}>
                                                         {clase.profesor}
                                                     </div>
-                                                    <div className="aula-info">
+                                                    <div className={styles.aulaInfo}>
                                                         {clase.aula}
                                                     </div>
                                                 </div>
                                             ) : (
-                                                <div className="clase-vacia"></div>
+                                                <div className={styles.claseVacia}></div>
                                             )}
                                         </div>
                                     );

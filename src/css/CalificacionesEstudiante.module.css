@@ -1,21 +1,20 @@
-.calificaciones-estudiante {
+.calificacionesEstudiante {
     min-height: 100vh;
     background-color: #F0F6FF;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell
-
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
 }
 
-.calificaciones-content {
+.calificacionesContent {
     padding: 30px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.header-section {
+.headerSection {
     margin-bottom: 30px;
 }
 
-.header-section h1 {
+.headerSection h1 {
     color: #2C2C2C;
     font-size: 2.5rem;
     font-weight: 700;
@@ -45,14 +44,14 @@
     color: #FFFFFF;
 }
 
-.calificaciones-section {
+.calificacionesSection {
     background: #FFFFFF;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.calificaciones-section h2 {
+.calificacionesSection h2 {
     color: #2C2C2C;
     font-size: 1.5rem;
     font-weight: 600;
@@ -66,7 +65,7 @@
     flex-wrap: wrap;
 }
 
-.filtro-select {
+.filtroSelect {
     padding: 10px 15px;
     border: 2px solid #F0F6FF;
     border-radius: 8px;
@@ -77,16 +76,16 @@
     transition: border-color 0.3s ease;
 }
 
-.filtro-select:focus {
+.filtroSelect:focus {
     outline: none;
     border-color: #3BA6FF;
 }
 
-.calificaciones-table {
+.calificacionesTable {
     width: 100%;
 }
 
-.table-header {
+.tableHeader {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 20px;
@@ -98,11 +97,11 @@
     font-size: 14px;
 }
 
-.header-cell {
+.headerCell {
     text-align: left;
 }
 
-.table-row {
+.tableRow {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 20px;
@@ -112,22 +111,22 @@
     transition: background-color 0.3s ease;
 }
 
-.table-row:hover {
+.tableRow:hover {
     background-color: #F0F6FF;
 }
 
-.table-cell {
+.tableCell {
     display: flex;
     align-items: center;
 }
 
-.materia-info {
+.materiaInfo {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-.materia-info h4 {
+.materiaInfo h4 {
     color: #2C2C2C;
     font-size: 1rem;
     font-weight: 600;
@@ -146,7 +145,7 @@
     font-weight: 500;
 }
 
-.calificacion-badge {
+.calificacionBadge {
     background-color: #2E4A7D;
     color: #FFFFFF;
     padding: 8px 16px;
@@ -163,7 +162,7 @@
     font-size: 1rem;
 }
 
-.estado-badge {
+.estadoBadge {
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 0.85rem;
@@ -172,27 +171,28 @@
     letter-spacing: 0.5px;
 }
 
-.estado-badge.cursando {
+.estadoBadge.cursando {
     background-color: rgba(59, 166, 255, 0.1);
     color: #3BA6FF;
 }
 
-.estado-badge.completado {
+.estadoBadge.completado {
     background-color: rgba(76, 175, 80, 0.1);
     color: #4CAF50;
 }
 
-.estado-badge.reprobado {
+.estadoBadge.reprobado {
     background-color: rgba(244, 67, 54, 0.1);
     color: #F44336;
 }
 
-.estado-badge.extraordinario {
+.estadoBadge.extraordinario {
     background-color: rgba(255, 193, 7, 0.1);
     color: #FFC107;
 }
 
-.loading-container, .error-container {
+.loadingContainer, 
+.errorContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -201,7 +201,7 @@
     text-align: center;
 }
 
-.loading-spinner {
+.loadingSpinner {
     width: 40px;
     height: 40px;
     border: 4px solid #F0F6FF;
@@ -216,13 +216,13 @@
     100% { transform: rotate(360deg); }
 }
 
-.error-message {
+.errorMessage {
     color: #F44336;
     font-size: 1.1rem;
     margin-bottom: 20px;
 }
 
-.retry-button {
+.retryButton {
     background-color: #3BA6FF;
     color: #FFFFFF;
     border: none;
@@ -233,11 +233,11 @@
     transition: background-color 0.3s ease;
 }
 
-.retry-button:hover {
+.retryButton:hover {
     background-color: #2E4A7D;
 }
 
-.no-data {
+.noData {
     text-align: center;
     padding: 40px;
     color: #6E6E6E;
@@ -245,11 +245,11 @@
 }
 
 @media (max-width: 768px) {
-    .calificaciones-content {
+    .calificacionesContent {
         padding: 20px 15px;
     }
     
-    .header-section h1 {
+    .headerSection h1 {
         font-size: 2rem;
     }
     
@@ -257,21 +257,21 @@
         flex-direction: column;
     }
     
-    .filtro-select {
+    .filtroSelect {
         width: 100%;
     }
     
-    .table-header,
-    .table-row {
+    .tableHeader,
+    .tableRow {
         grid-template-columns: 1fr;
         gap: 10px;
     }
     
-    .table-header {
+    .tableHeader {
         display: none;
     }
     
-    .table-row {
+    .tableRow {
         flex-direction: column;
         align-items: flex-start;
         padding: 20px;
@@ -281,12 +281,12 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     
-    .table-cell {
+    .tableCell {
         width: 100%;
         margin-bottom: 10px;
     }
     
-    .table-cell:last-child {
+    .tableCell:last-child {
         margin-bottom: 0;
     }
 }

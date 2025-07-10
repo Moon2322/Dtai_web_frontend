@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/HeaderEstudiante.css';
+import '../css/HeaderEstudiante.module.css';
 
 const HeaderEstudiante = ({ activeSection = 'dashboard' }) => {
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/HeaderDirectivo.css';
+import '../css/HeaderDirectivo.module.module.module.css';
 
 const HeaderDirectivo = ({ activeSection = 'dashboard' }) => {
     const navigate = useNavigate();

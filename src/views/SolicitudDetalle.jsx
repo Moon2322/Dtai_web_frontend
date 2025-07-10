@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import HeaderDirectivo from '../components/HeaderDirectivo';
-import '../css/SolicitudDetalle.css';
+import styles from '../css/SolicitudDetalle.module.css';
 
 const SolicitudDetalle = () => {
     const [solicitud, setSolicitud] = useState(null);
@@ -92,9 +92,9 @@ const SolicitudDetalle = () => {
 
     if (loading) {
         return (
-            <div className="dashboard-loading">
-                <div className="loading-spinner">
-                    <div className="spinner"></div>
+            <div className={styles.dashboardLoading}>
+                <div className={styles.loadingSpinner}>
+                    <div className={styles.spinner}></div>
                     <p>Cargando solicitud...</p>
                 </div>
             </div>
@@ -103,12 +103,12 @@ const SolicitudDetalle = () => {
 
     if (!solicitud) {
         return (
-            <div className="dashboard-container">
+            <div className={styles.dashboardContainer}>
                 <HeaderDirectivo activeSection="ayuda" />
-                <main className="dashboard-main">
-                    <div className="error-state">
+                <main className={styles.dashboardMain}>
+                    <div className={styles.errorState}>
                         <h2>Solicitud no encontrada</h2>
-                        <button onClick={handleVolver} className="btn-back">
+                        <button onClick={handleVolver} className={styles.btnBack}>
                             Volver al Centro de Ayuda
                         </button>
                     </div>
@@ -118,90 +118,92 @@ const SolicitudDetalle = () => {
     }
 
     return (
-        <div className="dashboard-container">
+        <div className={styles.dashboardContainer}>
             <HeaderDirectivo activeSection="ayuda" />
             
-            <main className="dashboard-main">
-                <div className="solicitud-detalle-content">
-                    <div className="page-header">
-                        <div className="header-info">
+            <main className={styles.dashboardMain}>
+                <div className={styles.solicitudDetalleContent}>
+                    <div className={styles.pageHeader}>
+                        <div className={styles.headerInfo}>
                             <h2>Respuesta a tu Solicitud de Ayuda</h2>
                         </div>
                     </div>
 
-                    <div className="solicitud-card">
-                        <div className="solicitud-header">
-                            <div className="solicitud-info">
+                    <div className={styles.solicitudCard}>
+                        <div className={styles.solicitudHeader}>
+                            <div className={styles.solicitudInfo}>
                                 <h3>Solicitud #{solicitud.id.toString().padStart(3, '0')}</h3>
-                                <span className="fecha">{formatFecha(solicitud.fecha_solicitud)}</span>
+                                <span className={styles.fecha}>{formatFecha(solicitud.fecha_solicitud)}</span>
                             </div>
                         </div>
 
-                        <div className="solicitud-original">
-                            <div className="section-header">
-                                <span className="section-icon">👤</span>
+                        <div className={styles.solicitudOriginal}>
+                            <div className={styles.sectionHeader}>
+                                <span className={styles.sectionIcon}>👤</span>
                                 <span>Tu Solicitud Original</span>
                             </div>
                             
-                            <div className="solicitud-content">
-                                <div className="info-row">
-                                    <span className="label">Asunto:</span>
-                                    <span className="value">{solicitud.tipo_problema}</span>
+                            <div className={styles.solicitudContent}>
+                                <div className={styles.infoRow}>
+                                    <span className={styles.label}>Asunto:</span>
+                                    <span className={styles.value}>{solicitud.tipo_problema}</span>
                                 </div>
-                                <div className="info-row">
-                                    <span className="label">Descripción:</span>
-                                    <p className="descripcion">{solicitud.descripcion_problema}</p>
+                                <div className={styles.infoRow}>
+                                    <span className={styles.label}>Descripción:</span>
+                                    <p className={styles.descripcion}>{solicitud.descripcion_problema}</p>
                                 </div>
                             </div>
                         </div>
+                        
                         {solicitud.respuesta && (
-                            <div className="respuesta-profesor">
-                                <div className="section-header">
-                                    <span className="section-icon">👨‍🏫</span>
+                            <div className={styles.respuestaProfesor}>
+                                <div className={styles.sectionHeader}>
+                                    <span className={styles.sectionIcon}>👨‍🏫</span>
                                     <span>Respuesta del Profesor</span>
                                 </div>
                                 
-                                <div className="profesor-info">
-                                    <span className="profesor-nombre">
+                                <div className={styles.profesorInfo}>
+                                    <span className={styles.profesorNombre}>
                                         Dr. {solicitud.directivo_nombre || 'Roberto'} {solicitud.directivo_apellido || 'Martínez'}
                                     </span>
-                                    <span className="profesor-cargo">Profesor de Estructuras de Datos</span>
-                                    <span className="fecha-respuesta">
+                                    <span className={styles.profesorCargo}>Profesor de Estructuras de Datos</span>
+                                    <span className={styles.fechaRespuesta}>
                                         Fecha respuesta: {formatFecha(solicitud.fecha_respuesta)}
                                     </span>
                                 </div>
                                 
-                                <div className="respuesta-content">
+                                <div className={styles.respuestaContent}>
                                     <p>{solicitud.respuesta}</p>
                                 </div>
                             </div>
                         )}
+                        
                         {!solicitud.respuesta && (
-                            <div className="nueva-respuesta">
-                                <div className="section-header">
-                                    <span className="section-icon">✍️</span>
+                            <div className={styles.nuevaRespuesta}>
+                                <div className={styles.sectionHeader}>
+                                    <span className={styles.sectionIcon}>✍️</span>
                                     <span>Proporcionar Respuesta</span>
                                 </div>
                                 
-                                <div className="respuesta-form">
+                                <div className={styles.respuestaForm}>
                                     <textarea
                                         value={respuesta}
                                         onChange={(e) => setRespuesta(e.target.value)}
                                         placeholder="Escribe tu respuesta al estudiante..."
                                         rows={6}
-                                        className="respuesta-textarea"
+                                        className={styles.respuestaTextarea}
                                     />
                                     
-                                    <div className="form-actions">
+                                    <div className={styles.formActions}>
                                         <button 
                                             onClick={handleVolver}
-                                            className="btn-cancel"
+                                            className={styles.btnCancel}
                                         >
                                             Cancelar
                                         </button>
                                         <button 
                                             onClick={handleEnviarRespuesta}
-                                            className="btn-send"
+                                            className={styles.btnSend}
                                             disabled={!respuesta.trim() || sending}
                                         >
                                             {sending ? 'Enviando...' : 'Enviar Respuesta'}
@@ -210,9 +212,10 @@ const SolicitudDetalle = () => {
                                 </div>
                             </div>
                         )}
+                        
                         {solicitud.respuesta && (
-                            <div className="actions-footer">
-                                <button onClick={handleVolver} className="btn-close">
+                            <div className={styles.actionsFooter}>
+                                <button onClick={handleVolver} className={styles.btnClose}>
                                     ✕ Cerrar
                                 </button>
                             </div>

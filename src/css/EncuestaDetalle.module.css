@@ -1,18 +1,17 @@
-
-.encuesta-detalle-content {
+.encuestaDetalleContent {
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
-.page-header {
+.pageHeader {
     display: flex;
     align-items: flex-start;
     gap: 20px;
     margin-bottom: 10px;
 }
 
-.btn-back {
+.btnBack {
     background: #2E4A7D;
     color: #FFFFFF;
     border: none;
@@ -25,16 +24,16 @@
     white-space: nowrap;
 }
 
-.btn-back:hover {
+.btnBack:hover {
     background: #1C2A44;
     transform: translateY(-1px);
 }
 
-.header-info {
+.headerInfo {
     flex: 1;
 }
 
-.header-info h2 {
+.headerInfo h2 {
     font-size: 28px;
     font-weight: 600;
     color: #2C2C2C;
@@ -42,13 +41,13 @@
     line-height: 1.2;
 }
 
-.header-info p {
+.headerInfo p {
     font-size: 16px;
     color: #6E6E6E;
     margin: 0;
 }
 
-.student-info-section {
+.studentInfoSection {
     background: #FFFFFF;
     border-radius: 12px;
     padding: 24px;
@@ -56,7 +55,7 @@
     border: 1px solid #F0F6FF;
 }
 
-.section-header {
+.sectionHeader {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -65,37 +64,37 @@
     border-bottom: 2px solid #F0F6FF;
 }
 
-.section-icon {
+.sectionIcon {
     font-size: 20px;
 }
 
-.section-header h3 {
+.sectionHeader h3 {
     font-size: 18px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0;
 }
 
-.student-info-grid {
+.studentInfoGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     margin-bottom: 20px;
 }
 
-.info-group {
+.infoGroup {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-.info-group label {
+.infoGroup label {
     font-size: 14px;
     font-weight: 500;
     color: #6E6E6E;
 }
 
-.info-value {
+.infoValue {
     font-size: 16px;
     font-weight: 500;
     color: #2C2C2C;
@@ -104,7 +103,7 @@
     border-radius: 6px;
 }
 
-.interview-info {
+.interviewInfo {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
@@ -112,13 +111,13 @@
     border-top: 1px solid #F0F6FF;
 }
 
-.survey-sections {
+.surveySections {
     display: flex;
     flex-direction: column;
     gap: 25px;
 }
 
-.survey-section {
+.surveySection {
     background: #FFFFFF;
     border-radius: 12px;
     padding: 24px;
@@ -126,15 +125,15 @@
     border: 1px solid #F0F6FF;
 }
 
-.section-number {
+.sectionNumber {
     font-size: 20px;
 }
 
-.question-group {
+.questionGroup {
     margin-bottom: 20px;
 }
 
-.question-group label {
+.questionGroup label {
     display: block;
     font-size: 14px;
     font-weight: 500;
@@ -142,7 +141,7 @@
     margin-bottom: 8px;
 }
 
-.response-display {
+.responseDisplay {
     padding: 12px 16px;
     background: #F0F6FF;
     border: 1px solid #3BA6FF;
@@ -152,14 +151,14 @@
     min-height: 20px;
 }
 
-.question-row {
+.questionRow {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     margin-bottom: 20px;
 }
 
-.response-options {
+.responseOptions {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
@@ -187,20 +186,20 @@
     color: #2C2C2C;
 }
 
-.error-state {
+.errorState {
     text-align: center;
     padding: 60px 20px;
     color: #6E6E6E;
 }
 
-.error-state h2 {
+.errorState h2 {
     font-size: 24px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 20px 0;
 }
 
-.dashboard-loading {
+.dashboardLoading {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -208,7 +207,7 @@
     background: #F0F6FF;
 }
 
-.loading-spinner {
+.loadingSpinner {
     text-align: center;
     color: #6E6E6E;
 }
@@ -229,40 +228,40 @@
 }
 
 @media (max-width: 1024px) {
-    .question-row {
+    .questionRow {
         grid-template-columns: 1fr;
     }
     
-    .student-info-grid {
+    .studentInfoGrid {
         grid-template-columns: 1fr 1fr;
     }
     
-    .interview-info {
+    .interviewInfo {
         grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 768px) {
-    .page-header {
+    .pageHeader {
         flex-direction: column;
         align-items: stretch;
         gap: 16px;
     }
     
-    .header-info h2 {
+    .headerInfo h2 {
         font-size: 22px;
     }
     
-    .student-info-grid {
+    .studentInfoGrid {
         grid-template-columns: 1fr;
     }
     
-    .student-info-section,
-    .survey-section {
+    .studentInfoSection,
+    .surveySection {
         padding: 20px;
     }
     
-    .response-options {
+    .responseOptions {
         flex-direction: column;
     }
     
@@ -272,17 +271,17 @@
 }
 
 @media (max-width: 480px) {
-    .encuesta-detalle-content {
+    .encuestaDetalleContent {
         gap: 20px;
     }
     
-    .section-header {
+    .sectionHeader {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
     
-    .section-header h3 {
+    .sectionHeader h3 {
         font-size: 16px;
     }
 }

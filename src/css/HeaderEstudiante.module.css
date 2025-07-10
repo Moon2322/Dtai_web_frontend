@@ -1,4 +1,4 @@
-.header-estudiante {
+.headerEstudiante {
     background-color: #1C2A44;
     color: #FFFFFF;
     padding: 0;
@@ -8,7 +8,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.header-content {
+.headerContent {
     max-width: 100%;
     margin: 0 auto;
     display: flex;
@@ -17,7 +17,7 @@
     height: 60px;
 }
 
-.header-nav {
+.headerNav {
     display: flex;
     align-items: center;
     gap: 0;
@@ -27,7 +27,7 @@
     padding: 0 20px;
 }
 
-.nav-item {
+.navItem {
     background: none;
     border: none;
     color: #FFFFFF;
@@ -45,47 +45,47 @@
     white-space: nowrap;
 }
 
-.nav-item:hover {
+.navItem:hover {
     background-color: #2E4A7D;
     color: #FFFFFF;
 }
 
-.nav-item.active {
+.navItem.active {
     background-color: #3BA6FF;
     color: #FFFFFF;
     font-weight: 600;
 }
 
-.nav-item.brand {
+.navItem.brand {
     font-size: 18px;
     font-weight: 700;
     padding: 15px 30px;
 }
 
-.nav-item.logout {
+.navItem.logout {
     color: #FFFFFF;
     margin-left: auto;
 }
 
-.nav-item.logout:hover {
+.navItem.logout:hover {
     background-color: #d32f2f;
     color: #FFFFFF;
 }
 
 @media (max-width: 768px) {
-    .header-nav {
+    .headerNav {
         flex-wrap: wrap;
         gap: 5px;
         padding: 0 10px;
     }
     
-    .nav-item {
+    .navItem {
         padding: 10px 15px;
         font-size: 12px;
         min-height: 45px;
     }
     
-    .nav-item.brand {
+    .navItem.brand {
         font-size: 16px;
         padding: 10px 20px;
     }

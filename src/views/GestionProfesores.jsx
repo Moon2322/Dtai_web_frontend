@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderDirectivo from '../components/HeaderDirectivo';
-import '../css/GestionProfesores.css';
+import styles from '../css/GestionProfesores.module.css';
 
 const GestionProfesores = () => {
     const [profesores, setProfesores] = useState([]);
@@ -228,9 +228,9 @@ const GestionProfesores = () => {
 
     if (loading) {
         return (
-            <div className="dashboard-loading">
-                <div className="loading-spinner">
-                    <div className="spinner"></div>
+            <div className={styles.dashboardLoading}>
+                <div className={styles.loadingSpinner}>
+                    <div className={styles.spinner}></div>
                     <p>Cargando profesores...</p>
                 </div>
             </div>
@@ -238,88 +238,91 @@ const GestionProfesores = () => {
     }
 
     return (
-        <div className="dashboard-container">
+        <div className={styles.dashboardContainer}>
             <HeaderDirectivo activeSection="profesores" />
             
-            <main className="dashboard-main">
-                <div className="profesores-content">
-                    <div className="page-header">
-                        <div className="header-info">
+            <main className={styles.dashboardMain}>
+                <div className={styles.profesoresContent}>
+                    <div className={styles.pageHeader}>
+                        <div className={styles.headerInfo}>
                             <h2>Gestión de Profesores</h2>
                             <p>Administra el personal docente de DTAI</p>
                         </div>
-                        <button className="btn-new" onClick={handleNewProfesor}>
-                            <span className="plus-icon">+</span>
+                        <button className={styles.btnNew} onClick={handleNewProfesor}>
+                            <span className={styles.plusIcon}>+</span>
                             Nuevo Profesor
                         </button>
                     </div>
-                    <div className="stats-cards">
-                        <div className="stat-card">
-                            <div className="stat-icon blue">
+                    
+                    <div className={styles.statsCards}>
+                        <div className={styles.statCard}>
+                            <div className={`${styles.statIcon} ${styles.blue}`}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" strokeWidth="2"/>
                                     <circle cx="8.5" cy="7" r="4" stroke="currentColor" strokeWidth="2"/>
                                     <path d="M20 8V14M23 11H17" stroke="currentColor" strokeWidth="2"/>
                                 </svg>
                             </div>
-                            <div className="stat-content">
-                                <div className="stat-label">Total Profesores</div>
-                                <div className="stat-number">{stats.totalProfesores}</div>
+                            <div className={styles.statContent}>
+                                <div className={styles.statLabel}>Total Profesores</div>
+                                <div className={styles.statNumber}>{stats.totalProfesores}</div>
                             </div>
                         </div>
                         
-                        <div className="stat-card">
-                            <div className="stat-icon green">
+                        <div className={styles.statCard}>
+                            <div className={`${styles.statIcon} ${styles.green}`}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M2 3H8C9.06087 3 10.0783 3.42143 10.8284 4.17157C11.5786 4.92172 12 5.93913 12 7V21C12 20.2044 11.6839 19.4413 11.1213 18.8787C10.5587 18.3161 9.79565 18 9 18H2V3Z" stroke="currentColor" strokeWidth="2"/>
                                     <path d="M22 3H16C14.9391 3 13.9217 3.42143 13.1716 4.17157C12.4214 4.92172 12 5.93913 12 7V21C12 20.2044 12.3161 19.4413 12.8787 18.8787C13.4413 18.3161 14.2044 18 15 18H22V3Z" stroke="currentColor" strokeWidth="2"/>
                                 </svg>
                             </div>
-                            <div className="stat-content">
-                                <div className="stat-label">Áreas Académicas</div>
-                                <div className="stat-number">{stats.areasAcademicas}</div>
+                            <div className={styles.statContent}>
+                                <div className={styles.statLabel}>Áreas Académicas</div>
+                                <div className={styles.statNumber}>{stats.areasAcademicas}</div>
                             </div>
                         </div>
-                        <div className="horarios-buttons">
+                        
+                        <div className={styles.horariosButtons}>
                             <button 
-                                className="btn-horario ingenieria"
+                                className={`${styles.btnHorario} ${styles.ingenieria}`}
                                 onClick={() => navigate('/horarios-ingenieria')}
                             >
-                                <span className="horario-icon">🎓</span>
-                                <div className="horario-info">
-                                    <span className="horario-title">Ingeniería</span>
-                                    <span className="horario-time">5:00 PM - 10:00 PM</span>
+                                <span className={styles.horarioIcon}>🎓</span>
+                                <div className={styles.horarioInfo}>
+                                    <span className={styles.horarioTitle}>Ingeniería</span>
+                                    <span className={styles.horarioTime}>5:00 PM - 10:00 PM</span>
                                 </div>
                             </button>
                             
                             <button 
-                                className="btn-horario tsu"
+                                className={`${styles.btnHorario} ${styles.tsu}`}
                                 onClick={() => navigate('/horarios-tsu')}
                             >
-                                <span className="horario-icon">📚</span>
-                                <div className="horario-info">
-                                    <span className="horario-title">TSU</span>
-                                    <span className="horario-time">7:00 AM - 3:00 PM</span>
+                                <span className={styles.horarioIcon}>📚</span>
+                                <div className={styles.horarioInfo}>
+                                    <span className={styles.horarioTitle}>TSU</span>
+                                    <span className={styles.horarioTime}>7:00 AM - 3:00 PM</span>
                                 </div>
                             </button>
                         </div>
                     </div>
-                    <div className="controls-section">
-                        <div className="search-box">
+                    
+                    <div className={styles.controlsSection}>
+                        <div className={styles.searchBox}>
                             <input
                                 type="text"
                                 placeholder="Buscar por nombre o número de empleado..."
                                 value={filters.search}
                                 onChange={(e) => handleFilterChange('search', e.target.value)}
                             />
-                            <span className="search-icon">🔍</span>
+                            <span className={styles.searchIcon}>🔍</span>
                         </div>
                         
-                        <div className="filters">
+                        <div className={styles.filters}>
                             <select
                                 value={filters.area}
                                 onChange={(e) => handleFilterChange('area', e.target.value)}
-                                className="filter-select"
+                                className={styles.filterSelect}
                             >
                                 <option value="todas">Todas las áreas</option>
                                 {carreras.map(carrera => (
@@ -332,7 +335,7 @@ const GestionProfesores = () => {
                             <select
                                 value={filters.estado}
                                 onChange={(e) => handleFilterChange('estado', e.target.value)}
-                                className="filter-select"
+                                className={styles.filterSelect}
                             >
                                 <option value="todos">Todos los estados</option>
                                 <option value="activo">Activo</option>
@@ -340,8 +343,9 @@ const GestionProfesores = () => {
                             </select>
                         </div>
                     </div>
-                    <div className="table-container">
-                        <table className="profesores-table">
+                    
+                    <div className={styles.tableContainer}>
+                        <table className={styles.profesoresTable}>
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -357,7 +361,7 @@ const GestionProfesores = () => {
                             <tbody>
                                 {profesores.map(profesor => (
                                     <tr key={profesor.id}>
-                                        <td className="profesor-name">
+                                        <td className={styles.profesorName}>
                                             {profesor.nombre} {profesor.apellido}
                                         </td>
                                         <td>{profesor.numero_empleado}</td>
@@ -366,20 +370,20 @@ const GestionProfesores = () => {
                                         <td>{profesor.especialidad || 'No especificada'}</td>
                                         <td>{getMateriasAsignadas(profesor)}</td>
                                         <td>
-                                            <span className={`status-badge ${profesor.activo ? 'active' : 'inactive'}`}>
+                                            <span className={`${styles.statusBadge} ${profesor.activo ? styles.active : styles.inactive}`}>
                                                 {profesor.activo ? 'Activo' : 'Inactivo'}
                                             </span>
                                         </td>
-                                        <td className="actions">
+                                        <td className={styles.actions}>
                                             <button
-                                                className="btn-edit"
+                                                className={styles.btnEdit}
                                                 onClick={() => handleEditProfesor(profesor)}
                                                 title="Editar"
                                             >
                                                 ✏️
                                             </button>
                                             <button
-                                                className={`btn-toggle ${profesor.activo ? 'btn-deactivate' : 'btn-activate'}`}
+                                                className={`${styles.btnToggle} ${profesor.activo ? styles.btnDeactivate : styles.btnActivate}`}
                                                 onClick={() => handleToggleStatus(profesor.id, profesor.activo)}
                                                 title={profesor.activo ? 'Desactivar' : 'Reactivar'}
                                             >
@@ -393,20 +397,21 @@ const GestionProfesores = () => {
                     </div>
                 </div>
             </main>
+            
             {showModal && (
-                <div className="modal-overlay" onClick={() => setShowModal(false)}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-header">
+                <div className={styles.modalOverlay} onClick={() => setShowModal(false)}>
+                    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.modalHeader}>
                             <h3>{editingProfesor ? 'Editar Profesor' : 'Nuevo Profesor'}</h3>
-                            <button className="close-btn" onClick={() => setShowModal(false)}>×</button>
+                            <button className={styles.closeBtn} onClick={() => setShowModal(false)}>×</button>
                         </div>
                         
-                        <form onSubmit={handleSubmit} className="modal-form">
-                            <div className="form-sections">
-                                <div className="form-section">
+                        <form onSubmit={handleSubmit} className={styles.modalForm}>
+                            <div className={styles.formSections}>
+                                <div className={styles.formSection}>
                                     <h4>Datos Personales</h4>
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Nombre Completo *</label>
                                         <input
                                             type="text"
@@ -417,7 +422,7 @@ const GestionProfesores = () => {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Apellido *</label>
                                         <input
                                             type="text"
@@ -428,7 +433,7 @@ const GestionProfesores = () => {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Correo Electrónico *</label>
                                         <input
                                             type="email"
@@ -440,7 +445,7 @@ const GestionProfesores = () => {
                                     </div>
                                     
                                     {!editingProfesor && (
-                                        <div className="form-group">
+                                        <div className={styles.formGroup}>
                                             <label>Contraseña *</label>
                                             <input
                                                 type="password"
@@ -452,7 +457,7 @@ const GestionProfesores = () => {
                                         </div>
                                     )}
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Teléfono</label>
                                         <input
                                             type="tel"
@@ -462,7 +467,7 @@ const GestionProfesores = () => {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Número de Empleado *</label>
                                         <input
                                             type="text"
@@ -473,10 +478,11 @@ const GestionProfesores = () => {
                                         />
                                     </div>
                                 </div>
-                                <div className="form-section">
+                                
+                                <div className={styles.formSection}>
                                     <h4>Datos Académicos</h4>
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Área *</label>
                                         <select
                                             value={formData.carrera_id}
@@ -492,7 +498,7 @@ const GestionProfesores = () => {
                                         </select>
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Área/Especialidad</label>
                                         <input
                                             type="text"
@@ -502,7 +508,7 @@ const GestionProfesores = () => {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Título Académico</label>
                                         <input
                                             type="text"
@@ -512,7 +518,7 @@ const GestionProfesores = () => {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Cédula Profesional</label>
                                         <input
                                             type="text"
@@ -522,7 +528,7 @@ const GestionProfesores = () => {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Experiencia (años)</label>
                                         <input
                                             type="number"
@@ -533,7 +539,7 @@ const GestionProfesores = () => {
                                         />
                                     </div>
                                     
-                                    <div className="form-group">
+                                    <div className={styles.formGroup}>
                                         <label>Fecha de Contratación *</label>
                                         <input
                                             type="date"
@@ -545,16 +551,16 @@ const GestionProfesores = () => {
                                 </div>
                             </div>
                             
-                            <div className="profesor-status">
-                                <span className="status-icon">👨‍🏫</span>
+                            <div className={styles.profesorStatus}>
+                                <span className={styles.statusIcon}>👨‍🏫</span>
                                 <span>Profesor Activo</span>
                             </div>
                             
-                            <div className="modal-actions">
-                                <button type="button" className="btn-cancel" onClick={() => setShowModal(false)}>
+                            <div className={styles.modalActions}>
+                                <button type="button" className={styles.btnCancel} onClick={() => setShowModal(false)}>
                                     Cancelar
                                 </button>
-                                <button type="submit" className="btn-save">
+                                <button type="submit" className={styles.btnSave}>
                                     {editingProfesor ? 'Actualizar' : 'Guardar'} Profesor
                                 </button>
                             </div>
@@ -562,10 +568,11 @@ const GestionProfesores = () => {
                     </div>
                 </div>
             )}
+            
             {showSuccessModal && (
-                <div className="success-modal-overlay">
-                    <div className="success-modal">
-                        <div className="success-icon">✅</div>
+                <div className={styles.successModalOverlay}>
+                    <div className={styles.successModal}>
+                        <div className={styles.successIcon}>✅</div>
                         <h3>¡Listo!</h3>
                         <p>{successMessage}</p>
                     </div>

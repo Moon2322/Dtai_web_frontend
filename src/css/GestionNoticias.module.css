@@ -1,31 +1,36 @@
-
-.profesores-content {
+.noticiasContent {
     display: flex;
     flex-direction: column;
     gap: 25px;
 }
 
-.page-header {
+.pageHeader {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 10px;
 }
 
-.header-info h2 {
+.headerInfo h2 {
     font-size: 32px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 8px 0;
 }
 
-.header-info p {
+.headerInfo p {
     font-size: 16px;
+    color: #6E6E6E;
+    margin: 0 0 4px 0;
+}
+
+.headerInfo small {
+    font-size: 14px;
     color: #6E6E6E;
     margin: 0;
 }
 
-.btn-new {
+.btnNew {
     background: #1C2A44;
     color: #FFFFFF;
     border: none;
@@ -40,81 +45,24 @@
     transition: all 0.2s ease;
 }
 
-.btn-new:hover {
+.btnNew:hover {
     background: #2E4A7D;
     transform: translateY(-1px);
 }
 
-.plus-icon {
+.plusIcon {
     font-size: 16px;
     font-weight: bold;
 }
 
-.stats-cards {
+.statsCards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
     margin-bottom: 10px;
 }
 
-.horarios-buttons {
-    display: flex;
-    gap: 15px;
-    grid-column: 1 / -1;
-    justify-content: center;
-    margin-top: 15px;
-}
-
-.btn-horario {
-    background: #FFFFFF;
-    border: 2px solid #F0F6FF;
-    border-radius: 12px;
-    padding: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    transition: all 0.2s ease;
-    min-width: 200px;
-}
-
-.btn-horario:hover {
-    border-color: #3BA6FF;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 166, 255, 0.15);
-}
-
-.btn-horario.ingenieria:hover {
-    background: linear-gradient(135deg, #F0F6FF 0%, #E8F3FF 100%);
-}
-
-.btn-horario.tsu:hover {
-    background: linear-gradient(135deg, #F0F6FF 0%, #E8F3FF 100%);
-}
-
-.horario-icon {
-    font-size: 24px;
-}
-
-.horario-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.horario-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #2C2C2C;
-}
-
-.horario-time {
-    font-size: 14px;
-    color: #6E6E6E;
-    font-weight: 500;
-}
-
-.stat-card {
+.statCard {
     background: #FFFFFF;
     border-radius: 12px;
     padding: 20px;
@@ -126,12 +74,12 @@
     transition: all 0.2s ease;
 }
 
-.stat-card:hover {
+.statCard:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transform: translateY(-1px);
 }
 
-.stat-icon {
+.statIcon {
     width: 48px;
     height: 48px;
     border-radius: 10px;
@@ -141,48 +89,58 @@
     flex-shrink: 0;
 }
 
-.stat-icon.blue {
+.statIcon.blue {
     background: #F0F6FF;
     color: #2E4A7D;
 }
 
-.stat-icon.green {
+.statIcon.orange {
     background: #F0F6FF;
     color: #3BA6FF;
 }
 
-.stat-content {
+.statIcon.green {
+    background: #F0F6FF;
+    color: #2E4A7D;
+}
+
+.statIcon.purple {
+    background: #F0F6FF;
+    color: #3BA6FF;
+}
+
+.statContent {
     flex: 1;
 }
 
-.stat-label {
+.statLabel {
     font-size: 14px;
     color: #6E6E6E;
     font-weight: 500;
     margin-bottom: 4px;
 }
 
-.stat-number {
-    font-size: 28px;
+.statNumber {
+    font-size: 24px;
     font-weight: 700;
     color: #2C2C2C;
     line-height: 1;
 }
 
-.controls-section {
+.controlsSection {
     display: flex;
     gap: 20px;
     align-items: center;
     flex-wrap: wrap;
 }
 
-.search-box {
+.searchBox {
     position: relative;
     flex: 1;
     min-width: 300px;
 }
 
-.search-box input {
+.searchBox input {
     width: 100%;
     padding: 12px 40px 12px 16px;
     border: 1px solid #F0F6FF;
@@ -194,17 +152,17 @@
     box-sizing: border-box;
 }
 
-.search-box input:focus {
+.searchBox input:focus {
     outline: none;
     border-color: #3BA6FF;
     box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
 }
 
-.search-box input::placeholder {
+.searchBox input::placeholder {
     color: #6E6E6E;
 }
 
-.search-icon {
+.searchIcon {
     position: absolute;
     right: 12px;
     top: 50%;
@@ -218,7 +176,7 @@
     gap: 12px;
 }
 
-.filter-select {
+.filterSelect {
     padding: 12px 16px;
     border: 1px solid #F0F6FF;
     border-radius: 8px;
@@ -227,16 +185,16 @@
     color: #2C2C2C;
     cursor: pointer;
     transition: all 0.2s ease;
-    min-width: 120px;
+    min-width: 150px;
 }
 
-.filter-select:focus {
+.filterSelect:focus {
     outline: none;
     border-color: #3BA6FF;
     box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
 }
 
-.table-container {
+.tableContainer {
     background: #FFFFFF;
     border-radius: 12px;
     overflow: hidden;
@@ -244,16 +202,16 @@
     border: 1px solid #F0F6FF;
 }
 
-.profesores-table {
+.noticiasTable {
     width: 100%;
     border-collapse: collapse;
 }
 
-.profesores-table thead {
+.noticiasTable thead {
     background: #1C2A44;
 }
 
-.profesores-table th {
+.noticiasTable th {
     padding: 16px 20px;
     text-align: left;
     font-size: 14px;
@@ -262,31 +220,47 @@
     border: none;
 }
 
-.profesores-table tbody tr {
+.noticiasTable tbody tr {
     border-bottom: 1px solid #F0F6FF;
     transition: background-color 0.2s ease;
 }
 
-.profesores-table tbody tr:hover {
+.noticiasTable tbody tr:hover {
     background: #F0F6FF;
 }
 
-.profesores-table tbody tr:last-child {
+.noticiasTable tbody tr:last-child {
     border-bottom: none;
 }
 
-.profesores-table td {
+.noticiasTable td {
     padding: 16px 20px;
     font-size: 14px;
     color: #2C2C2C;
     vertical-align: middle;
 }
 
-.profesor-name {
+.noticiaTitle {
     font-weight: 500;
+    position: relative;
 }
 
-.status-badge {
+.destacadaBadge {
+    margin-left: 8px;
+    font-size: 16px;
+}
+
+.categoriaBadge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.statusBadge {
     padding: 4px 12px;
     border-radius: 16px;
     font-size: 12px;
@@ -295,12 +269,12 @@
     letter-spacing: 0.5px;
 }
 
-.status-badge.active {
+.statusBadge.publicada {
     background: #F0F6FF;
     color: #2E4A7D;
 }
 
-.status-badge.inactive {
+.statusBadge.borrador {
     background: #FEF2F2;
     color: #DC2626;
 }
@@ -311,8 +285,8 @@
     align-items: center;
 }
 
-.btn-edit,
-.btn-toggle {
+.btnEdit,
+.btnToggle {
     background: none;
     border: none;
     cursor: pointer;
@@ -322,23 +296,23 @@
     font-size: 16px;
 }
 
-.btn-edit:hover {
+.btnEdit:hover {
     background: #F0F6FF;
 }
 
-.btn-toggle:hover {
+.btnToggle:hover {
     background: #F0F6FF;
 }
 
-.btn-deactivate:hover {
+.btnDeactivate:hover {
     background: #FEF2F2;
 }
 
-.btn-activate:hover {
+.btnActivate:hover {
     background: #F0FDF4;
 }
 
-.modal-overlay {
+.modalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -351,17 +325,21 @@
     z-index: 1000;
 }
 
-.modal-content {
+.modalContent {
     background: #FFFFFF;
     border-radius: 12px;
     width: 90%;
-    max-width: 800px;
+    max-width: 600px;
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
 
-.modal-header {
+.modalContent.large {
+    max-width: 800px;
+}
+
+.modalHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -369,14 +347,14 @@
     margin-bottom: 20px;
 }
 
-.modal-header h3 {
+.modalHeader h3 {
     font-size: 20px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0;
 }
 
-.close-btn {
+.closeBtn {
     background: none;
     border: none;
     font-size: 24px;
@@ -387,36 +365,26 @@
     transition: all 0.2s ease;
 }
 
-.close-btn:hover {
+.closeBtn:hover {
     background: #F0F6FF;
     color: #2C2C2C;
 }
 
-.modal-form {
+.modalForm {
     padding: 0 24px 24px;
 }
 
-.form-sections {
+.formRow {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    gap: 16px;
+}
+
+.formGroup {
     margin-bottom: 20px;
 }
 
-.form-section h4 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #2C2C2C;
-    margin: 0 0 16px 0;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #F0F6FF;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
+.formGroup label {
     display: block;
     margin-bottom: 6px;
     font-size: 14px;
@@ -424,8 +392,9 @@
     color: #2C2C2C;
 }
 
-.form-group input,
-.form-group select {
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
     width: 100%;
     padding: 12px 16px;
     border: 1px solid #F0F6FF;
@@ -437,31 +406,44 @@
     box-sizing: border-box;
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
     outline: none;
     border-color: #3BA6FF;
     box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
 }
 
-.profesor-status {
+.formGroup textarea {
+    resize: vertical;
+    font-family: inherit;
+}
+
+.checkboxGroup {
+    display: flex;
+    align-items: center;
+}
+
+.checkboxLabel {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 16px;
-    background: #F0F6FF;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    cursor: pointer;
     font-size: 14px;
+    color: #2C2C2C;
+}
+
+.checkboxLabel input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    accent-color: #3BA6FF;
+}
+
+.checkboxText {
     font-weight: 500;
-    color: #2E4A7D;
 }
 
-.status-icon {
-    font-size: 18px;
-}
-
-.modal-actions {
+.modalActions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
@@ -469,7 +451,7 @@
     border-top: 1px solid #F0F6FF;
 }
 
-.btn-cancel {
+.btnCancel {
     background: #FFFFFF;
     color: #6E6E6E;
     border: 1px solid #F0F6FF;
@@ -481,12 +463,12 @@
     transition: all 0.2s ease;
 }
 
-.btn-cancel:hover {
+.btnCancel:hover {
     background: #F0F6FF;
     color: #2C2C2C;
 }
 
-.btn-save {
+.btnSave {
     background: #2E4A7D;
     color: #FFFFFF;
     border: none;
@@ -498,11 +480,12 @@
     transition: all 0.2s ease;
 }
 
-.btn-save:hover {
+.btnSave:hover {
     background: #1C2A44;
     transform: translateY(-1px);
 }
-.success-modal-overlay {
+
+.successModalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -516,7 +499,7 @@
     animation: fadeIn 0.3s ease-out;
 }
 
-.success-modal {
+.successModal {
     background: #FFFFFF;
     border-radius: 16px;
     padding: 32px;
@@ -526,19 +509,19 @@
     animation: slideInScale 0.3s ease-out;
 }
 
-.success-icon {
+.successIcon {
     font-size: 48px;
     margin-bottom: 16px;
 }
 
-.success-modal h3 {
+.successModal h3 {
     font-size: 24px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 12px 0;
 }
 
-.success-modal p {
+.successModal p {
     font-size: 16px;
     color: #6E6E6E;
     margin: 0;
@@ -561,7 +544,7 @@
     }
 }
 
-.dashboard-loading {
+.dashboardLoading {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -569,7 +552,7 @@
     background: #F0F6FF;
 }
 
-.loading-spinner {
+.loadingSpinner {
     text-align: center;
     color: #6E6E6E;
 }
@@ -590,76 +573,79 @@
 }
 
 @media (max-width: 1024px) {
-    .form-sections {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    .statsCards {
+        grid-template-columns: repeat(2, 1fr);
     }
     
-    .controls-section {
+    .controlsSection {
         flex-direction: column;
         align-items: stretch;
     }
     
-    .search-box {
+    .searchBox {
         min-width: auto;
     }
     
     .filters {
         justify-content: space-between;
     }
+    
+    .formRow {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
-    .page-header {
+    .pageHeader {
         flex-direction: column;
         gap: 16px;
         align-items: stretch;
     }
     
-    .btn-new {
+    .btnNew {
         justify-content: center;
     }
     
-    .stats-cards {
+    .statsCards {
         grid-template-columns: 1fr;
     }
     
-    .profesores-table {
+    .noticiasTable {
         font-size: 12px;
     }
     
-    .profesores-table th,
-    .profesores-table td {
+    .noticiasTable th,
+    .noticiasTable td {
         padding: 12px 16px;
     }
     
-    .modal-actions {
+    .modalActions {
         flex-direction: column;
     }
     
-    .btn-cancel,
-    .btn-save {
+    .btnCancel,
+    .btnSave {
         width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    .modal-content {
+    .modalContent {
         width: 95%;
         margin: 20px;
     }
     
-    .modal-header,
-    .modal-form {
+    .modalHeader,
+    .modalForm {
         padding: 16px;
     }
     
-    .profesores-table th:nth-child(4),
-    .profesores-table td:nth-child(4),
-    .profesores-table th:nth-child(5),
-    .profesores-table td:nth-child(5),
-    .profesores-table th:nth-child(6),
-    .profesores-table td:nth-child(6) {
+    .noticiasTable th:nth-child(3),
+    .noticiasTable td:nth-child(3),
+    .noticiasTable th:nth-child(4),
+    .noticiasTable td:nth-child(4),
+    .noticiasTable th:nth-child(6),
+    .noticiasTable td:nth-child(6) {
         display: none;
     }
 }

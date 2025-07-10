@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import HeaderDirectivo from '../components/HeaderDirectivo';
-import '../css/ChatBot.css';
+import styles from '../css/ChatBot.module.css'; 
 
 const ChatBot = () => {
     const [mensajes, setMensajes] = useState([]);
@@ -185,70 +185,71 @@ const ChatBot = () => {
     };
 
     return (
-        <div className="chatbot-container">
+        <div className={styles.chatbotContainer}>
             <HeaderDirectivo activeSection="chatbot" />
             
-            <div className="chatbot-content">
-                <div className="chatbot-header">
+            <div className={styles.chatbotContent}>
+                <div className={styles.chatbotHeader}>
                     <h2>Dashboard ChatBot</h2>
                     <p>Panel de control y administración de DTAI</p>
                 </div>
 
-                <div className="chatbot-layout">
-                    <div className="chatbot-sidebar">
+                <div className={styles.chatbotLayout}>
+                    <div className={styles.chatbotSidebar}>
                         <button 
-                            className="btn-nueva-conversacion"
+                            className={styles.btnNuevaConversacion}
                             onClick={nuevaConversacion}
                         >
                             + Nueva conversación
                         </button>
                         
-                        <div className="conversaciones-lista">
+                        <div className={styles.conversacionesLista}>
                             <h4>Conversaciones recientes</h4>
                             {conversaciones.map(conv => (
                                 <div 
                                     key={conv.id}
-                                    className={`conversacion-item ${conversacionId === conv.id ? 'active' : ''}`}
+                                    className={`${styles.conversacionItem} ${conversacionId === conv.id ? styles.active : ''}`}
                                     onClick={() => seleccionarConversacion(conv.id)}
                                 >
-                                    <div className="conversacion-titulo">{conv.titulo}</div>
-                                    <div className="conversacion-fecha">
+                                    <div className={styles.conversacionTitulo}>{conv.titulo}</div>
+                                    <div className={styles.conversacionFecha}>
                                         {new Date(conv.fecha_actualizacion).toLocaleDateString('es-MX')}
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
-                    <div className="chatbot-main">
-                        <div className="chatbot-header-card">
-                            <div className="chatbot-avatar">🤖</div>
-                            <div className="chatbot-info">
+                    
+                    <div className={styles.chatbotMain}>
+                        <div className={styles.chatbotHeaderCard}>
+                            <div className={styles.chatbotAvatar}>🤖</div>
+                            <div className={styles.chatbotInfo}>
                                 <h3>ChatBot</h3>
                                 <p>Pregunta cualquier cosa sobre estadísticas, estudiantes, profesores y datos de la división</p>
                             </div>
                         </div>
 
-                        <div className="chat-container" ref={chatContainerRef}>
+                        <div className={styles.chatContainer} ref={chatContainerRef}>
                             {mensajes.map(mensaje => (
                                 <div 
                                     key={mensaje.id} 
-                                    className={`mensaje ${mensaje.tipo === 'pregunta' ? 'mensaje-usuario' : 'mensaje-bot'}`}
+                                    className={`${styles.mensaje} ${mensaje.tipo === 'pregunta' ? styles.mensajeUsuario : styles.mensajeBot}`}
                                 >
-                                    <div className="mensaje-avatar">
+                                    <div className={styles.mensajeAvatar}>
                                         {mensaje.tipo === 'pregunta' ? '👤' : '🤖'}
                                     </div>
-                                    <div className="mensaje-contenido">
-                                        <div className="mensaje-texto">{mensaje.contenido}</div>
-                                        <div className="mensaje-timestamp">{mensaje.timestamp}</div>
+                                    <div className={styles.mensajeContenido}>
+                                        <div className={styles.mensajeTexto}>{mensaje.contenido}</div>
+                                        <div className={styles.mensajeTimestamp}>{mensaje.timestamp}</div>
                                     </div>
                                 </div>
                             ))}
                             
                             {loading && (
-                                <div className="mensaje mensaje-bot">
-                                    <div className="mensaje-avatar">🤖</div>
-                                    <div className="mensaje-contenido">
-                                        <div className="typing-indicator">
+                                <div className={`${styles.mensaje} ${styles.mensajeBot}`}>
+                                    <div className={styles.mensajeAvatar}>🤖</div>
+                                    <div className={styles.mensajeContenido}>
+                                        <div className={styles.typingIndicator}>
                                             <span></span>
                                             <span></span>
                                             <span></span>
@@ -257,12 +258,13 @@ const ChatBot = () => {
                                 </div>
                             )}
                         </div>
+
                         {mensajes.length <= 1 && (
-                            <div className="preguntas-sugeridas">
+                            <div className={styles.preguntasSugeridas}>
                                 {preguntasSugeridas.map((pregunta, index) => (
                                     <button
                                         key={index}
-                                        className="pregunta-sugerida"
+                                        className={styles.preguntaSugerida}
                                         onClick={() => enviarMensaje(pregunta)}
                                     >
                                         {pregunta}
@@ -270,25 +272,26 @@ const ChatBot = () => {
                                 ))}
                             </div>
                         )}
-                        <div className="chat-input-container">
-                            <div className="chat-input-wrapper">
+
+                        <div className={styles.chatInputContainer}>
+                            <div className={styles.chatInputWrapper}>
                                 <textarea
                                     value={inputMensaje}
                                     onChange={(e) => setInputMensaje(e.target.value)}
                                     onKeyPress={handleKeyPress}
                                     placeholder="Escribe tu pregunta..."
-                                    className="chat-input"
+                                    className={styles.chatInput}
                                     rows="1"
                                     disabled={loading}
                                 />
                                 <button 
-                                    className="btn-adjuntar"
+                                    className={styles.btnAdjuntar}
                                     type="button"
                                 >
                                     📎
                                 </button>
                                 <button 
-                                    className="btn-enviar"
+                                    className={styles.btnEnviar}
                                     onClick={() => enviarMensaje()}
                                     disabled={loading || !inputMensaje.trim()}
                                 >

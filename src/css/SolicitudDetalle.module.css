@@ -1,22 +1,21 @@
-
-.solicitud-detalle-content {
+.solicitudDetalleContent {
     display: flex;
     flex-direction: column;
     gap: 25px;
 }
 
-.page-header {
+.pageHeader {
     margin-bottom: 10px;
 }
 
-.header-info h2 {
+.headerInfo h2 {
     font-size: 32px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0;
 }
 
-.solicitud-card {
+.solicitudCard {
     background: #FFFFFF;
     border-radius: 12px;
     overflow: hidden;
@@ -24,19 +23,19 @@
     border: 1px solid #F0F6FF;
 }
 
-.solicitud-header {
+.solicitudHeader {
     background: #F0F6FF;
     padding: 20px 24px;
     border-bottom: 1px solid #3BA6FF;
 }
 
-.solicitud-info {
+.solicitudInfo {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.solicitud-info h3 {
+.solicitudInfo h3 {
     font-size: 20px;
     font-weight: 600;
     color: #2C2C2C;
@@ -49,7 +48,7 @@
     font-weight: 500;
 }
 
-.section-header {
+.sectionHeader {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -58,32 +57,32 @@
     background: #F0F6FF;
 }
 
-.section-icon {
+.sectionIcon {
     font-size: 18px;
 }
 
-.section-header span:last-child {
+.sectionHeader span:last-child {
     font-size: 16px;
     font-weight: 600;
     color: #2C2C2C;
 }
 
-.solicitud-original {
+.solicitudOriginal {
     border-bottom: 1px solid #F0F6FF;
 }
 
-.solicitud-content {
+.solicitudContent {
     padding: 20px 24px;
 }
 
-.info-row {
+.infoRow {
     display: flex;
     margin-bottom: 16px;
     align-items: flex-start;
     gap: 12px;
 }
 
-.info-row:last-child {
+.infoRow:last-child {
     margin-bottom: 0;
 }
 
@@ -108,39 +107,39 @@
     flex: 1;
 }
 
-.respuesta-profesor {
+.respuestaProfesor {
     border-bottom: 1px solid #F0F6FF;
 }
 
-.profesor-info {
+.profesorInfo {
     display: flex;
     flex-direction: column;
     gap: 4px;
     padding: 20px 24px 16px;
 }
 
-.profesor-nombre {
+.profesorNombre {
     font-size: 16px;
     font-weight: 600;
     color: #2C2C2C;
 }
 
-.profesor-cargo {
+.profesorCargo {
     font-size: 14px;
     color: #6E6E6E;
 }
 
-.fecha-respuesta {
+.fechaRespuesta {
     font-size: 12px;
     color: #6E6E6E;
     margin-top: 4px;
 }
 
-.respuesta-content {
+.respuestaContent {
     padding: 0 24px 20px;
 }
 
-.respuesta-content p {
+.respuestaContent p {
     color: #2C2C2C;
     font-size: 14px;
     line-height: 1.6;
@@ -151,15 +150,15 @@
     border-left: 4px solid #3BA6FF;
 }
 
-.nueva-respuesta {
+.nuevaRespuesta {
     border-bottom: 1px solid #F0F6FF;
 }
 
-.respuesta-form {
+.respuestaForm {
     padding: 20px 24px;
 }
 
-.respuesta-textarea {
+.respuestaTextarea {
     width: 100%;
     padding: 16px;
     border: 1px solid #F0F6FF;
@@ -173,23 +172,23 @@
     margin-bottom: 16px;
 }
 
-.respuesta-textarea:focus {
+.respuestaTextarea:focus {
     outline: none;
     border-color: #3BA6FF;
     box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
 }
 
-.respuesta-textarea::placeholder {
+.respuestaTextarea::placeholder {
     color: #6E6E6E;
 }
 
-.form-actions {
+.formActions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
 }
 
-.btn-cancel {
+.btnCancel {
     background: #FFFFFF;
     color: #6E6E6E;
     border: 1px solid #F0F6FF;
@@ -201,12 +200,12 @@
     transition: all 0.2s ease;
 }
 
-.btn-cancel:hover {
+.btnCancel:hover {
     background: #F0F6FF;
     color: #2C2C2C;
 }
 
-.btn-send {
+.btnSend {
     background: #2E4A7D;
     color: #FFFFFF;
     border: none;
@@ -218,24 +217,24 @@
     transition: all 0.2s ease;
 }
 
-.btn-send:hover:not(:disabled) {
+.btnSend:hover:not(:disabled) {
     background: #1C2A44;
     transform: translateY(-1px);
 }
 
-.btn-send:disabled {
+.btnSend:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
 }
 
-.actions-footer {
+.actionsFooter {
     padding: 20px 24px;
     display: flex;
     justify-content: center;
 }
 
-.btn-close {
+.btnClose {
     background: #6E6E6E;
     color: #FFFFFF;
     border: none;
@@ -250,24 +249,24 @@
     gap: 8px;
 }
 
-.btn-close:hover {
+.btnClose:hover {
     background: #2C2C2C;
 }
 
-.error-state {
+.errorState {
     text-align: center;
     padding: 60px 20px;
     color: #6E6E6E;
 }
 
-.error-state h2 {
+.errorState h2 {
     font-size: 24px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 20px 0;
 }
 
-.btn-back {
+.btnBack {
     background: #2E4A7D;
     color: #FFFFFF;
     border: none;
@@ -279,12 +278,12 @@
     transition: all 0.2s ease;
 }
 
-.btn-back:hover {
+.btnBack:hover {
     background: #1C2A44;
     transform: translateY(-1px);
 }
 
-.dashboard-loading {
+.dashboardLoading {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -292,7 +291,7 @@
     background: #F0F6FF;
 }
 
-.loading-spinner {
+.loadingSpinner {
     text-align: center;
     color: #6E6E6E;
 }
@@ -313,44 +312,44 @@
 }
 
 @media (max-width: 768px) {
-    .solicitud-detalle-content {
+    .solicitudDetalleContent {
         gap: 20px;
     }
     
-    .header-info h2 {
+    .headerInfo h2 {
         font-size: 24px;
     }
     
-    .solicitud-header,
-    .section-header,
-    .solicitud-content,
-    .profesor-info,
-    .respuesta-content,
-    .respuesta-form,
-    .actions-footer {
+    .solicitudHeader,
+    .sectionHeader,
+    .solicitudContent,
+    .profesorInfo,
+    .respuestaContent,
+    .respuestaForm,
+    .actionsFooter {
         padding-left: 20px;
         padding-right: 20px;
     }
     
-    .solicitud-info {
+    .solicitudInfo {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
     
-    .form-actions {
+    .formActions {
         flex-direction: column;
     }
     
-    .btn-cancel,
-    .btn-send {
+    .btnCancel,
+    .btnSend {
         width: 100%;
         justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
-    .info-row {
+    .infoRow {
         flex-direction: column;
         gap: 4px;
     }

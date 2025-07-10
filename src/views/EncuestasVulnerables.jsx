@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderDirectivo from '../components/HeaderDirectivo';
-import '../css/EncuestasVulnerables.css';
+import styles from '../css/EncuestasVulnerables.module.css'; 
 
 const EncuestasVulnerables = () => {
     const [estudiantes, setEstudiantes] = useState([]);
@@ -80,9 +80,9 @@ const EncuestasVulnerables = () => {
 
     if (loading) {
         return (
-            <div className="dashboard-loading">
-                <div className="loading-spinner">
-                    <div className="spinner"></div>
+            <div className={styles.dashboardLoading}>
+                <div className={styles.loadingSpinner}>
+                    <div className={styles.spinner}></div>
                     <p>Cargando encuestas...</p>
                 </div>
             </div>
@@ -90,34 +90,34 @@ const EncuestasVulnerables = () => {
     }
 
     return (
-        <div className="dashboard-container">
+        <div className={styles.dashboardContainer}>
             <HeaderDirectivo activeSection="encuesta" />
             
-            <main className="dashboard-main">
-                <div className="encuestas-content">
-                    <div className="page-header">
-                        <div className="header-info">
+            <main className={styles.dashboardMain}>
+                <div className={styles.encuestasContent}>
+                    <div className={styles.pageHeader}>
+                        <div className={styles.headerInfo}>
                             <h2>Encuestas de preguntas vulnerables</h2>
                             <p>Visualiza las solicitudes</p>
                         </div>
                     </div>
 
-                    <div className="controls-section">
-                        <div className="search-box">
+                    <div className={styles.controlsSection}>
+                        <div className={styles.searchBox}>
                             <input
                                 type="text"
                                 placeholder="Buscar por nombre, matrícula o email..."
                                 value={filters.search}
                                 onChange={(e) => handleFilterChange('search', e.target.value)}
                             />
-                            <span className="search-icon">🔍</span>
+                            <span className={styles.searchIcon}>🔍</span>
                         </div>
                         
-                        <div className="filters">
+                        <div className={styles.filters}>
                             <select
                                 value={filters.grupo}
                                 onChange={(e) => handleFilterChange('grupo', e.target.value)}
-                                className="filter-select"
+                                className={styles.filterSelect}
                             >
                                 <option value="todos">Todos los grupos</option>
                                 {grupos.map(grupo => (
@@ -130,7 +130,7 @@ const EncuestasVulnerables = () => {
                             <select
                                 value={filters.cuatrimestre}
                                 onChange={(e) => handleFilterChange('cuatrimestre', e.target.value)}
-                                className="filter-select"
+                                className={styles.filterSelect}
                             >
                                 <option value="todos">Todos los cuatrimestres</option>
                                 {[1,2,3,4,5,6,7,8,9].map(n => (
@@ -139,8 +139,9 @@ const EncuestasVulnerables = () => {
                             </select>
                         </div>
                     </div>
-                    <div className="table-container">
-                        <table className="encuestas-table">
+
+                    <div className={styles.tableContainer}>
+                        <table className={styles.encuestasTable}>
                             <thead>
                                 <tr>
                                     <th>Estudiante</th>
@@ -153,15 +154,15 @@ const EncuestasVulnerables = () => {
                             <tbody>
                                 {estudiantes.map(estudiante => (
                                     <tr key={estudiante.id}>
-                                        <td className="estudiante-name">
+                                        <td className={styles.estudianteName}>
                                             {estudiante.nombre} {estudiante.apellido}
                                         </td>
                                         <td>{estudiante.matricula}</td>
                                         <td>{estudiante.correo}</td>
                                         <td>{estudiante.grupo_codigo || 'Sin grupo'}</td>
-                                        <td className="actions">
+                                        <td className={styles.actions}>
                                             <button
-                                                className="btn-view"
+                                                className={styles.btnView}
                                                 onClick={() => handleViewEncuesta(estudiante.id)}
                                                 title="Ver encuesta"
                                             >
@@ -174,8 +175,8 @@ const EncuestasVulnerables = () => {
                         </table>
                         
                         {estudiantes.length === 0 && (
-                            <div className="empty-state">
-                                <div className="empty-icon">📋</div>
+                            <div className={styles.emptyState}>
+                                <div className={styles.emptyIcon}>📋</div>
                                 <h3>No hay estudiantes</h3>
                                 <p>No se encontraron estudiantes con los filtros aplicados</p>
                             </div>

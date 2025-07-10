@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import HeaderDirectivo from '../components/HeaderDirectivo';
-import '../css/Reportes.css';
+import styles from '../css/Reportes.module.css';
 
 const Reportes = () => {
     const [estudiantesActivos, setEstudiantesActivos] = useState({});
@@ -141,8 +141,8 @@ const Reportes = () => {
     const renderVisualizacion = () => {
         if (!reporteSeleccionado) {
             return (
-                <div className="visualizacion-placeholder">
-                    <div className="placeholder-icon">📊</div>
+                <div className={styles.visualizacionPlaceholder}>
+                    <div className={styles.placeholderIcon}>📊</div>
                     <p>Selecciona un reporte para visualizar</p>
                     <span>Los datos se cargarán automáticamente</span>
                 </div>
@@ -151,19 +151,19 @@ const Reportes = () => {
 
         if (loading) {
             return (
-                <div className="visualizacion-placeholder">
-                    <div className="loading-spinner"></div>
+                <div className={styles.visualizacionPlaceholder}>
+                    <div className={styles.loadingSpinner}></div>
                     <p>Cargando datos...</p>
                 </div>
             );
         }
 
         return (
-            <div className="datos-tabla">
+            <div className={styles.datosTabla}>
                 <h4>{tiposReportes.find(r => r.id === reporteSeleccionado)?.nombre}</h4>
                 {datosReporte.length > 0 ? (
-                    <div className="tabla-container">
-                        <table className="tabla-reportes">
+                    <div className={styles.tablaContainer}>
+                        <table className={styles.tablaReportes}>
                             <thead>
                                 <tr>
                                     {Object.keys(datosReporte[0]).map(key => (
@@ -183,7 +183,7 @@ const Reportes = () => {
                         </table>
                     </div>
                 ) : (
-                    <div className="no-datos">
+                    <div className={styles.noDatos}>
                         <p>No hay datos disponibles para este reporte</p>
                     </div>
                 )}
@@ -192,32 +192,32 @@ const Reportes = () => {
     };
 
     return (
-        <div className="reportes-container">
+        <div className={styles.reportesContainer}>
             <HeaderDirectivo activeSection="reportes" />
             
-            <div className="reportes-content">
-                <div className="reportes-header">
+            <div className={styles.reportesContent}>
+                <div className={styles.reportesHeader}>
                     <h2>Reportes</h2>
                     <p>Gestiona y visualiza los reportes</p>
                 </div>
 
-                <div className="estudiantes-activos-card">
-                    <div className="card-header">
-                        <div className="icon">👥</div>
-                        <div className="card-content">
-                            <div className="card-header">
+                <div className={styles.estudiantesActivosCard}>
+                    <div className={styles.cardHeader}>
+                        <div className={styles.icon}>👥</div>
+                        <div className={styles.cardContent}>
+                            <div className={styles.cardHeader}>
                                 <h3>Estudiantes Activos</h3>
                             </div>
-                            <div className="card-number">{estudiantesActivos.activos || 0}</div>
+                            <div className={styles.cardNumber}>{estudiantesActivos.activos || 0}</div>
                         </div>
                     </div>
                 </div>
 
-                <div className="reportes-filtros">
+                <div className={styles.reportesFiltros}>
                     <select 
                         value={reporteSeleccionado} 
                         onChange={(e) => handleReporteChange(e.target.value)}
-                        className="filtro-select"
+                        className={styles.filtroSelect}
                     >
                         <option value="">Selecciona un reporte</option>
                         {tiposReportes.map(reporte => (
@@ -228,7 +228,7 @@ const Reportes = () => {
                     </select>
 
                     <button 
-                        className="btn-generar-pdf"
+                        className={styles.btnGenerarPdf}
                         onClick={generarPDF}
                         disabled={!reporteSeleccionado || datosReporte.length === 0}
                     >
@@ -236,27 +236,27 @@ const Reportes = () => {
                     </button>
                 </div>
 
-                <div className="otros-reportes">
+                <div className={styles.otrosReportes}>
                     <h3>Otros Reportes</h3>
-                    <div className="reportes-grid">
+                    <div className={styles.reportesGrid}>
                         {tiposReportes.slice(0, 3).map(reporte => (
                             <div 
                                 key={reporte.id}
-                                className={`reporte-card ${reporteSeleccionado === reporte.id ? 'active' : ''}`}
+                                className={`${styles.reporteCard} ${reporteSeleccionado === reporte.id ? styles.active : ''}`}
                                 onClick={() => handleReporteChange(reporte.id)}
                             >
-                                <div className="reporte-icon">📈</div>
+                                <div className={styles.reporteIcon}>📈</div>
                                 <span>{reporte.nombre}</span>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                <div className="visualizacion-datos">
-                    <div className="visualizacion-header">
+                <div className={styles.visualizacionDatos}>
+                    <div className={styles.visualizacionHeader}>
                         <h3>Visualización de Datos</h3>
                         <button 
-                            className="btn-generar-pdf-small"
+                            className={styles.btnGenerarPdfSmall}
                             onClick={generarPDF}
                             disabled={!reporteSeleccionado || datosReporte.length === 0}
                         >
@@ -264,7 +264,7 @@ const Reportes = () => {
                         </button>
                     </div>
                     
-                    <div className="visualizacion-content">
+                    <div className={styles.visualizacionContent}>
                         {renderVisualizacion()}
                     </div>
                 </div>

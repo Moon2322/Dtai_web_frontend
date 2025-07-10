@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderDirectivo from '../components/HeaderDirectivo';
-import '../css/Horarios.css';
+import styles from '../css/Horarios.module.css';
 
 const HorariosTSU = () => {
     const [horarios, setHorarios] = useState([]);
@@ -95,27 +95,27 @@ const HorariosTSU = () => {
 
         if (!horario) {
             return (
-                <div className="horario-cell empty" key={`${dia}-${hora}`}>
-                    <span className="empty-text">Libre</span>
+                <div className={`${styles.horarioCell} ${styles.empty}`} key={`${dia}-${hora}`}>
+                    <span className={styles.emptyText}>Libre</span>
                 </div>
             );
         }
 
         return (
-            <div className="horario-cell occupied" key={`${dia}-${hora}`}>
-                <div className="materia-nombre">{horario.asignatura_nombre}</div>
-                <div className="profesor-nombre">{horario.profesor_nombre}</div>
-                <div className="grupo-codigo">{horario.grupo_codigo}</div>
-                <div className="aula">{horario.aula || 'Sin aula'}</div>
+            <div className={`${styles.horarioCell} ${styles.occupied}`} key={`${dia}-${hora}`}>
+                <div className={styles.materiaNombre}>{horario.asignatura_nombre}</div>
+                <div className={styles.profesorNombre}>{horario.profesor_nombre}</div>
+                <div className={styles.grupoCodigo}>{horario.grupo_codigo}</div>
+                <div className={styles.aula}>{horario.aula || 'Sin aula'}</div>
             </div>
         );
     };
 
     if (loading) {
         return (
-            <div className="dashboard-loading">
-                <div className="loading-spinner">
-                    <div className="spinner"></div>
+            <div className={styles.dashboardLoading}>
+                <div className={styles.loadingSpinner}>
+                    <div className={styles.spinner}></div>
                     <p>Cargando horarios...</p>
                 </div>
             </div>
@@ -123,26 +123,26 @@ const HorariosTSU = () => {
     }
 
     return (
-        <div className="dashboard-container">
+        <div className={styles.dashboardContainer}>
             <HeaderDirectivo activeSection="profesores" />
             
-            <main className="dashboard-main">
-                <div className="horarios-content">
-                    <div className="page-header">
-                        <div className="header-info">
+            <main className={styles.dashboardMain}>
+                <div className={styles.horariosContent}>
+                    <div className={styles.pageHeader}>
+                        <div className={styles.headerInfo}>
                             <h2>Horarios TSU</h2>
                             <p>Horario matutino: 7:00 AM - 3:00 PM</p>
                         </div>
                         <button 
-                            className="btn-back"
+                            className={styles.btnBack}
                             onClick={() => navigate('/profesores-directivo')}
                         >
                             ← Volver
                         </button>
                     </div>
 
-                    <div className="filters-section">
-                        <div className="search-box">
+                    <div className={styles.filtersSection}>
+                        <div className={styles.searchBox}>
                             <input
                                 type="text"
                                 placeholder="Buscar profesor, materia o grupo..."
@@ -154,7 +154,7 @@ const HorariosTSU = () => {
                         <select
                             value={filters.profesor}
                             onChange={(e) => setFilters(prev => ({...prev, profesor: e.target.value}))}
-                            className="filter-select"
+                            className={styles.filterSelect}
                         >
                             <option value="todos">Todos los profesores</option>
                             {profesores.map(p => (
@@ -167,7 +167,7 @@ const HorariosTSU = () => {
                         <select
                             value={filters.grupo}
                             onChange={(e) => setFilters(prev => ({...prev, grupo: e.target.value}))}
-                            className="filter-select"
+                            className={styles.filterSelect}
                         >
                             <option value="todos">Todos los grupos</option>
                             {grupos.map(g => (
@@ -178,13 +178,13 @@ const HorariosTSU = () => {
                         </select>
                     </div>
 
-                    <div className="horario-grid-container">
-                        <table className="horario-table">
+                    <div className={styles.horarioGridContainer}>
+                        <table className={styles.horarioTable}>
                             <thead>
                                 <tr>
-                                    <th className="hora-header">Hora</th>
+                                    <th className={styles.horaHeader}>Hora</th>
                                     {dias.map(dia => (
-                                        <th key={dia} className="dia-header">
+                                        <th key={dia} className={styles.diaHeader}>
                                             {dia.charAt(0).toUpperCase() + dia.slice(1)}
                                         </th>
                                     ))}
@@ -193,9 +193,9 @@ const HorariosTSU = () => {
                             <tbody>
                                 {horasTSU.map(hora => (
                                     <tr key={hora}>
-                                        <td className="hora-cell">{hora}</td>
+                                        <td className={styles.horaCell}>{hora}</td>
                                         {dias.map(dia => (
-                                            <td key={`${dia}-${hora}`} className="horario-slot">
+                                            <td key={`${dia}-${hora}`} className={styles.horarioSlot}>
                                                 {getHorarioCell(dia, hora)}
                                             </td>
                                         ))}

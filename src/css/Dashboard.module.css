@@ -1,52 +1,46 @@
-
-.dashboard-container {
-    min-height: 100vh;
-    background: #F0F6FF;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell
-}
-.dashboard-container {
+.dashboardContainer {
     min-height: 100vh;
     background: #F0F6FF;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-.dashboard-main {
+.dashboardMain {
     max-width: 1200px;
     margin: 0 auto;
     padding: 30px 20px;
 }
 
-.dashboard-content {
+.dashboardContent {
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
 
-.welcome-section {
+.welcomeSection {
     margin-bottom: 10px;
 }
 
-.welcome-section h2 {
+.welcomeSection h2 {
     font-size: 32px;
     font-weight: 600;
     color: #2C2C2C;
     margin: 0 0 8px 0;
 }
 
-.welcome-section p {
+.welcomeSection p {
     font-size: 16px;
     color: #6E6E6E;
     margin: 0;
 }
 
-.quick-actions {
+.quickActions {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
     margin-bottom: 20px;
 }
 
-.action-card {
+.actionCard {
     background: #FFFFFF;
     border: 1px solid #F0F6FF;
     border-radius: 12px;
@@ -59,20 +53,20 @@
     color: #2C2C2C;
 }
 
-.action-card:hover {
+.actionCard:hover {
     border-color: #3BA6FF;
     box-shadow: 0 4px 12px rgba(59, 166, 255, 0.15);
     transform: translateY(-1px);
 }
 
-.stats-grid {
+.statsGrid {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     grid-template-rows: auto auto;
     gap: 20px;
 }
 
-.stat-card {
+.statCard {
     background: #FFFFFF;
     border-radius: 16px;
     padding: 24px;
@@ -84,23 +78,23 @@
     transition: all 0.2s ease;
 }
 
-.stat-card:hover {
+.statCard:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transform: translateY(-1px);
 }
 
-.stat-card.large {
+.statCard.large {
     grid-row: span 2;
     flex-direction: column;
     text-align: center;
     justify-content: center;
 }
 
-.stat-card.small {
+.statCard.small {
     grid-column: span 2;
 }
 
-.stat-icon {
+.statIcon {
     width: 50px;
     height: 50px;
     border-radius: 12px;
@@ -110,37 +104,37 @@
     flex-shrink: 0;
 }
 
-.stat-card.large .stat-icon {
+.statCard.large .statIcon {
     width: 70px;
     height: 70px;
     margin-bottom: 15px;
 }
 
-.stat-icon.blue {
+.statIcon.blue {
     background: #F0F6FF;
     color: #2E4A7D;
 }
 
-.stat-icon.purple {
+.statIcon.purple {
     background: #F0F6FF;
     color: #2E4A7D;
 }
 
-.stat-icon.green {
+.statIcon.green {
     background: #F0F6FF;
     color: #2E4A7D;
 }
 
-.stat-icon.orange {
+.statIcon.orange {
     background: #F0F6FF;
     color: #3BA6FF;
 }
 
-.stat-content {
+.statContent {
     flex: 1;
 }
 
-.stat-number {
+.statNumber {
     font-size: 36px;
     font-weight: 700;
     color: #2C2C2C;
@@ -148,22 +142,22 @@
     margin-bottom: 5px;
 }
 
-.stat-card.large .stat-number {
+.statCard.large .statNumber {
     font-size: 48px;
     margin-bottom: 10px;
 }
 
-.stat-label {
+.statLabel {
     font-size: 14px;
     color: #6E6E6E;
     font-weight: 500;
 }
 
-.stat-card.large .stat-label {
+.statCard.large .statLabel {
     font-size: 16px;
 }
 
-.dashboard-loading {
+.dashboardLoading {
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -171,7 +165,7 @@
     background: #F0F6FF;
 }
 
-.loading-spinner {
+.loadingSpinner {
     text-align: center;
     color: #6E6E6E;
 }
@@ -192,70 +186,70 @@
 }
 
 @media (max-width: 1024px) {
-    .stats-grid {
+    .statsGrid {
         grid-template-columns: 1fr 1fr;
     }
     
-    .stat-card.large {
+    .statCard.large {
         grid-column: span 2;
         grid-row: span 1;
         flex-direction: row;
         text-align: left;
     }
     
-    .stat-card.large .stat-icon {
+    .statCard.large .statIcon {
         margin-bottom: 0;
         width: 50px;
         height: 50px;
     }
     
-    .stat-card.large .stat-number {
+    .statCard.large .statNumber {
         font-size: 36px;
         margin-bottom: 5px;
     }
     
-    .stat-card.large .stat-label {
+    .statCard.large .statLabel {
         font-size: 14px;
     }
 }
 
 @media (max-width: 768px) {
-    .dashboard-main {
+    .dashboardMain {
         padding: 20px 15px;
     }
     
-    .welcome-section h2 {
+    .welcomeSection h2 {
         font-size: 24px;
     }
     
-    .stats-grid {
+    .statsGrid {
         grid-template-columns: 1fr;
     }
     
-    .stat-card.large,
-    .stat-card.small {
+    .statCard.large,
+    .statCard.small {
         grid-column: span 1;
     }
     
-    .quick-actions {
+    .quickActions {
         grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 480px) {
-    .dashboard-main {
+    .dashboardMain {
         padding: 15px 10px;
     }
     
-    .stat-card {
+    .statCard {
         padding: 18px;
     }
     
-    .stat-number {
+    .statNumber {
         font-size: 28px;
     }
     
-    .stat-icon {
+    .statIcon {
         width: 40px;
         height: 40px;
     }

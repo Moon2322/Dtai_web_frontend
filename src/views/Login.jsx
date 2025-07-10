@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/Login.css';
+import styles from '../css/Login.module.css';
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -11,6 +11,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    
     useEffect(() => {
         const clearSession = async () => {
             try {
@@ -100,10 +101,10 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
-            <div className="login-card">
-                <div className="login-header">
-                    <div className="user-icon">
+        <div className={styles.loginContainer}>
+            <div className={styles.loginCard}>
+                <div className={styles.loginHeader}>
+                    <div className={styles.userIcon}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" fill="white"/>
                             <path d="M12 14C7.02944 14 3 18.0294 3 23H21C21 18.0294 16.9706 14 12 14Z" fill="white"/>
@@ -113,10 +114,10 @@ const Login = () => {
                     <p>Accede a tu cuenta DTAI</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="login-form">
-                    <div className="form-group">
+                <form onSubmit={handleSubmit} className={styles.loginForm}>
+                    <div className={styles.formGroup}>
                         <label htmlFor="correo">Correo Electrónico</label>
-                        <div className="input-group">
+                        <div className={styles.inputGroup}>
                             <input
                                 type="email"
                                 id="correo"
@@ -130,9 +131,9 @@ const Login = () => {
                         </div>
                     </div>
 
-                    <div className="form-group">
+                    <div className={styles.formGroup}>
                         <label htmlFor="contraseña">Contraseña</label>
-                        <div className="input-group">
+                        <div className={styles.inputGroup}>
                             <input
                                 type={showPassword ? "text" : "password"}
                                 id="contraseña"
@@ -145,7 +146,7 @@ const Login = () => {
                             />
                             <button
                                 type="button"
-                                className="password-toggle"
+                                className={styles.passwordToggle}
                                 onClick={() => setShowPassword(!showPassword)}
                             >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -161,7 +162,7 @@ const Login = () => {
                     </div>
 
                     {error && (
-                        <div className="error-message">
+                        <div className={styles.errorMessage}>
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/>
                                 <line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" strokeWidth="2"/>
@@ -173,11 +174,11 @@ const Login = () => {
 
                     <button 
                         type="submit" 
-                        className="login-button"
+                        className={styles.loginButton}
                         disabled={loading}
                     >
                         {loading ? (
-                            <div className="loading-spinner">
+                            <div className={styles.loadingSpinner}>
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeDasharray="32" strokeDashoffset="32">
                                         <animate attributeName="stroke-dashoffset" dur="1s" values="32;0" repeatCount="indefinite"/>

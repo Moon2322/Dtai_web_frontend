@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeaderDirectivo from '../components/HeaderDirectivo';
-import '../css/GestionNoticias.css';
+import styles from '../css/GestionNoticias.module.css';
 
 const GestionNoticias = () => {
     const [noticias, setNoticias] = useState([]);
@@ -214,17 +214,17 @@ const GestionNoticias = () => {
 
     const getEstadoBadge = (noticia) => {
         if (noticia.publicada) {
-            return <span className="status-badge publicada">Publicada</span>;
+            return <span className={`${styles.statusBadge} ${styles.publicada}`}>Publicada</span>;
         } else {
-            return <span className="status-badge borrador">Borrador</span>;
+            return <span className={`${styles.statusBadge} ${styles.borrador}`}>Borrador</span>;
         }
     };
 
     if (loading) {
         return (
-            <div className="dashboard-loading">
-                <div className="loading-spinner">
-                    <div className="spinner"></div>
+            <div className={styles.dashboardLoading}>
+                <div className={styles.loadingSpinner}>
+                    <div className={styles.spinner}></div>
                     <p>Cargando noticias...</p>
                 </div>
             </div>
@@ -232,39 +232,39 @@ const GestionNoticias = () => {
     }
 
     return (
-        <div className="dashboard-container">
+        <div className={styles.dashboardContainer}>
             <HeaderDirectivo activeSection="noticias" />
             
-            <main className="dashboard-main">
-                <div className="noticias-content">
-                    <div className="page-header">
-                        <div className="header-info">
+            <main className={styles.dashboardMain}>
+                <div className={styles.noticiasContent}>
+                    <div className={styles.pageHeader}>
+                        <div className={styles.headerInfo}>
                             <h2>Gestión de Noticias</h2>
                             <p>Administra las noticias y comunicados de DTAI</p>
                             <small>Crea, modifica y publica noticias institucionales</small>
                         </div>
-                        <button className="btn-new" onClick={handleNewNoticia}>
-                            <span className="plus-icon">+</span>
+                        <button className={styles.btnNew} onClick={handleNewNoticia}>
+                            <span className={styles.plusIcon}>+</span>
                             Nueva Noticia
                         </button>
                     </div>
 
-                    <div className="stats-cards">
-                        <div className="stat-card">
-                            <div className="stat-icon blue">
+                    <div className={styles.statsCards}>
+                        <div className={styles.statCard}>
+                            <div className={`${styles.statIcon} ${styles.blue}`}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2"/>
                                     <polyline points="14,2 14,8 20,8" stroke="currentColor" strokeWidth="2"/>
                                 </svg>
                             </div>
-                            <div className="stat-content">
-                                <div className="stat-label">Noticias Publicadas</div>
-                                <div className="stat-number">{stats.noticiasPublicadas}</div>
+                            <div className={styles.statContent}>
+                                <div className={styles.statLabel}>Noticias Publicadas</div>
+                                <div className={styles.statNumber}>{stats.noticiasPublicadas}</div>
                             </div>
                         </div>
                         
-                        <div className="stat-card">
-                            <div className="stat-icon orange">
+                        <div className={styles.statCard}>
+                            <div className={`${styles.statIcon} ${styles.orange}`}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M17 3C17.5523 3 18 3.44772 18 4V20C18 20.5523 17.5523 21 17 21H7C6.44772 21 6 20.5523 6 20V4C6 3.44772 6.44772 3 7 3H17Z" stroke="currentColor" strokeWidth="2"/>
                                     <path d="M10 7H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
@@ -272,27 +272,27 @@ const GestionNoticias = () => {
                                     <path d="M10 15H14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                                 </svg>
                             </div>
-                            <div className="stat-content">
-                                <div className="stat-label">Borradores</div>
-                                <div className="stat-number">{stats.borradores}</div>
+                            <div className={styles.statContent}>
+                                <div className={styles.statLabel}>Borradores</div>
+                                <div className={styles.statNumber}>{stats.borradores}</div>
                             </div>
                         </div>
 
-                        <div className="stat-card">
-                            <div className="stat-icon green">
+                        <div className={styles.statCard}>
+                            <div className={`${styles.statIcon} ${styles.green}`}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M1 12S4 4 12 4s11 8 11 8-3 8-11 8-11-8-11-8z" stroke="currentColor" strokeWidth="2"/>
                                     <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
                                 </svg>
                             </div>
-                            <div className="stat-content">
-                                <div className="stat-label">Total Vistas</div>
-                                <div className="stat-number">{stats.totalVistas.toLocaleString()}</div>
+                            <div className={styles.statContent}>
+                                <div className={styles.statLabel}>Total Vistas</div>
+                                <div className={styles.statNumber}>{stats.totalVistas.toLocaleString()}</div>
                             </div>
                         </div>
 
-                        <div className="stat-card">
-                            <div className="stat-icon purple">
+                        <div className={styles.statCard}>
+                            <div className={`${styles.statIcon} ${styles.purple}`}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7 7H17V17H7V7Z" stroke="currentColor" strokeWidth="2"/>
                                     <path d="M9 1V7" stroke="currentColor" strokeWidth="2"/>
@@ -301,28 +301,29 @@ const GestionNoticias = () => {
                                     <path d="M15 17V23" stroke="currentColor" strokeWidth="2"/>
                                 </svg>
                             </div>
-                            <div className="stat-content">
-                                <div className="stat-label">Categorías Activas</div>
-                                <div className="stat-number">{stats.categoriasActivas}</div>
+                            <div className={styles.statContent}>
+                                <div className={styles.statLabel}>Categorías Activas</div>
+                                <div className={styles.statNumber}>{stats.categoriasActivas}</div>
                             </div>
                         </div>
                     </div>
-                    <div className="controls-section">
-                        <div className="search-box">
+                    
+                    <div className={styles.controlsSection}>
+                        <div className={styles.searchBox}>
                             <input
                                 type="text"
                                 placeholder="Buscar noticias por título o contenido..."
                                 value={filters.search}
                                 onChange={(e) => handleFilterChange('search', e.target.value)}
                             />
-                            <span className="search-icon">🔍</span>
+                            <span className={styles.searchIcon}>🔍</span>
                         </div>
                         
-                        <div className="filters">
+                        <div className={styles.filters}>
                             <select
                                 value={filters.categoria}
                                 onChange={(e) => handleFilterChange('categoria', e.target.value)}
-                                className="filter-select"
+                                className={styles.filterSelect}
                             >
                                 <option value="todas">Todas las categorías</option>
                                 {categorias.map(categoria => (
@@ -335,7 +336,7 @@ const GestionNoticias = () => {
                             <select
                                 value={filters.estado}
                                 onChange={(e) => handleFilterChange('estado', e.target.value)}
-                                className="filter-select"
+                                className={styles.filterSelect}
                             >
                                 <option value="todos">Todos los estados</option>
                                 <option value="publicada">Publicada</option>
@@ -343,8 +344,9 @@ const GestionNoticias = () => {
                             </select>
                         </div>
                     </div>
-                    <div className="table-container">
-                        <table className="noticias-table">
+                    
+                    <div className={styles.tableContainer}>
+                        <table className={styles.noticiasTable}>
                             <thead>
                                 <tr>
                                     <th>Título</th>
@@ -359,13 +361,13 @@ const GestionNoticias = () => {
                             <tbody>
                                 {noticias.map(noticia => (
                                     <tr key={noticia.id}>
-                                        <td className="noticia-title">
+                                        <td className={styles.noticiaTitle}>
                                             {noticia.titulo}
-                                            {noticia.es_destacada && <span className="destacada-badge">⭐</span>}
+                                            {noticia.es_destacada && <span className={styles.destacadaBadge}>⭐</span>}
                                         </td>
                                         <td>
                                             <span 
-                                                className="categoria-badge"
+                                                className={styles.categoriaBadge}
                                                 style={{ backgroundColor: noticia.categoria_color }}
                                             >
                                                 {noticia.categoria_nombre}
@@ -375,16 +377,16 @@ const GestionNoticias = () => {
                                         <td>{formatDate(noticia.fecha_publicacion)}</td>
                                         <td>{getEstadoBadge(noticia)}</td>
                                         <td>{noticia.vistas}</td>
-                                        <td className="actions">
+                                        <td className={styles.actions}>
                                             <button
-                                                className="btn-edit"
+                                                className={styles.btnEdit}
                                                 onClick={() => handleEditNoticia(noticia)}
                                                 title="Editar"
                                             >
                                                 ✏️
                                             </button>
                                             <button
-                                                className={`btn-toggle ${noticia.publicada ? 'btn-deactivate' : 'btn-activate'}`}
+                                                className={`${styles.btnToggle} ${noticia.publicada ? styles.btnDeactivate : styles.btnActivate}`}
                                                 onClick={() => handleToggleStatus(noticia.id, noticia.publicada)}
                                                 title={noticia.publicada ? 'Despublicar' : 'Publicar'}
                                             >
@@ -398,16 +400,17 @@ const GestionNoticias = () => {
                     </div>
                 </div>
             </main>
+            
             {showModal && (
-                <div className="modal-overlay" onClick={() => setShowModal(false)}>
-                    <div className="modal-content large" onClick={(e) => e.stopPropagation()}>
-                        <div className="modal-header">
+                <div className={styles.modalOverlay} onClick={() => setShowModal(false)}>
+                    <div className={`${styles.modalContent} ${styles.large}`} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.modalHeader}>
                             <h3>{editingNoticia ? 'Editar Noticia' : 'Nueva Noticia'}</h3>
-                            <button className="close-btn" onClick={() => setShowModal(false)}>×</button>
+                            <button className={styles.closeBtn} onClick={() => setShowModal(false)}>×</button>
                         </div>
                         
-                        <form onSubmit={handleSubmit} className="modal-form">
-                            <div className="form-group">
+                        <form onSubmit={handleSubmit} className={styles.modalForm}>
+                            <div className={styles.formGroup}>
                                 <label>Título *</label>
                                 <input
                                     type="text"
@@ -418,8 +421,8 @@ const GestionNoticias = () => {
                                 />
                             </div>
 
-                            <div className="form-row">
-                                <div className="form-group">
+                            <div className={styles.formRow}>
+                                <div className={styles.formGroup}>
                                     <label>Categoría *</label>
                                     <select
                                         value={formData.categoria_id}
@@ -435,19 +438,19 @@ const GestionNoticias = () => {
                                     </select>
                                 </div>
                                 
-                                <div className="form-group checkbox-group">
-                                    <label className="checkbox-label">
+                                <div className={`${styles.formGroup} ${styles.checkboxGroup}`}>
+                                    <label className={styles.checkboxLabel}>
                                         <input
                                             type="checkbox"
                                             checked={formData.es_destacada}
                                             onChange={(e) => setFormData({...formData, es_destacada: e.target.checked})}
                                         />
-                                        <span className="checkbox-text">Noticia destacada ⭐</span>
+                                        <span className={styles.checkboxText}>Noticia destacada ⭐</span>
                                     </label>
                                 </div>
                             </div>
 
-                            <div className="form-group">
+                            <div className={styles.formGroup}>
                                 <label>Resumen</label>
                                 <textarea
                                     rows="3"
@@ -457,7 +460,7 @@ const GestionNoticias = () => {
                                 />
                             </div>
                             
-                            <div className="form-group">
+                            <div className={styles.formGroup}>
                                 <label>Contenido *</label>
                                 <textarea
                                     rows="8"
@@ -468,22 +471,22 @@ const GestionNoticias = () => {
                                 />
                             </div>
 
-                            <div className="form-group checkbox-group">
-                                <label className="checkbox-label">
+                            <div className={`${styles.formGroup} ${styles.checkboxGroup}`}>
+                                <label className={styles.checkboxLabel}>
                                     <input
                                         type="checkbox"
                                         checked={formData.publicada}
                                         onChange={(e) => setFormData({...formData, publicada: e.target.checked})}
                                     />
-                                    <span className="checkbox-text">Publicar inmediatamente</span>
+                                    <span className={styles.checkboxText}>Publicar inmediatamente</span>
                                 </label>
                             </div>
                             
-                            <div className="modal-actions">
-                                <button type="button" className="btn-cancel" onClick={() => setShowModal(false)}>
+                            <div className={styles.modalActions}>
+                                <button type="button" className={styles.btnCancel} onClick={() => setShowModal(false)}>
                                     Cancelar
                                 </button>
-                                <button type="submit" className="btn-save">
+                                <button type="submit" className={styles.btnSave}>
                                     {editingNoticia ? 'Actualizar' : 'Guardar'} Noticia
                                 </button>
                             </div>
@@ -491,10 +494,11 @@ const GestionNoticias = () => {
                     </div>
                 </div>
             )}
+            
             {showSuccessModal && (
-                <div className="success-modal-overlay">
-                    <div className="success-modal">
-                        <div className="success-icon">✅</div>
+                <div className={styles.successModalOverlay}>
+                    <div className={styles.successModal}>
+                        <div className={styles.successIcon}>✅</div>
                         <h3>¡Listo!</h3>
                         <p>{successMessage}</p>
                     </div>
