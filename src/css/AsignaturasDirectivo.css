@@ -1,0 +1,500 @@
+
+
+.asignaturas-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+.header-info h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 8px 0;
+}
+
+.header-description {
+    font-size: 18px;
+    color: #2C2C2C;
+    margin: 0 0 4px 0;
+    font-weight: 500;
+}
+
+.header-subtitle {
+    font-size: 14px;
+    color: #6E6E6E;
+    margin: 0;
+}
+
+.controls-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.btn-nuevo {
+    background: #2E4A7D;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-nuevo:hover {
+    background: #1C2A44;
+    transform: translateY(-1px);
+}
+
+.search-filters {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    padding: 0 15px;
+    min-width: 300px;
+}
+
+.search-box svg {
+    color: #6E6E6E;
+    margin-right: 10px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    padding: 12px 0;
+    font-size: 14px;
+    color: #2C2C2C;
+    background: transparent;
+    width: 100%;
+}
+
+.search-box input::placeholder {
+    color: #6E6E6E;
+}
+
+.filter-select {
+    background: #FFFFFF;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 14px;
+    color: #2C2C2C;
+    cursor: pointer;
+    min-width: 150px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #3BA6FF;
+}
+
+.table-container {
+    background: #FFFFFF;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #F0F6FF;
+}
+
+.asignaturas-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.asignaturas-table thead {
+    background: #1C2A44;
+}
+
+.asignaturas-table thead th {
+    color: white;
+    padding: 18px 20px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+}
+
+.asignaturas-table tbody tr {
+    border-bottom: 1px solid #F0F6FF;
+    transition: background-color 0.2s ease;
+}
+
+.asignaturas-table tbody tr:hover {
+    background: #F0F6FF;
+}
+
+.asignaturas-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.asignaturas-table tbody td {
+    padding: 18px 20px;
+    font-size: 14px;
+    color: #2C2C2C;
+    vertical-align: middle;
+}
+
+.nombre-cell {
+    font-weight: 500;
+    color: #2C2C2C;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.activa {
+    background: #E8F5E8;
+    color: #2E7D2E;
+}
+
+.status-badge.inactiva {
+    background: #FFF4E6;
+    color: #9b9b9b;
+}
+
+.acciones-cell {
+    text-align: center;
+}
+
+.btn-accion {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 0 4px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-accion.edit {
+    color: #3BA6FF;
+}
+
+.btn-accion.edit:hover {
+    background: rgba(59, 166, 255, 0.1);
+}
+
+.btn-accion.delete {
+    color: #121079;
+}
+
+.btn-accion.delete:hover {
+    background: rgba(220, 38, 38, 0.1);
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6E6E6E;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #FFFFFF;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #F0F6FF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #2C2C2C;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6E6E6E;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: #F0F6FF;
+    color: #2C2C2C;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #2C2C2C;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #2C2C2C;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3BA6FF;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.modal-footer {
+    padding: 20px 25px;
+    border-top: 1px solid #F0F6FF;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-cancel {
+    background: transparent;
+    color: #6E6E6E;
+    border: 1px solid #F0F6FF;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: #F0F6FF;
+    color: #2C2C2C;
+}
+
+.btn-save {
+    background: #2E4A7D;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-save:hover {
+    background: #1C2A44;
+}
+
+@media (max-width: 1024px) {
+    .controls-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .search-filters {
+        justify-content: stretch;
+        flex-direction: column;
+    }
+
+    .search-box {
+        min-width: auto;
+    }
+
+    .asignaturas-table {
+        font-size: 13px;
+    }
+
+    .asignaturas-table thead th,
+    .asignaturas-table tbody td {
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .asignaturas-content {
+        padding: 20px 15px;
+    }
+
+    .search-filters {
+        gap: 10px;
+    }
+
+    .filter-select {
+        min-width: auto;
+    }
+
+    .asignaturas-table {
+        font-size: 12px;
+    }
+
+    .asignaturas-table thead th,
+    .asignaturas-table tbody td {
+        padding: 10px 12px;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-footer {
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+    .btn-cancel,
+    .btn-save {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-info h1 {
+        font-size: 24px;
+    }
+
+    .header-description {
+        font-size: 16px;
+    }
+
+    .controls-section {
+        gap: 12px;
+    }
+
+    .btn-nuevo {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .asignaturas-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .asignaturas-table thead,
+    .asignaturas-table tbody,
+    .asignaturas-table th,
+    .asignaturas-table td,
+    .asignaturas-table tr {
+        display: block;
+    }
+
+    .asignaturas-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .asignaturas-table tr {
+        border: 1px solid #F0F6FF;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        padding: 15px;
+        background: #FFFFFF;
+    }
+
+    .asignaturas-table td {
+        border: none;
+        padding: 8px 0;
+        position: relative;
+        padding-left: 120px;
+        text-align: left;
+    }
+
+    .asignaturas-table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 110px;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: 600;
+        color: #2C2C2C;
+    }
+}

@@ -1,0 +1,440 @@
+.dashboard-estudiante {
+    min-height: 100vh;
+    background-color: #F0F6FF;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell
+
+}
+
+.dashboard-content {
+    padding: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.welcome-section h1 {
+    color: #2C2C2C;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #6E6E6E;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.loading-container, .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #F0F6FF;
+    border-top: 4px solid #3BA6FF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.retry-button {
+    background-color: #3BA6FF;
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.retry-button:hover {
+    background-color: #2E4A7D;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: #FFFFFF;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stat-icon.promedio {
+    background-color: rgba(59, 166, 255, 0.1);
+}
+
+.stat-icon.cuatrimestre {
+    background-color: rgba(46, 74, 125, 0.1);
+}
+
+.stat-icon.materias {
+    background-color: rgba(28, 42, 68, 0.1);
+}
+
+.stat-icon.creditos {
+    background-color: rgba(59, 166, 255, 0.2);
+}
+
+.stat-content h3 {
+    color: #6E6E6E;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0 0 5px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-number {
+    color: #2C2C2C;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 25px;
+}
+
+.dashboard-section {
+    background: #FFFFFF;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-section h2 {
+    color: #2C2C2C;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #F0F6FF;
+}
+
+.no-data {
+    color: #6E6E6E;
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+}
+.clases-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.clase-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background-color: #F0F6FF;
+    border-radius: 8px;
+    border-left: 4px solid #3BA6FF;
+}
+
+.clase-hora {
+    color: #2E4A7D;
+    font-weight: 600;
+    font-size: 0.9rem;
+    min-width: 120px;
+}
+
+.clase-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.materia {
+    color: #2C2C2C;
+    font-weight: 600;
+}
+
+.aula {
+    color: #6E6E6E;
+    font-size: 0.9rem;
+}
+.noticias-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.noticia-item {
+    padding: 15px;
+    border-left: 4px solid #3BA6FF;
+    background-color: #F0F6FF;
+    border-radius: 8px;
+}
+
+.noticia-item h4 {
+    color: #2C2C2C;
+    margin: 0 0 8px 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.noticia-item p {
+    color: #6E6E6E;
+    margin: 0 0 8px 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.fecha {
+    color: #6E6E6E;
+    font-size: 0.8rem;
+}
+.alertas-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.alerta-item {
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid;
+}
+
+.alerta-item.bajo {
+    background-color: rgba(76, 175, 80, 0.1);
+    border-color: #4CAF50;
+}
+
+.alerta-item.medio {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-color: #FFC107;
+}
+
+.alerta-item.alto {
+    background-color: rgba(255, 87, 34, 0.1);
+    border-color: #FF5722;
+}
+
+.alerta-item.critico {
+    background-color: rgba(244, 67, 54, 0.1);
+    border-color: #F44336;
+}
+
+.alerta-item.success {
+    background-color: rgba(76, 175, 80, 0.1);
+    border-color: #4CAF50;
+}
+
+.alerta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.alerta-tipo {
+    color: #2C2C2C;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.nivel-riesgo {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.nivel-riesgo.bajo {
+    background-color: #4CAF50;
+    color: #FFFFFF;
+}
+
+.nivel-riesgo.medio {
+    background-color: #FFC107;
+    color: #2C2C2C;
+}
+
+.nivel-riesgo.alto {
+    background-color: #FF5722;
+    color: #FFFFFF;
+}
+
+.nivel-riesgo.critico {
+    background-color: #F44336;
+    color: #FFFFFF;
+}
+
+.alerta-item p {
+    margin: 0;
+    color: #6E6E6E;
+    line-height: 1.4;
+}
+.progreso-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.progreso-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.progreso-item span:first-child {
+    color: #6E6E6E;
+    min-width: 140px;
+    font-weight: 500;
+}
+
+.progreso-bar {
+    flex: 1;
+    height: 8px;
+    background-color: #F0F6FF;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progreso-fill {
+    height: 100%;
+    background-color: #3BA6FF;
+    transition: width 0.3s ease;
+}
+
+.progreso-item span:last-child {
+    color: #2C2C2C;
+    font-weight: 600;
+    min-width: 60px;
+    text-align: right;
+}
+
+.info-academica {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 15px;
+    border-top: 1px solid #F0F6FF;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    color: #6E6E6E;
+    font-weight: 500;
+}
+
+.value {
+    color: #2C2C2C;
+    font-weight: 600;
+}
+
+.value.estado.activo {
+    color: #4CAF50;
+}
+
+.value.estado.baja_temporal {
+    color: #FFC107;
+}
+
+.value.estado.egresado {
+    color: #3BA6FF;
+}
+
+.value.estado.baja_definitiva {
+    color: #F44336;
+}
+
+@media (max-width: 768px) {
+    .dashboard-content {
+        padding: 20px 15px;
+    }
+    
+    .welcome-section h1 {
+        font-size: 2rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .stat-card {
+        padding: 20px;
+    }
+    
+    .stat-icon {
+        font-size: 2rem;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .clase-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .clase-hora {
+        min-width: auto;
+    }
+}

@@ -1,0 +1,361 @@
+
+.solicitud-detalle-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.page-header {
+    margin-bottom: 10px;
+}
+
+.header-info h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0;
+}
+
+.solicitud-card {
+    background: #FFFFFF;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #F0F6FF;
+}
+
+.solicitud-header {
+    background: #F0F6FF;
+    padding: 20px 24px;
+    border-bottom: 1px solid #3BA6FF;
+}
+
+.solicitud-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.solicitud-info h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0;
+}
+
+.fecha {
+    font-size: 14px;
+    color: #6E6E6E;
+    font-weight: 500;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #F0F6FF;
+    background: #F0F6FF;
+}
+
+.section-icon {
+    font-size: 18px;
+}
+
+.section-header span:last-child {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+}
+
+.solicitud-original {
+    border-bottom: 1px solid #F0F6FF;
+}
+
+.solicitud-content {
+    padding: 20px 24px;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 16px;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.info-row:last-child {
+    margin-bottom: 0;
+}
+
+.label {
+    font-weight: 600;
+    color: #2C2C2C;
+    min-width: 80px;
+    font-size: 14px;
+}
+
+.value {
+    color: #6E6E6E;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+
+.descripcion {
+    color: #2C2C2C;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+}
+
+.respuesta-profesor {
+    border-bottom: 1px solid #F0F6FF;
+}
+
+.profesor-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 20px 24px 16px;
+}
+
+.profesor-nombre {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+}
+
+.profesor-cargo {
+    font-size: 14px;
+    color: #6E6E6E;
+}
+
+.fecha-respuesta {
+    font-size: 12px;
+    color: #6E6E6E;
+    margin-top: 4px;
+}
+
+.respuesta-content {
+    padding: 0 24px 20px;
+}
+
+.respuesta-content p {
+    color: #2C2C2C;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    background: #F0F6FF;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid #3BA6FF;
+}
+
+.nueva-respuesta {
+    border-bottom: 1px solid #F0F6FF;
+}
+
+.respuesta-form {
+    padding: 20px 24px;
+}
+
+.respuesta-textarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #2C2C2C;
+    resize: vertical;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+}
+
+.respuesta-textarea:focus {
+    outline: none;
+    border-color: #3BA6FF;
+    box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
+}
+
+.respuesta-textarea::placeholder {
+    color: #6E6E6E;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-cancel {
+    background: #FFFFFF;
+    color: #6E6E6E;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: #F0F6FF;
+    color: #2C2C2C;
+}
+
+.btn-send {
+    background: #2E4A7D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-send:hover:not(:disabled) {
+    background: #1C2A44;
+    transform: translateY(-1px);
+}
+
+.btn-send:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.actions-footer {
+    padding: 20px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-close {
+    background: #6E6E6E;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-close:hover {
+    background: #2C2C2C;
+}
+
+.error-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6E6E6E;
+}
+
+.error-state h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 20px 0;
+}
+
+.btn-back {
+    background: #2E4A7D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+    background: #1C2A44;
+    transform: translateY(-1px);
+}
+
+.dashboard-loading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F0F6FF;
+}
+
+.loading-spinner {
+    text-align: center;
+    color: #6E6E6E;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #F0F6FF;
+    border-top: 3px solid #3BA6FF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .solicitud-detalle-content {
+        gap: 20px;
+    }
+    
+    .header-info h2 {
+        font-size: 24px;
+    }
+    
+    .solicitud-header,
+    .section-header,
+    .solicitud-content,
+    .profesor-info,
+    .respuesta-content,
+    .respuesta-form,
+    .actions-footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .solicitud-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-cancel,
+    .btn-send {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .info-row {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .label {
+        min-width: auto;
+    }
+}
