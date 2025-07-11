@@ -1,0 +1,422 @@
+.reportesContainer {
+    min-height: 100vh;
+    background-color: #F0F6FF;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+}
+
+.reportesContent {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.reportesHeader {
+    margin-bottom: 30px;
+}
+
+.reportesHeader h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 8px 0;
+}
+
+.reportesHeader p {
+    color: #6E6E6E;
+    font-size: 16px;
+    margin: 0;
+}
+
+.estudiantesActivosCard {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #F0F6FF;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s ease;
+    margin-bottom: 30px;
+}
+
+.estudiantesActivosCard:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.estudiantesActivosCard .icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: #F0F6FF;
+    color: #2E4A7D;
+    font-size: 24px;
+}
+
+.cardContent {
+    flex: 1;
+}
+
+.cardHeader {
+    display: block;
+}
+
+.cardHeader h3 {
+    font-size: 14px;
+    color: #6E6E6E;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.cardHeader .icon {
+    font-size: 24px;
+    color: #3BA6FF;
+}
+
+.cardNumber {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2C2C2C;
+    line-height: 1;
+}
+
+.reportesFiltros {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+.filtroSelect {
+    padding: 12px 16px;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    color: #2C2C2C;
+    font-size: 14px;
+    min-width: 200px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filtroSelect:focus {
+    outline: none;
+    border-color: #3BA6FF;
+    box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
+}
+
+.btnGenerarPdf {
+    background: #1C2A44;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.btnGenerarPdf:hover {
+    background: #2E4A7D;
+    transform: translateY(-1px);
+}
+
+.btnGenerarPdf:disabled {
+    background: #E0E0E0;
+    color: #6E6E6E;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.otrosReportes {
+    margin-bottom: 30px;
+}
+
+.otrosReportes h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #F0F6FF;
+}
+
+.reportesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.reporteCard {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reporteCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-color: #3BA6FF;
+}
+
+.reporteCard.active {
+    border-color: #3BA6FF;
+    background: linear-gradient(135deg, #F0F6FF 0%, #FFFFFF 100%);
+}
+
+.reporteIcon {
+    font-size: 24px;
+    color: #2E4A7D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: #F0F6FF;
+    border-radius: 8px;
+}
+
+.reporteCard span {
+    color: #2C2C2C;
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+}
+
+.visualizacionDatos {
+    background: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.visualizacionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    border-bottom: 1px solid #E0E0E0;
+    background: #F8F9FA;
+}
+
+.visualizacionHeader h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0;
+}
+
+.btnGenerarPdfSmall {
+    background: #2E4A7D;
+    color: #FFFFFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btnGenerarPdfSmall:hover {
+    background: #1C2A44;
+}
+
+.btnGenerarPdfSmall:disabled {
+    background: #E0E0E0;
+    color: #6E6E6E;
+    cursor: not-allowed;
+}
+
+.visualizacionContent {
+    padding: 24px;
+    min-height: 400px;
+}
+
+.visualizacionPlaceholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 350px;
+    text-align: center;
+    color: #6E6E6E;
+}
+
+.placeholderIcon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.7;
+}
+
+.visualizacionPlaceholder p {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #2C2C2C;
+}
+
+.visualizacionPlaceholder span {
+    font-size: 14px;
+    color: #6E6E6E;
+}
+
+.loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #F0F6FF;
+    border-top: 4px solid #3BA6FF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.datosTabla h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #F0F6FF;
+}
+
+.tablaContainer {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #E0E0E0;
+}
+
+.tablaReportes {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tablaReportes thead {
+    background: #1C2A44;
+}
+
+.tablaReportes th {
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    color: #FFFFFF;
+    border: none;
+}
+
+.tablaReportes td {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #2C2C2C;
+    vertical-align: middle;
+}
+
+.tablaReportes tbody tr {
+    border-bottom: 1px solid #F0F6FF;
+    transition: background-color 0.2s ease;
+}
+
+.tablaReportes tbody tr:hover {
+    background: #F0F6FF;
+}
+
+.tablaReportes tbody tr:last-child {
+    border-bottom: none;
+}
+
+.noDatos {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6E6E6E;
+}
+
+.noDatos p {
+    font-size: 16px;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .reportesContent {
+        padding: 16px;
+    }
+    
+    .reportesFiltros {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filtroSelect {
+        min-width: 100%;
+        margin-bottom: 12px;
+    }
+    
+    .btnGenerarPdf {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .estudiantesActivosCard {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+    }
+    
+    .reportesGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .visualizacionHeader {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+    
+    .tablaContainer {
+        font-size: 12px;
+    }
+    
+    .tablaReportes th,
+    .tablaReportes td {
+        padding: 8px 12px;
+    }
+}
+
+.reporteCard,
+.estudiantesActivosCard,
+.visualizacionDatos {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

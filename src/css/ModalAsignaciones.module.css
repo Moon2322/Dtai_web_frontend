@@ -1,0 +1,504 @@
+.modalAsignaciones {
+    background: #FFFFFF;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 1200px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #F0F6FF;
+    background: #1C2A44;
+    color: #FFFFFF;
+}
+
+.modalHeader h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.tabsContainer {
+    background: #F0F6FF;
+    border-bottom: 1px solid #F0F6FF;
+}
+
+.tabs {
+    display: flex;
+    padding: 0 24px;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 16px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6E6E6E;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab:hover {
+    color: #2C2C2C;
+    background: rgba(59, 166, 255, 0.05);
+}
+
+.tab.active {
+    color: #3BA6FF;
+    border-bottom-color: #3BA6FF;
+    background: rgba(59, 166, 255, 0.05);
+}
+
+.modalContentTabs {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.tabContent {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.infoCard {
+    background: #F0F6FF;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #F0F6FF;
+}
+
+.infoCard h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #3BA6FF;
+}
+
+.infoItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(59, 166, 255, 0.1);
+}
+
+.infoItem:last-child {
+    border-bottom: none;
+}
+
+.infoItem label {
+    font-weight: 500;
+    color: #2C2C2C;
+    font-size: 14px;
+}
+
+.infoItem span {
+    color: #6E6E6E;
+    font-size: 14px;
+    text-align: right;
+}
+
+.asignarMateriaSection {
+    background: #F0F6FF;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid #3BA6FF;
+}
+
+.asignarMateriaSection h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 16px 0;
+}
+
+.asignarForm .formRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 16px;
+    align-items: end;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.formGroup label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2C2C2C;
+    margin-bottom: 6px;
+}
+
+.formGroup select,
+.formGroup input {
+    padding: 10px 12px;
+    border: 1px solid #F0F6FF;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #FFFFFF;
+    color: #2C2C2C;
+    transition: all 0.2s ease;
+}
+
+.formGroup select:focus,
+.formGroup input:focus {
+    outline: none;
+    border-color: #3BA6FF;
+    box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
+}
+
+.btnAssign {
+    background: #2E4A7D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    height: fit-content;
+}
+
+.btnAssign:hover:not(:disabled) {
+    background: #1C2A44;
+}
+
+.btnAssign:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.asignaturasAsignadas h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 16px 0;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6E6E6E;
+    background: #F0F6FF;
+    border-radius: 12px;
+}
+
+.asignaturasList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.asignaturaCard {
+    background: #FFFFFF;
+    border: 1px solid #F0F6FF;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.asignaturaHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #F0F6FF;
+}
+
+.asignaturaInfo h5 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 4px 0;
+}
+
+.asignaturaInfo p {
+    font-size: 14px;
+    color: #6E6E6E;
+    margin: 0;
+}
+
+.asignaturaActions {
+    display: flex;
+    gap: 8px;
+}
+
+.btnRemove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 16px;
+}
+
+.btnRemove:hover {
+    background: #FEF2F2;
+}
+
+.horarioForm {
+    margin-bottom: 20px;
+}
+
+.horarioForm h6 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 12px 0;
+}
+
+.horarioFormGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto;
+    gap: 12px;
+    align-items: center;
+}
+
+.horarioFormGrid select,
+.horarioFormGrid input {
+    padding: 8px 10px;
+    border: 1px solid #F0F6FF;
+    border-radius: 6px;
+    font-size: 13px;
+    background: #FFFFFF;
+    color: #2C2C2C;
+}
+
+.btnAddHorario {
+    background: #3BA6FF;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnAddHorario:hover:not(:disabled) {
+    background: #2E4A7D;
+}
+
+.btnAddHorario:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.horariosList h6 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 12px 0;
+}
+
+.horariosGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+
+.horarioItem {
+    background: #F0F6FF;
+    border: 1px solid #3BA6FF;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.horarioInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.horarioInfo .dia {
+    font-weight: 600;
+    color: #2C2C2C;
+    font-size: 13px;
+}
+
+.horarioInfo .hora {
+    color: #3BA6FF;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.horarioInfo .aula,
+.horarioInfo .tipo {
+    color: #6E6E6E;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
+.btnRemoveHorario {
+    background: none;
+    border: none;
+    color: #DC2626;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.btnRemoveHorario:hover {
+    background: #FEF2F2;
+}
+
+.noHorarios {
+    text-align: center;
+    color: #6E6E6E;
+    font-style: italic;
+    padding: 20px;
+    background: #F0F6FF;
+    border-radius: 8px;
+    margin: 0;
+}
+
+@media (max-width: 1024px) {
+    .modalAsignaciones {
+        width: 95%;
+        max-width: 900px;
+    }
+    
+    .infoGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .asignarForm .formRow {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    
+    .btnAssign {
+        grid-column: span 2;
+    }
+    
+    .horarioFormGrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    
+    .btnAddHorario {
+        grid-column: span 2;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .modalAsignaciones {
+        width: 98%;
+        height: 95vh;
+    }
+    
+    .modalContentTabs {
+        padding: 16px;
+    }
+    
+    .tabs {
+        padding: 0 16px;
+    }
+    
+    .tab {
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+    
+    .asignarForm .formRow {
+        grid-template-columns: 1fr;
+    }
+    
+    .btnAssign {
+        grid-column: span 1;
+    }
+    
+    .horarioFormGrid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .horariosGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .asignaturaHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modalHeader {
+        padding: 16px;
+    }
+    
+    .modalHeader h3 {
+        font-size: 16px;
+    }
+    
+    .infoCard {
+        padding: 16px;
+    }
+    
+    .asignarMateriaSection {
+        padding: 16px;
+    }
+    
+    .asignaturaCard {
+        padding: 16px;
+    }
+}
