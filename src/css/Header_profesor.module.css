@@ -1,0 +1,149 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1C2A44;
+  color: white;
+  padding: 0 2rem;
+  height: 70px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: Arial, Helvetica, sans-serif; /* Fuente por defecto */
+}
+
+/* Logo/Título */
+.logo h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #3498db;
+  letter-spacing: 1px;
+  
+}
+
+/* Navegación */
+.navigation {
+  display: flex;
+  gap: 0.7rem;
+  flex: 1;
+  justify-content: center;
+  margin: 0 2rem;
+}
+
+.navButton {
+  background: none;
+  border: none;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.navButton:hover {
+  background-color: #34495e;
+  transform: translateY(-1px);
+}
+
+.navButton:active {
+  transform: translateY(0);
+}
+
+/* Sección de usuario */
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userName {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #ecf0f1;
+  padding: 0.5rem 0;
+  font-weight: bold;
+
+}
+
+.logoutButton {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.logoutButton:hover {
+  background-color: #c0392b;
+  transform: translateY(-1px);
+}
+
+.logoutButton:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 1rem;
+    height: auto;
+    flex-wrap: wrap;
+    min-height: 70px;
+  }
+  
+  .logo h1 {
+    font-size: 1.5rem;
+  }
+  
+  .navigation {
+    order: 3;
+    width: 100%;
+    justify-content: flex-start;
+    margin: 0.5rem 0;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .navButton {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .userSection {
+    gap: 0.5rem;
+  }
+  
+  .userName {
+    font-size: 0.85rem;
+  }
+  
+  .logoutButton {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0 0.5rem;
+  }
+  
+  .navigation {
+    gap: 0.3rem;
+  }
+  
+  .navButton {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+}
