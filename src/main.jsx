@@ -24,13 +24,17 @@ import CentroAyudaEstudiante from './views/CentroAyudaEstudiante.jsx';
 import SolicitudAyudaDetalle from './views/SolicitudAyudaDetalle.jsx';
 import ForoEstudiante from './views/ForoEstudiante.jsx';
 import PostDetalle from './views/PostDetalle.jsx';
+import NoticiasPublicas from './views/NoticiasPublicas.jsx';
+import NoticiaDetallePublico from './views/NoticiaDetallePublico.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <Router>
   <Routes>
-    <Route path="/" element={<Login />} />
+    <Route path="/" element={<NoticiasPublicas />} />
+    <Route path="/noticias-publicas" element={<NoticiasPublicas />} />
+    <Route path="/noticia-detalle/:id" element={<NoticiaDetallePublico />} />
     <Route path="/login" element={<Login />} />
     <Route path="/profesor/dashboard_profesor" element={<Dashboard_profesor />} />
     <Route path="/profesor/Administracion_estudiantes" element={<Admin_estudiantes_profesor />} />
