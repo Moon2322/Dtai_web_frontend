@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import HeaderEstudiante from '../components/HeaderEstudiante.jsx';
-import axios from '../api/axiosConfig.js';
 import styles from '../css/CalificacionesEstudiante.module.css'; 
 
 const CalificacionesEstudiante = () => {
@@ -11,6 +10,20 @@ const CalificacionesEstudiante = () => {
     const [filtroCuatrimestre, setFiltroCuatrimestre] = useState('todos');
 
     useEffect(() => {
+        const userData = localStorage.getItem('usuario');
+        const token = localStorage.getItem('token');
+        
+        if (!userData || !token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const user = JSON.parse(userData);
+        if (user.rol !== 'alumno') {
+            window.location.href = '/login';
+            return;
+        }
+
         cargarCalificaciones();
     }, []);
 
@@ -25,8 +38,18 @@ const CalificacionesEstudiante = () => {
                 return;
             }
 
-            const response = await axios.get('/api/estudiante/calificaciones');
-            setCalificaciones(Array.isArray(response.data) ? response.data : []);
+            const response = await fetch('http://localhost:5000/api/alumno/calificaciones', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                setCalificaciones(Array.isArray(data.data) ? data.data : []);
+            } else {
+                setError(data.message || 'Error al cargar calificaciones');
+                setCalificaciones([]);
+            }
 
         } catch (error) {
             console.error('Error al cargar calificaciones:', error);
@@ -35,6 +58,34 @@ const CalificacionesEstudiante = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const calcularCalificacionActual = (cal) => {
+        if (cal.calificacion_final !== null && cal.calificacion_final > 0) {
+            return parseFloat(cal.calificacion_final).toFixed(1);
+        }
+        
+        let calificacionesActuales = [];
+        
+        if (cal.parcial_1 !== null && cal.parcial_1 > 0) {
+            calificacionesActuales.push(parseFloat(cal.parcial_1));
+        }
+        if (cal.parcial_2 !== null && cal.parcial_2 > 0) {
+            calificacionesActuales.push(parseFloat(cal.parcial_2));
+        }
+        if (cal.parcial_3 !== null && cal.parcial_3 > 0) {
+            calificacionesActuales.push(parseFloat(cal.parcial_3));
+        }
+        if (cal.calificacion_ordinario !== null && cal.calificacion_ordinario > 0) {
+            calificacionesActuales.push(parseFloat(cal.calificacion_ordinario));
+        }
+        
+        if (calificacionesActuales.length > 0) {
+            const promedio = calificacionesActuales.reduce((sum, cal) => sum + cal, 0) / calificacionesActuales.length;
+            return promedio.toFixed(1);
+        }
+        
+        return 'N/A';
     };
 
     const obtenerEstadoClase = (estatus) => {
@@ -99,7 +150,6 @@ const CalificacionesEstudiante = () => {
                 <div className={styles.headerSection}>
                     <h1>Calificaciones</h1>
                     <div className={styles.tabs}>
-                        {/* Aquí puedes agregar tabs si necesitas */}
                     </div>
                 </div>
 
@@ -152,7 +202,7 @@ const CalificacionesEstudiante = () => {
                                     
                                     <div className={`${styles.tableCell} ${styles.calificaciones}`}>
                                         <div className={styles.calificacionBadge}>
-                                            {cal.calificacion_final ? cal.calificacion_final.toFixed(1) : 'N/A'}
+                                            {calcularCalificacionActual(cal)}
                                         </div>
                                     </div>
                                     

@@ -2,6 +2,18 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+}
+.dashboardContainer {
+    min-height: 100vh;
+    background: #F0F6FF;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.dashboardMain {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
 }
 
 .pageHeader {
@@ -576,20 +588,20 @@
     .statsCards {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .controlsSection {
         flex-direction: column;
         align-items: stretch;
     }
-    
+
     .searchBox {
         min-width: auto;
     }
-    
+
     .filters {
         justify-content: space-between;
     }
-    
+
     .formRow {
         grid-template-columns: 1fr;
     }
@@ -601,28 +613,28 @@
         gap: 16px;
         align-items: stretch;
     }
-    
+
     .btnNew {
         justify-content: center;
     }
-    
+
     .statsCards {
         grid-template-columns: 1fr;
     }
-    
+
     .noticiasTable {
         font-size: 12px;
     }
-    
+
     .noticiasTable th,
     .noticiasTable td {
         padding: 12px 16px;
     }
-    
+
     .modalActions {
         flex-direction: column;
     }
-    
+
     .btnCancel,
     .btnSave {
         width: 100%;
@@ -634,12 +646,12 @@
         width: 95%;
         margin: 20px;
     }
-    
+
     .modalHeader,
     .modalForm {
         padding: 16px;
     }
-    
+
     .noticiasTable th:nth-child(3),
     .noticiasTable td:nth-child(3),
     .noticiasTable th:nth-child(4),

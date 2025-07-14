@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import HeaderEstudiante from '../components/HeaderEstudiante.jsx';
-import axios from '../api/axiosConfig.js';
 import styles from '../css/HorariosEstudiante.module.css';
 
 const HorariosEstudiante = () => {
@@ -10,6 +9,20 @@ const HorariosEstudiante = () => {
     const [alumnoInfo, setAlumnoInfo] = useState(null);
 
     useEffect(() => {
+        const userData = localStorage.getItem('usuario');
+        const token = localStorage.getItem('token');
+        
+        if (!userData || !token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const user = JSON.parse(userData);
+        if (user.rol !== 'alumno') {
+            window.location.href = '/login';
+            return;
+        }
+
         cargarHorarios();
     }, []);
 
@@ -24,13 +37,25 @@ const HorariosEstudiante = () => {
                 return;
             }
 
-            const [horariosRes, perfilRes] = await Promise.all([
-                axios.get('/api/estudiante/horarios'),
-                axios.get('/api/estudiante/perfil')
-            ]);
+            const horariosResponse = await fetch('http://localhost:5000/api/alumno/horarios', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const horariosData = await horariosResponse.json();
 
-            setHorarios(Array.isArray(horariosRes.data) ? horariosRes.data : []);
-            setAlumnoInfo(perfilRes.data);
+            const perfilResponse = await fetch('http://localhost:5000/api/alumno/perfil', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const perfilData = await perfilResponse.json();
+
+            if (horariosData.success) {
+                setHorarios(Array.isArray(horariosData.data) ? horariosData.data : []);
+            } else {
+                setHorarios([]);
+            }
+
+            if (perfilData.success) {
+                setAlumnoInfo(perfilData.data);
+            }
 
         } catch (error) {
             console.error('Error al cargar horarios:', error);
@@ -45,9 +70,9 @@ const HorariosEstudiante = () => {
         const fecha = new Date();
         const mes = fecha.getMonth() + 1;
         
-        if (mes >= 1 && mes <= 4) return 'Enero - Abril 2024';
-        if (mes >= 5 && mes <= 8) return 'Mayo - Agosto 2024';
-        return 'Septiembre - Diciembre 2024';
+        if (mes >= 1 && mes <= 4) return 'Enero - Abril 2025';
+        if (mes >= 5 && mes <= 8) return 'Mayo - Agosto 2025';
+        return 'Septiembre - Diciembre 2025';
     };
 
     const diasSemana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes'];

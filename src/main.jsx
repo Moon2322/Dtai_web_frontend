@@ -1,9 +1,9 @@
-
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import Login from './views/Login';
+
 import Dashboard_profesor from './views/Dashboard_profesor';
 import Admin_estudiantes_profesor from "./views/Admin_estudiantes_profesor";
-import Login from './views/Login.jsx';
 import DashboardDirectivo from './views/DashboardDirectivo.jsx';
 import GestionAsignaturas from './views/GestionAsignaturas.jsx';
 import GestionProfesores from './views/GestionProfesores.jsx';
@@ -19,6 +19,11 @@ import ChatBot from './views/ChatBot.jsx';
 import DashboardEstudiante from './views/DashboardEstudiante.jsx';
 import CalificacionesEstudiante from './views/CalificacionesEstudiante.jsx';
 import HorariosEstudiante from './views/HorariosEstudiante.jsx';
+import PerfilEstudiante from './views/PerfilEstudiante.jsx';
+import CentroAyudaEstudiante from './views/CentroAyudaEstudiante.jsx';
+import SolicitudAyudaDetalle from './views/SolicitudAyudaDetalle.jsx';
+import ForoEstudiante from './views/ForoEstudiante.jsx';
+import PostDetalle from './views/PostDetalle.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -44,7 +49,11 @@ root.render(
       <Route path="/dashboard-alumno" element={<DashboardEstudiante />} />
       <Route path="/calificaciones-estudiante" element={<CalificacionesEstudiante />} />
       <Route path="/horarios-estudiante" element={<HorariosEstudiante />} />
-
+      <Route path="/Perfil-estudiante" element={<PerfilEstudiante />} />
+      <Route path="/centro-ayuda-estudiante" element={<CentroAyudaEstudiante />} />
+      <Route path="/solicitud-ayuda-detalle/:id" element={<SolicitudAyudaDetalle />} />
+      <Route path="/foro-estudiante" element={<ForoEstudiante />} />
+      <Route path="/foro-post/:id" element={<PostDetalle />} />
     </Routes>
   </Router>
 );

@@ -1,0 +1,426 @@
+.centroAyudaEstudiante {
+    min-height: 100vh;
+    background: #F0F6FF;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+
+}
+
+.ayudaContent {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.headerSection {
+    text-align: center;
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(28, 42, 68, 0.1);
+}
+
+.ayudaIcon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.headerSection h1 {
+    color: #1C2A44;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #2E4A7D;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.description {
+    color: #6E6E6E;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btnSolicitud {
+    background: #3BA6FF;
+    color: #FFFFFF;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(59, 166, 255, 0.3);
+}
+
+.btnSolicitud:hover {
+    background: #2E4A7D;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 166, 255, 0.4);
+}
+
+.solicitudesSection {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(28, 42, 68, 0.1);
+}
+
+.solicitudesSection h2 {
+    color: #1C2A44;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+.solicitudesList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.solicitudCard {
+    border: 1px solid #E5E5E5;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.solicitudCard:hover {
+    border-color: #3BA6FF;
+    box-shadow: 0 4px 12px rgba(59, 166, 255, 0.1);
+}
+
+.solicitudHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.headerActions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.tipoProblema {
+    color: #1C2A44;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: capitalize;
+}
+
+.badges {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btnVer {
+    background: #3BA6FF;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnVer:hover {
+    background: #2E4A7D;
+    transform: scale(1.1);
+}
+
+.urgenciaBadge, .estadoBadge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.urgenciaAlta {
+    background: #FFE5E5;
+    color: #D32F2F;
+}
+
+.urgenciaMedia {
+    background: #FFF3E0;
+    color: #F57C00;
+}
+
+.urgenciaBaja {
+    background: #E8F5E8;
+    color: #388E3C;
+}
+
+.pendiente {
+    background: #FFF3E0;
+    color: #F57C00;
+}
+
+.enAtencion {
+    background: #E3F2FD;
+    color: #1976D2;
+}
+
+.resuelto {
+    background: #E8F5E8;
+    color: #388E3C;
+}
+
+.cerrado {
+    background: #F5F5F5;
+    color: #757575;
+}
+
+.solicitudBody p {
+    color: #2C2C2C;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.solicitudFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #6E6E6E;
+}
+
+.fecha {
+    font-weight: 500;
+}
+
+.asignado {
+    color: #2E4A7D;
+    font-weight: 600;
+}
+
+.noSolicitudes {
+    text-align: center;
+    padding: 3rem;
+    color: #6E6E6E;
+}
+
+.noSolicitudes p:first-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background: #FFFFFF;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.modalHeader h3 {
+    color: #1C2A44;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #6E6E6E;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.closeBtn:hover {
+    color: #2C2C2C;
+}
+
+.modalForm {
+    padding: 2rem;
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+    display: block;
+    color: #1C2A44;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.formGroup select,
+.formGroup textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #E5E5E5;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    resize: vertical;
+}
+
+.formGroup select:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #3BA6FF;
+}
+
+.formGroup textarea {
+    min-height: 120px;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.modalActions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+.btnCancel {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #6E6E6E;
+    background: #FFFFFF;
+    color: #6E6E6E;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btnCancel:hover {
+    background: #6E6E6E;
+    color: #FFFFFF;
+}
+
+.btnSubmit {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: #3BA6FF;
+    color: #FFFFFF;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btnSubmit:hover:not(:disabled) {
+    background: #2E4A7D;
+}
+
+.btnSubmit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.successModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+}
+
+.successModal {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.successIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.successModal h3 {
+    color: #1C2A44;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.successModal p {
+    color: #6E6E6E;
+}
+
+@media (max-width: 768px) {
+    .ayudaContent {
+        padding: 1rem;
+    }
+    
+    .headerSection {
+        padding: 2rem 1rem;
+    }
+    
+    .headerSection h1 {
+        font-size: 2rem;
+    }
+    
+    .modalContent {
+        width: 95%;
+        margin: 1rem;
+    }
+    
+    .modalForm {
+        padding: 1rem;
+    }
+    
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+    
+    .modalActions {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,350 @@
+.solicitudDetalle {
+    min-height: 100vh;
+    background: #F0F6FF;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+
+}
+
+.detalleContent {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.headerSection {
+    margin-bottom: 2rem;
+}
+
+.btnVolver {
+    background: none;
+    border: none;
+    color: #2E4A7D;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    transition: color 0.3s ease;
+}
+
+.btnVolver:hover {
+    color: #1C2A44;
+}
+
+.headerSection h1 {
+    color: #1C2A44;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.solicitudCard {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(28, 42, 68, 0.1);
+}
+
+.solicitudHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #E5E5E5;
+}
+
+.solicitudHeader h2 {
+    color: #1C2A44;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.fecha {
+    color: #6E6E6E;
+    font-size: 0.9rem;
+}
+
+.solicitudInfo {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: start;
+}
+
+.infoSection h3 {
+    color: #2E4A7D;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.infoItem {
+    margin-bottom: 1rem;
+}
+
+.infoItem strong {
+    display: block;
+    color: #1C2A44;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.infoItem span,
+.infoItem p {
+    color: #2C2C2C;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.estadoSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.estadoBadge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.pendiente {
+    background: #FFF3E0;
+    color: #F57C00;
+}
+
+.enAtencion {
+    background: #E3F2FD;
+    color: #1976D2;
+}
+
+.resuelto {
+    background: #E8F5E8;
+    color: #388E3C;
+}
+
+.cerrado {
+    background: #F5F5F5;
+    color: #757575;
+}
+
+.asignado {
+    color: #2E4A7D;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.chatSection {
+    background: #FFFFFF;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(28, 42, 68, 0.1);
+    overflow: hidden;
+}
+
+.chatHeader {
+    background: #2E4A7D;
+    color: #FFFFFF;
+    padding: 1rem 2rem;
+}
+
+.chatHeader h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.chatMessages {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mensaje {
+    max-width: 70%;
+    padding: 1rem;
+    border-radius: 12px;
+    position: relative;
+}
+
+.mensajeAlumno {
+    align-self: flex-end;
+    background: #3BA6FF;
+    color: #FFFFFF;
+}
+
+.mensajeProfesor {
+    align-self: flex-start;
+    background: #F0F6FF;
+    color: #1C2A44;
+    border: 1px solid #E5E5E5;
+}
+
+.mensajeHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.mensajeAlumno .mensajeHeader {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.mensajeProfesor .mensajeHeader {
+    color: #6E6E6E;
+}
+
+.autor {
+    font-weight: 600;
+}
+
+.hora {
+    font-size: 0.75rem;
+}
+
+.mensajeContenido {
+    line-height: 1.5;
+}
+
+.noMensajes {
+    text-align: center;
+    padding: 3rem;
+    color: #6E6E6E;
+}
+
+.noMensajes p:first-child {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.chatForm {
+    border-top: 1px solid #E5E5E5;
+    padding: 1rem;
+    background: #FAFAFA;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.inputGroup textarea {
+    border: 2px solid #E5E5E5;
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 80px;
+    transition: border-color 0.3s ease;
+}
+
+.inputGroup textarea:focus {
+    outline: none;
+    border-color: #3BA6FF;
+}
+
+.formActions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.btnEnviar {
+    background: #3BA6FF;
+    color: #FFFFFF;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btnEnviar:hover:not(:disabled) {
+    background: #2E4A7D;
+}
+
+.btnEnviar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btnCerrar {
+    background: #6E6E6E;
+    color: #FFFFFF;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btnCerrar:hover {
+    background: #2C2C2C;
+}
+
+.loadingContainer,
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    color: #6E6E6E;
+}
+
+.loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #E5E5E5;
+    border-top: 4px solid #3BA6FF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .detalleContent {
+        padding: 1rem;
+    }
+    
+    .solicitudCard {
+        padding: 1rem;
+    }
+    
+    .solicitudInfo {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .estadoSection {
+        align-items: flex-start;
+    }
+    
+    .mensaje {
+        max-width: 85%;
+    }
+    
+    .formActions {
+        flex-direction: column;
+    }
+}

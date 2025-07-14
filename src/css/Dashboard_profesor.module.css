@@ -4,8 +4,9 @@ body{
 }
 .dashboardContainer {
   min-height: 100vh;
-  background-color: #f8f9fa;
-  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  background-color: #f8f9fa;    
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+
 }
 
 .mainContent {

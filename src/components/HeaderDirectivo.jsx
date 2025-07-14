@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/HeaderDirectivo.module.module.module.css';
+import styles from '../css/HeaderDirectivo.module.css';
 
 const HeaderDirectivo = ({ activeSection = 'dashboard' }) => {
     const navigate = useNavigate();
@@ -45,23 +45,23 @@ const HeaderDirectivo = ({ activeSection = 'dashboard' }) => {
     ];
 
     return (
-        <header className="header-directivo">
-            <div className="header-content">
-                <div className="header-left">
-                    <h1 className="header-title">DTAI</h1>
+        <header className={styles.headerDirectivo}>
+            <div className={styles.headerContent}>
+                <div className={styles.headerLeft}>
+                    <h1 className={styles.headerTitle}>DTAI</h1>
                 </div>
-                <nav className="header-nav">
+                <nav className={styles.headerNav}>
                     {navItems.map((item) => (
                         <button
                             key={item.key}
-                            className={`nav-item ${activeSection === item.key ? 'active' : ''}`}
+                            className={`${styles.navItem} ${activeSection === item.key ? styles.active : ''}`}
                             onClick={() => handleNavigation(item.path)}
                         >
                             {item.label}
                         </button>
                     ))}
                     <button 
-                        className="nav-item logout"
+                        className={`${styles.navItem} ${styles.logout}`}
                         onClick={handleLogout}
                     >
                         Cerrar sesión

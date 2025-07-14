@@ -20,13 +20,11 @@ const GestionAsignaturas = () => {
         codigo: '',
         nombre: '',
         descripcion: '',
-        creditos: 5,
         horas_teoricas: 3,
         horas_practicas: 2,
         complejidad: 5,
         cuatrimestre: 1,
         carrera_id: '',
-        prerequisitos: ''
     });
     const navigate = useNavigate();
 
@@ -96,13 +94,11 @@ const GestionAsignaturas = () => {
             codigo: '',
             nombre: '',
             descripcion: '',
-            creditos: 5,
             horas_teoricas: 3,
             horas_practicas: 2,
             complejidad: 5,
             cuatrimestre: 1,
             carrera_id: '',
-            prerequisitos: ''
         });
         setShowModal(true);
     };
@@ -113,13 +109,11 @@ const GestionAsignaturas = () => {
             codigo: asignatura.codigo,
             nombre: asignatura.nombre,
             descripcion: asignatura.descripcion || '',
-            creditos: asignatura.creditos,
             horas_teoricas: asignatura.horas_teoricas,
             horas_practicas: asignatura.horas_practicas,
             complejidad: asignatura.complejidad,
             cuatrimestre: asignatura.cuatrimestre,
             carrera_id: asignatura.carrera_id,
-            prerequisitos: asignatura.prerequisitos || ''
         });
         setShowModal(true);
     };
@@ -363,18 +357,6 @@ const GestionAsignaturas = () => {
                                 </select>
                             </div>
                             
-                            <div className={styles.formRow}>
-                                <div className={styles.formGroup}>
-                                    <label>Créditos</label>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        max="10"
-                                        value={formData.creditos}
-                                        onChange={(e) => setFormData({...formData, creditos: parseInt(e.target.value)})}
-                                    />
-                                </div>
-                            </div>
                             
                             <div className={styles.formGroup}>
                                 <label>Descripción</label>

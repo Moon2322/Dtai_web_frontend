@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import HeaderEstudiante from '../components/HeaderEstudiante.jsx';
-import axios from '../api/axiosConfig.js';
 import styles from '../css/DashboardEstudiante.module.css'; 
 
 const DashboardEstudiante = () => {
@@ -15,6 +14,20 @@ const DashboardEstudiante = () => {
     });
 
     useEffect(() => {
+        const userData = localStorage.getItem('usuario');
+        const token = localStorage.getItem('token');
+        
+        if (!userData || !token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const user = JSON.parse(userData);
+        if (user.rol !== 'alumno') {
+            window.location.href = '/login';
+            return;
+        }
+
         cargarDatosEstudiante();
     }, []);
 
@@ -38,26 +51,66 @@ const DashboardEstudiante = () => {
             };
 
             try {
-                const requests = [
-                    axios.get('/api/estudiante/perfil').catch(err => ({ data: null, error: err })),
-                    axios.get('/api/estudiante/calificaciones').catch(err => ({ data: [], error: err })),
-                    axios.get('/api/estudiante/reportes').catch(err => ({ data: [], error: err })),
-                    axios.get('/api/noticias/publicas').catch(err => ({ data: [], error: err })),
-                    axios.get('/api/estudiante/horarios').catch(err => ({ data: [], error: err }))
-                ];
-                const [alumnoRes, calificacionesRes, reportesRes, noticiasRes, horariosRes] = await Promise.all(requests);
-                
-                datosTemp.alumno = alumnoRes.data || null;
-                datosTemp.calificaciones = Array.isArray(calificacionesRes.data) ? calificacionesRes.data : [];
-                datosTemp.reportes = Array.isArray(reportesRes.data) ? reportesRes.data : [];
-                datosTemp.noticias = Array.isArray(noticiasRes.data) ? noticiasRes.data : [];
-                datosTemp.horarios = Array.isArray(horariosRes.data) ? horariosRes.data : [];
-                console.log('Datos cargados:', datosTemp);
-
+                const perfilResponse = await fetch('http://localhost:5000/api/alumno/perfil', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const perfilData = await perfilResponse.json();
+                if (perfilData.success) {
+                    datosTemp.alumno = perfilData.data;
+                }
             } catch (error) {
-                console.error('Error en una o más peticiones:', error);
+                console.error('Error al cargar perfil:', error);
             }
 
+            try {
+                const calificacionesResponse = await fetch('http://localhost:5000/api/alumno/calificaciones', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const calificacionesData = await calificacionesResponse.json();
+                if (calificacionesData.success && Array.isArray(calificacionesData.data)) {
+                    datosTemp.calificaciones = calificacionesData.data;
+                }
+            } catch (error) {
+                console.error('Error al cargar calificaciones:', error);
+            }
+
+            try {
+                const reportesResponse = await fetch('http://localhost:5000/api/alumno/reportes', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const reportesData = await reportesResponse.json();
+                if (reportesData.success && Array.isArray(reportesData.data)) {
+                    datosTemp.reportes = reportesData.data;
+                }
+            } catch (error) {
+                console.error('Error al cargar reportes:', error);
+            }
+
+            try {
+                const noticiasResponse = await fetch('http://localhost:5000/api/noticias', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const noticiasData = await noticiasResponse.json();
+                if (noticiasData.success && Array.isArray(noticiasData.data)) {
+                    datosTemp.noticias = noticiasData.data.filter(n => n.publicada).slice(0, 5);
+                }
+            } catch (error) {
+                console.error('Error al cargar noticias:', error);
+            }
+
+            try {
+                const horariosResponse = await fetch('http://localhost:5000/api/alumno/horarios', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const horariosData = await horariosResponse.json();
+                if (horariosData.success && Array.isArray(horariosData.data)) {
+                    datosTemp.horarios = horariosData.data;
+                }
+            } catch (error) {
+                console.error('Error al cargar horarios:', error);
+            }
+
+            console.log('Datos cargados:', datosTemp);
             setDatos(datosTemp);
 
         } catch (error) {
@@ -80,23 +133,40 @@ const DashboardEstudiante = () => {
             return '0.0';
         }
         
-        const calificacionesValidas = datos.calificaciones.filter(c => 
-            c.calificacion_final !== null && c.calificacion_final > 0
-        );
+        let totalCalificaciones = 0;
+        let totalMaterias = 0;
         
-        if (calificacionesValidas.length === 0) return '0.0';
+        datos.calificaciones.forEach(materia => {
+            if (materia.calificacion_final !== null && materia.calificacion_final > 0) {
+                totalCalificaciones += parseFloat(materia.calificacion_final);
+                totalMaterias++;
+            } else {
+                let calificacionesActuales = [];
+                
+                if (materia.parcial_1 !== null && materia.parcial_1 > 0) {
+                    calificacionesActuales.push(parseFloat(materia.parcial_1));
+                }
+                if (materia.parcial_2 !== null && materia.parcial_2 > 0) {
+                    calificacionesActuales.push(parseFloat(materia.parcial_2));
+                }
+                if (materia.parcial_3 !== null && materia.parcial_3 > 0) {
+                    calificacionesActuales.push(parseFloat(materia.parcial_3));
+                }
+                if (materia.calificacion_ordinario !== null && materia.calificacion_ordinario > 0) {
+                    calificacionesActuales.push(parseFloat(materia.calificacion_ordinario));
+                }
+                
+                if (calificacionesActuales.length > 0) {
+                    const promedioMateria = calificacionesActuales.reduce((sum, cal) => sum + cal, 0) / calificacionesActuales.length;
+                    totalCalificaciones += promedioMateria;
+                    totalMaterias++;
+                }
+            }
+        });
         
-        const suma = calificacionesValidas.reduce((acc, cal) => acc + parseFloat(cal.calificacion_final), 0);
-        return (suma / calificacionesValidas.length).toFixed(1);
-    };
-
-    const obtenerMateriasPendientes = () => {
-        if (!datos.calificaciones || !Array.isArray(datos.calificaciones)) {
-            return 0;
-        }
-        return datos.calificaciones.filter(c => 
-            c.estatus === 'cursando' || c.estatus === 'reprobado'
-        ).length;
+        if (totalMaterias === 0) return '0.0';
+        
+        return (totalCalificaciones / totalMaterias).toFixed(1);
     };
 
     const obtenerProximasClases = () => {
