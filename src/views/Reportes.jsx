@@ -70,72 +70,152 @@ const Reportes = () => {
         cargarReporte(tipoReporte);
     };
 
-    const generarPDF = async () => {
+    const generarPDF = () => {
         if (!reporteSeleccionado || datosReporte.length === 0) {
             alert('Selecciona un reporte para generar el PDF');
             return;
         }
 
-        try {
-            const reporteNombre = tiposReportes.find(r => r.id === reporteSeleccionado)?.nombre;
-            const htmlContent = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>${reporteNombre}</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 20px; }
-                        .header { text-align: center; margin-bottom: 30px; }
-                        .header h1 { color: #1C2A44; }
-                        .date { color: #6E6E6E; }
-                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                        th { background-color: #2E4A7D; color: white; }
-                        .summary { background-color: #F0F6FF; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-                    </style>
-                </head>
-                <body>
-                    <div class="header">
-                        <h1>DTAI - ${reporteNombre}</h1>
-                        <p class="date">Generado el: ${new Date().toLocaleDateString('es-MX')}</p>
-                    </div>
-                    <div class="summary">
-                        <h3>Resumen Ejecutivo</h3>
-                        <p>Total de registros: ${datosReporte.length}</p>
-                        <p>Estudiantes activos: ${estudiantesActivos.activos || 0}</p>
-                    </div>
-                    <table>
-                        <thead>
-                            <tr>
-                                ${Object.keys(datosReporte[0] || {}).map(key => `<th>${key}</th>`).join('')}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${datosReporte.map(row => `
-                                <tr>
-                                    ${Object.values(row).map(value => `<td>${value || 'N/A'}</td>`).join('')}
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </body>
-                </html>
-            `;
+        const reporteNombre = tiposReportes.find(r => r.id === reporteSeleccionado)?.nombre;
+        const ventanaPDF = window.open('', '_blank');
+        
+        ventanaPDF.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>DTAI - ${reporteNombre}</title>
+                <style>
+                    @media print {
+                        body { margin: 0; }
+                        .no-print { display: none !important; }
+                    }
+                    body { 
+                        font-family: Arial, sans-serif; 
+                        margin: 20px;
+                        color: #000;
+                    }
+                    .header { 
+                        text-align: center; 
+                        margin-bottom: 30px; 
+                        border-bottom: 2px solid #1C2A44;
+                        padding-bottom: 20px;
+                    }
+                    .header h1 { 
+                        color: #1C2A44;
+                        margin: 0;
+                        font-size: 24px;
+                    }
+                    .date { 
+                        color: #6E6E6E;
+                        margin: 10px 0;
+                    }
+                    .summary { 
+                        background-color: #F5F5F5; 
+                        padding: 15px; 
+                        border-radius: 5px; 
+                        margin-bottom: 30px;
+                        border-left: 4px solid #2E4A7D;
+                    }
+                    .summary h3 {
+                        margin-top: 0;
+                        color: #1C2A44;
+                    }
+                    table { 
+                        width: 100%; 
+                        border-collapse: collapse; 
+                        margin-top: 20px;
+                        font-size: 12px;
+                    }
+                    th, td { 
+                        border: 1px solid #ddd; 
+                        padding: 8px; 
+                        text-align: left;
+                        word-wrap: break-word;
+                    }
+                    th { 
+                        background-color: #2E4A7D; 
+                        color: white;
+                        font-weight: bold;
+                    }
+                    tr:nth-child(even) {
+                        background-color: #f9f9f9;
+                    }
+                    .btn-print {
+                        background: #2E4A7D;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        margin: 20px 0;
+                        font-size: 16px;
+                    }
+                    .btn-print:hover {
+                        background: #1C2A44;
+                    }
+                    @page {
+                        margin: 1cm;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <h1>DTAI - ${reporteNombre}</h1>
+                    <p class="date">Generado el: ${new Date().toLocaleDateString('es-MX', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })}</p>
+                </div>
+                
+                <div class="summary">
+                    <h3>Resumen Ejecutivo</h3>
+                    <p><strong>Total de registros:</strong> ${datosReporte.length}</p>
+                    <p><strong>Estudiantes activos:</strong> ${estudiantesActivos.activos || 0}</p>
+                    <p><strong>Reporte:</strong> ${reporteNombre}</p>
+                </div>
 
-            const blob = new Blob([htmlContent], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${reporteNombre.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.html`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        } catch (error) {
-            console.error('Error al generar PDF:', error);
-            alert('Error al generar el reporte PDF');
-        }
+                <button class="btn-print no-print" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            ${Object.keys(datosReporte[0] || {}).map(key => 
+                                `<th>${key.replace(/_/g, ' ').toUpperCase()}</th>`
+                            ).join('')}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${datosReporte.map(row => `
+                            <tr>
+                                ${Object.values(row).map(value => {
+                                    let displayValue = value || 'N/A';
+                                    if (typeof value === 'number' && value % 1 !== 0) {
+                                        displayValue = parseFloat(value).toFixed(2);
+                                    }
+                                    return `<td>${displayValue}</td>`;
+                                }).join('')}
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+                
+                <div style="margin-top: 40px; border-top: 1px solid #ddd; padding-top: 20px; text-align: center; color: #6E6E6E; font-size: 12px;">
+                    <p>DTAI - Sistema de Gestión Académica</p>
+                </div>
+            </body>
+            </html>
+        `);
+        
+        ventanaPDF.document.close();
+        
+        setTimeout(() => {
+            ventanaPDF.focus();
+            ventanaPDF.print();
+        }, 500);
     };
 
     const renderVisualizacion = () => {
