@@ -1,12 +1,17 @@
-import { NavLink } from "react-router-dom";
-import styles from "../css/Header_profesor.module.css";
+import styles from '../css/Header_profesor.module.css';
 
 const Header = () => {
+  // Datos estáticos por ahora
   const userName = "Prof. Juan Pérez";
-
+  
   const handleLogout = () => {
-    console.log("Cerrando sesión…");
-    // Aquí más adelante pondrás la lógica real para cerrar sesión
+    // Por ahora solo un console.log, después conectarás con la lógica real
+    console.log("Cerrando sesión...");
+  };
+
+  const handleNavigation = (section) => {
+    // Por ahora solo console.log, después conectarás con React Router
+    console.log(`Navegando a: ${section}`);
   };
 
   return (
@@ -18,33 +23,57 @@ const Header = () => {
 
       {/* Navegación */}
       <nav className={styles.navigation}>
-        <NavLink to="/profesor/dashboard_profesor" className={styles.navButton}>
-          Inicio
-        </NavLink>
-        <NavLink to="/asignaturas" className={styles.navButton}>
+        <button 
+          className={styles.navButton}
+          onClick={() => handleNavigation('dashboard')}
+        >
+          Dashboard
+        </button>
+        <button 
+          className={styles.navButton}
+          onClick={() => handleNavigation('asignaturas')}
+        >
           Asignaturas
-        </NavLink>
-        <NavLink to="/profesor/Administracion_estudiantes" className={styles.navButton}>
+        </button>
+        <button 
+          className={styles.navButton}
+          onClick={() => handleNavigation('estudiantes')}
+        >
           Estudiantes
-        </NavLink>
-        <NavLink to="/calificaciones" className={styles.navButton}>
+        </button>
+        <button 
+          className={styles.navButton}
+          onClick={() => handleNavigation('calificaciones')}
+        >
           Calificaciones
-        </NavLink>
-        <NavLink to="/foro" className={styles.navButton}>
+        </button>
+        <button 
+          className={styles.navButton}
+          onClick={() => handleNavigation('foro')}
+        >
           Foro
-        </NavLink>
-        <NavLink to="/ayuda" className={styles.navButton}>
+        </button>
+        <button 
+          className={styles.navButton}
+          onClick={() => handleNavigation('ayuda')}
+        >
           Centro de Ayuda
-        </NavLink>
-        <NavLink to="/encuestas" className={styles.navButton}>
+        </button>
+        <button 
+          className={styles.navButton}
+          onClick={() => handleNavigation('encuentas')}
+        >
           Encuestas
-        </NavLink>
+        </button>
       </nav>
 
       {/* Usuario y logout */}
       <div className={styles.userSection}>
         <span className={styles.userName}>{userName}</span>
-        <button className={styles.logoutButton} onClick={handleLogout}>
+        <button 
+          className={styles.logoutButton}
+          onClick={handleLogout}
+        >
           Cerrar Sesión
         </button>
       </div>
