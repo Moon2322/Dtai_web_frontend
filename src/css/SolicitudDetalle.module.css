@@ -1,0 +1,360 @@
+.solicitudDetalleContent {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.pageHeader {
+    margin-bottom: 10px;
+}
+
+.headerInfo h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0;
+}
+
+.solicitudCard {
+    background: #FFFFFF;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #F0F6FF;
+}
+
+.solicitudHeader {
+    background: #F0F6FF;
+    padding: 20px 24px;
+    border-bottom: 1px solid #3BA6FF;
+}
+
+.solicitudInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.solicitudInfo h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0;
+}
+
+.fecha {
+    font-size: 14px;
+    color: #6E6E6E;
+    font-weight: 500;
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #F0F6FF;
+    background: #F0F6FF;
+}
+
+.sectionIcon {
+    font-size: 18px;
+}
+
+.sectionHeader span:last-child {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+}
+
+.solicitudOriginal {
+    border-bottom: 1px solid #F0F6FF;
+}
+
+.solicitudContent {
+    padding: 20px 24px;
+}
+
+.infoRow {
+    display: flex;
+    margin-bottom: 16px;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.infoRow:last-child {
+    margin-bottom: 0;
+}
+
+.label {
+    font-weight: 600;
+    color: #2C2C2C;
+    min-width: 80px;
+    font-size: 14px;
+}
+
+.value {
+    color: #6E6E6E;
+    font-size: 14px;
+    text-transform: capitalize;
+}
+
+.descripcion {
+    color: #2C2C2C;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    flex: 1;
+}
+
+.respuestaProfesor {
+    border-bottom: 1px solid #F0F6FF;
+}
+
+.profesorInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 20px 24px 16px;
+}
+
+.profesorNombre {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+}
+
+.profesorCargo {
+    font-size: 14px;
+    color: #6E6E6E;
+}
+
+.fechaRespuesta {
+    font-size: 12px;
+    color: #6E6E6E;
+    margin-top: 4px;
+}
+
+.respuestaContent {
+    padding: 0 24px 20px;
+}
+
+.respuestaContent p {
+    color: #2C2C2C;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    background: #F0F6FF;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid #3BA6FF;
+}
+
+.nuevaRespuesta {
+    border-bottom: 1px solid #F0F6FF;
+}
+
+.respuestaForm {
+    padding: 20px 24px;
+}
+
+.respuestaTextarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #2C2C2C;
+    resize: vertical;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+}
+
+.respuestaTextarea:focus {
+    outline: none;
+    border-color: #3BA6FF;
+    box-shadow: 0 0 0 3px rgba(59, 166, 255, 0.1);
+}
+
+.respuestaTextarea::placeholder {
+    color: #6E6E6E;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btnCancel {
+    background: #FFFFFF;
+    color: #6E6E6E;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btnCancel:hover {
+    background: #F0F6FF;
+    color: #2C2C2C;
+}
+
+.btnSend {
+    background: #2E4A7D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btnSend:hover:not(:disabled) {
+    background: #1C2A44;
+    transform: translateY(-1px);
+}
+
+.btnSend:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.actionsFooter {
+    padding: 20px 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.btnClose {
+    background: #6E6E6E;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btnClose:hover {
+    background: #2C2C2C;
+}
+
+.errorState {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6E6E6E;
+}
+
+.errorState h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 20px 0;
+}
+
+.btnBack {
+    background: #2E4A7D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btnBack:hover {
+    background: #1C2A44;
+    transform: translateY(-1px);
+}
+
+.dashboardLoading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F0F6FF;
+}
+
+.loadingSpinner {
+    text-align: center;
+    color: #6E6E6E;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #F0F6FF;
+    border-top: 3px solid #3BA6FF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .solicitudDetalleContent {
+        gap: 20px;
+    }
+    
+    .headerInfo h2 {
+        font-size: 24px;
+    }
+    
+    .solicitudHeader,
+    .sectionHeader,
+    .solicitudContent,
+    .profesorInfo,
+    .respuestaContent,
+    .respuestaForm,
+    .actionsFooter {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .solicitudInfo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .formActions {
+        flex-direction: column;
+    }
+    
+    .btnCancel,
+    .btnSend {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .infoRow {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .label {
+        min-width: auto;
+    }
+}

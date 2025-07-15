@@ -1,0 +1,498 @@
+.asignaturasContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.pageHeader {
+    margin-bottom: 30px;
+}
+
+.headerInfo h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 8px 0;
+}
+
+.headerDescription {
+    font-size: 18px;
+    color: #2C2C2C;
+    margin: 0 0 4px 0;
+    font-weight: 500;
+}
+
+.headerSubtitle {
+    font-size: 14px;
+    color: #6E6E6E;
+    margin: 0;
+}
+
+.controlsSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.btnNuevo {
+    background: #2E4A7D;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btnNuevo:hover {
+    background: #1C2A44;
+    transform: translateY(-1px);
+}
+
+.searchFilters {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.searchBox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    padding: 0 15px;
+    min-width: 300px;
+}
+
+.searchBox svg {
+    color: #6E6E6E;
+    margin-right: 10px;
+}
+
+.searchBox input {
+    border: none;
+    outline: none;
+    padding: 12px 0;
+    font-size: 14px;
+    color: #2C2C2C;
+    background: transparent;
+    width: 100%;
+}
+
+.searchBox input::placeholder {
+    color: #6E6E6E;
+}
+
+.filterSelect {
+    background: #FFFFFF;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 14px;
+    color: #2C2C2C;
+    cursor: pointer;
+    min-width: 150px;
+}
+
+.filterSelect:focus {
+    outline: none;
+    border-color: #3BA6FF;
+}
+
+.tableContainer {
+    background: #FFFFFF;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #F0F6FF;
+}
+
+.asignaturasTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.asignaturasTable thead {
+    background: #1C2A44;
+}
+
+.asignaturasTable thead th {
+    color: white;
+    padding: 18px 20px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+}
+
+.asignaturasTable tbody tr {
+    border-bottom: 1px solid #F0F6FF;
+    transition: background-color 0.2s ease;
+}
+
+.asignaturasTable tbody tr:hover {
+    background: #F0F6FF;
+}
+
+.asignaturasTable tbody tr:last-child {
+    border-bottom: none;
+}
+
+.asignaturasTable tbody td {
+    padding: 18px 20px;
+    font-size: 14px;
+    color: #2C2C2C;
+    vertical-align: middle;
+}
+
+.nombreCell {
+    font-weight: 500;
+    color: #2C2C2C;
+}
+
+.statusBadge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.statusBadge.activa {
+    background: #E8F5E8;
+    color: #2E7D2E;
+}
+
+.statusBadge.inactiva {
+    background: #FFF4E6;
+    color: #9b9b9b;
+}
+
+.accionesCell {
+    text-align: center;
+}
+
+.btnAccion {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 0 4px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnAccion.edit {
+    color: #3BA6FF;
+}
+
+.btnAccion.edit:hover {
+    background: rgba(59, 166, 255, 0.1);
+}
+
+.btnAccion.delete {
+    color: #121079;
+}
+
+.btnAccion.delete:hover {
+    background: rgba(220, 38, 38, 0.1);
+}
+
+.noResults {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6E6E6E;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background: #FFFFFF;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modalHeader {
+    padding: 20px 25px;
+    border-bottom: 1px solid #F0F6FF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalHeader h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #2C2C2C;
+}
+
+.modalClose {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6E6E6E;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.modalClose:hover {
+    background: #F0F6FF;
+    color: #2C2C2C;
+}
+
+.modalBody {
+    padding: 25px;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #2C2C2C;
+    font-size: 14px;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #F0F6FF;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #2C2C2C;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #3BA6FF;
+}
+
+.formGroup textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.modalFooter {
+    padding: 20px 25px;
+    border-top: 1px solid #F0F6FF;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btnCancel {
+    background: transparent;
+    color: #6E6E6E;
+    border: 1px solid #F0F6FF;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btnCancel:hover {
+    background: #F0F6FF;
+    color: #2C2C2C;
+}
+
+.btnSave {
+    background: #2E4A7D;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btnSave:hover {
+    background: #1C2A44;
+}
+
+@media (max-width: 1024px) {
+    .controlsSection {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .searchFilters {
+        justify-content: stretch;
+        flex-direction: column;
+    }
+
+    .searchBox {
+        min-width: auto;
+    }
+
+    .asignaturasTable {
+        font-size: 13px;
+    }
+
+    .asignaturasTable thead th,
+    .asignaturasTable tbody td {
+        padding: 12px 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .asignaturasContent {
+        padding: 20px 15px;
+    }
+
+    .searchFilters {
+        gap: 10px;
+    }
+
+    .filterSelect {
+        min-width: auto;
+    }
+
+    .asignaturasTable {
+        font-size: 12px;
+    }
+
+    .asignaturasTable thead th,
+    .asignaturasTable tbody td {
+        padding: 10px 12px;
+    }
+
+    .modalContent {
+        width: 95%;
+        margin: 20px;
+    }
+
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+
+    .modalFooter {
+        flex-direction: column-reverse;
+        gap: 8px;
+    }
+
+    .btnCancel,
+    .btnSave {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .headerInfo h1 {
+        font-size: 24px;
+    }
+
+    .headerDescription {
+        font-size: 16px;
+    }
+
+    .controlsSection {
+        gap: 12px;
+    }
+
+    .btnNuevo {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .asignaturasTable {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .asignaturasTable thead,
+    .asignaturasTable tbody,
+    .asignaturasTable th,
+    .asignaturasTable td,
+    .asignaturasTable tr {
+        display: block;
+    }
+
+    .asignaturasTable thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .asignaturasTable tr {
+        border: 1px solid #F0F6FF;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        padding: 15px;
+        background: #FFFFFF;
+    }
+
+    .asignaturasTable td {
+        border: none;
+        padding: 8px 0;
+        position: relative;
+        padding-left: 120px;
+        text-align: left;
+    }
+
+    .asignaturasTable td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 110px;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: 600;
+        color: #2C2C2C;
+    }
+}

@@ -1,0 +1,292 @@
+.calificacionesEstudiante {
+    min-height: 100vh;
+    background-color: #F0F6FF;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+}
+
+.calificacionesContent {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.headerSection {
+    margin-bottom: 30px;
+}
+
+.headerSection h1 {
+    color: #2C2C2C;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab {
+    background: none;
+    border: none;
+    color: #6E6E6E;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.tab.active {
+    background-color: #3BA6FF;
+    color: #FFFFFF;
+}
+
+.calificacionesSection {
+    background: #FFFFFF;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calificacionesSection h2 {
+    color: #2C2C2C;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.filtros {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.filtroSelect {
+    padding: 10px 15px;
+    border: 2px solid #F0F6FF;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    color: #2C2C2C;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.filtroSelect:focus {
+    outline: none;
+    border-color: #3BA6FF;
+}
+
+.calificacionesTable {
+    width: 100%;
+}
+
+.tableHeader {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 20px;
+    padding: 15px 20px;
+    background-color: #1C2A44;
+    border-radius: 8px 8px 0 0;
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.headerCell {
+    text-align: left;
+}
+
+.tableRow {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    border-bottom: 1px solid #F0F6FF;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.tableRow:hover {
+    background-color: #F0F6FF;
+}
+
+.tableCell {
+    display: flex;
+    align-items: center;
+}
+
+.materiaInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.materiaInfo h4 {
+    color: #2C2C2C;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.codigo {
+    color: #6E6E6E;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.profesor {
+    color: #2E4A7D;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.calificacionBadge {
+    background-color: #2E4A7D;
+    color: #FFFFFF;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-align: center;
+    min-width: 50px;
+}
+
+.cuatrimestre {
+    color: #2C2C2C;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.estadoBadge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.estadoBadge.cursando {
+    background-color: rgba(59, 166, 255, 0.1);
+    color: #3BA6FF;
+}
+
+.estadoBadge.completado {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+}
+
+.estadoBadge.reprobado {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+}
+
+.estadoBadge.extraordinario {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #FFC107;
+}
+
+.loadingContainer, 
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+}
+
+.loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #F0F6FF;
+    border-top: 4px solid #3BA6FF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.errorMessage {
+    color: #F44336;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.retryButton {
+    background-color: #3BA6FF;
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.retryButton:hover {
+    background-color: #2E4A7D;
+}
+
+.noData {
+    text-align: center;
+    padding: 40px;
+    color: #6E6E6E;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .calificacionesContent {
+        padding: 20px 15px;
+    }
+    
+    .headerSection h1 {
+        font-size: 2rem;
+    }
+    
+    .filtros {
+        flex-direction: column;
+    }
+    
+    .filtroSelect {
+        width: 100%;
+    }
+    
+    .tableHeader,
+    .tableRow {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .tableHeader {
+        display: none;
+    }
+    
+    .tableRow {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        background-color: #FFFFFF;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tableCell {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .tableCell:last-child {
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,256 @@
+.dashboardContainer {
+    min-height: 100vh;
+    background: #F0F6FF;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.dashboardMain {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.dashboardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.welcomeSection {
+    margin-bottom: 10px;
+}
+
+.welcomeSection h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 8px 0;
+}
+
+.welcomeSection p {
+    font-size: 16px;
+    color: #6E6E6E;
+    margin: 0;
+}
+
+.quickActions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.actionCard {
+    background: #FFFFFF;
+    border: 1px solid #F0F6FF;
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2C2C2C;
+}
+
+.actionCard:hover {
+    border-color: #3BA6FF;
+    box-shadow: 0 4px 12px rgba(59, 166, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+}
+
+.statCard {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #F0F6FF;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.2s ease;
+}
+
+.statCard:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.statCard.large {
+    grid-row: span 2;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+.statCard.small {
+    grid-column: span 2;
+}
+
+.statIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.statCard.large .statIcon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 15px;
+}
+
+.statIcon.blue {
+    background: #F0F6FF;
+    color: #2E4A7D;
+}
+
+.statIcon.purple {
+    background: #F0F6FF;
+    color: #2E4A7D;
+}
+
+.statIcon.green {
+    background: #F0F6FF;
+    color: #2E4A7D;
+}
+
+.statIcon.orange {
+    background: #F0F6FF;
+    color: #3BA6FF;
+}
+
+.statContent {
+    flex: 1;
+}
+
+.statNumber {
+    font-size: 36px;
+    font-weight: 700;
+    color: #2C2C2C;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.statCard.large .statNumber {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.statLabel {
+    font-size: 14px;
+    color: #6E6E6E;
+    font-weight: 500;
+}
+
+.statCard.large .statLabel {
+    font-size: 16px;
+}
+
+.dashboardLoading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F0F6FF;
+}
+
+.loadingSpinner {
+    text-align: center;
+    color: #6E6E6E;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #F0F6FF;
+    border-top: 3px solid #3BA6FF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 1024px) {
+    .statsGrid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .statCard.large {
+        grid-column: span 2;
+        grid-row: span 1;
+        flex-direction: row;
+        text-align: left;
+    }
+    
+    .statCard.large .statIcon {
+        margin-bottom: 0;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .statCard.large .statNumber {
+        font-size: 36px;
+        margin-bottom: 5px;
+    }
+    
+    .statCard.large .statLabel {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboardMain {
+        padding: 20px 15px;
+    }
+    
+    .welcomeSection h2 {
+        font-size: 24px;
+    }
+    
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .statCard.large,
+    .statCard.small {
+        grid-column: span 1;
+    }
+    
+    .quickActions {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboardMain {
+        padding: 15px 10px;
+    }
+    
+    .statCard {
+        padding: 18px;
+    }
+    
+    .statNumber {
+        font-size: 28px;
+    }
+    
+    .statIcon {
+        width: 40px;
+        height: 40px;
+    }
+}
