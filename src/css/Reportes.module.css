@@ -223,6 +223,49 @@
     margin: 0;
 }
 
+.headerControls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.vistaControls {
+    display: flex;
+    background: #F0F6FF;
+    border-radius: 8px;
+    padding: 4px;
+    gap: 4px;
+}
+
+.btnVista {
+    background: transparent;
+    color: #6E6E6E;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btnVista:hover {
+    background: rgba(46, 74, 125, 0.1);
+    color: #2E4A7D;
+}
+
+.btnVista.active {
+    background: #2E4A7D;
+    color: #FFFFFF;
+}
+
+.btnVista:disabled {
+    background: transparent;
+    color: #C0C0C0;
+    cursor: not-allowed;
+}
+
 .btnGenerarPdfSmall {
     background: #2E4A7D;
     color: #FFFFFF;
@@ -291,6 +334,21 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.graficaContainer {
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.graficaContainer h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2C2C2C;
+    margin: 0 0 20px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #F0F6FF;
 }
 
 .datosTabla h4 {
@@ -394,6 +452,15 @@
         align-items: stretch;
     }
     
+    .headerControls {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .vistaControls {
+        justify-content: center;
+    }
+    
     .tablaContainer {
         font-size: 12px;
     }
@@ -401,6 +468,10 @@
     .tablaReportes th,
     .tablaReportes td {
         padding: 8px 12px;
+    }
+    
+    .graficaContainer {
+        padding: 12px;
     }
 }
 

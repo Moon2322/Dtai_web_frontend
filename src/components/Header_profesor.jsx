@@ -6,7 +6,6 @@ const Header = () => {
 
   const handleLogout = () => {
     console.log("Cerrando sesión…");
-    // Aquí más adelante pondrás la lógica real para cerrar sesión
   };
 
   return (

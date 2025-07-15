@@ -28,8 +28,10 @@ const GestionNoticias = () => {
         resumen: '',
         categoria_id: '',
         es_destacada: false,
-        publicada: false
+        publicada: false,
+        imagen: null
     });
+    const [imagePreview, setImagePreview] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -116,6 +118,18 @@ const GestionNoticias = () => {
         }, 2000);
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFormData(prev => ({ ...prev, imagen: file }));
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleNewNoticia = () => {
         setEditingNoticia(null);
         setFormData({
@@ -124,8 +138,10 @@ const GestionNoticias = () => {
             resumen: '',
             categoria_id: '',
             es_destacada: false,
-            publicada: false
+            publicada: false,
+            imagen: null
         });
+        setImagePreview(null);
         setShowModal(true);
     };
 
@@ -137,8 +153,10 @@ const GestionNoticias = () => {
             resumen: noticia.resumen || '',
             categoria_id: noticia.categoria_id,
             es_destacada: noticia.es_destacada,
-            publicada: noticia.publicada
+            publicada: noticia.publicada,
+            imagen: null
         });
+        setImagePreview(noticia.imagen_url || null);
         setShowModal(true);
     };
 
@@ -150,13 +168,24 @@ const GestionNoticias = () => {
                 ? `http://localhost:5000/api/noticias/${editingNoticia.id}`
                 : 'http://localhost:5000/api/noticias';
             
+            const formDataToSend = new FormData();
+            formDataToSend.append('titulo', formData.titulo);
+            formDataToSend.append('contenido', formData.contenido);
+            formDataToSend.append('resumen', formData.resumen);
+            formDataToSend.append('categoria_id', formData.categoria_id);
+            formDataToSend.append('es_destacada', formData.es_destacada);
+            formDataToSend.append('publicada', formData.publicada);
+            
+            if (formData.imagen) {
+                formDataToSend.append('imagen', formData.imagen);
+            }
+
             const response = await fetch(url, {
                 method: editingNoticia ? 'PUT' : 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
                 },
-                body: JSON.stringify(formData)
+                body: formDataToSend
             });
 
             const data = await response.json();
@@ -349,6 +378,7 @@ const GestionNoticias = () => {
                         <table className={styles.noticiasTable}>
                             <thead>
                                 <tr>
+                                    <th>Imagen</th>
                                     <th>Título</th>
                                     <th>Categoría</th>
                                     <th>Autor</th>
@@ -361,6 +391,19 @@ const GestionNoticias = () => {
                             <tbody>
                                 {noticias.map(noticia => (
                                     <tr key={noticia.id}>
+                                        <td>
+                                            {noticia.imagen_url ? (
+                                                <img 
+                                                    src={noticia.imagen_url} 
+                                                    alt={noticia.titulo}
+                                                    className={styles.noticiaImage}
+                                                />
+                                            ) : (
+                                                <div className={styles.noImagePlaceholder}>
+                                                    📰
+                                                </div>
+                                            )}
+                                        </td>
                                         <td className={styles.noticiaTitle}>
                                             {noticia.titulo}
                                             {noticia.es_destacada && <span className={styles.destacadaBadge}>⭐</span>}
@@ -448,6 +491,21 @@ const GestionNoticias = () => {
                                         <span className={styles.checkboxText}>Noticia destacada ⭐</span>
                                     </label>
                                 </div>
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label>Imagen de la noticia</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageChange}
+                                    className={styles.fileInput}
+                                />
+                                {imagePreview && (
+                                    <div className={styles.imagePreview}>
+                                        <img src={imagePreview} alt="Preview" />
+                                    </div>
+                                )}
                             </div>
 
                             <div className={styles.formGroup}>
