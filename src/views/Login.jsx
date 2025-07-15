@@ -11,7 +11,7 @@ const Login = () => {
           <form>
             <input type="email" placeholder="Correo electrónico" required className={styles.input} />
             <input type="password" placeholder="Contraseña" required className={styles.input} />
-            <button type="submit" className={styles.button}>Entrar</button>
+            <button type="submit" className={styles.button}>Holaaaaaaa</button>
           </form>
         </div>
       </div>
