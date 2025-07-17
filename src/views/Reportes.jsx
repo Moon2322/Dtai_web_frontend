@@ -383,7 +383,7 @@ const Reportes = () => {
                 <div class="summary">
                     <h3>Resumen Ejecutivo</h3>
                     <p><strong>Total de registros:</strong> ${datosReporte.length}</p>
-                    <p><strong>Estudiantes activos:</strong> ${estudiantesActivos.activos || 0}</p>
+                    <p><strong>Estudiantes:</strong> ${estudiantesActivos.activos || 0}</p>
                     <p><strong>Reporte:</strong> ${reporteNombre}</p>
                     <p><strong>Vista:</strong> ${vistaActual === 'grafica' ? 'Gráfica y Tabla' : 'Tabla'}</p>
                 </div>
@@ -514,7 +514,7 @@ const Reportes = () => {
                         <div className={styles.icon}>👥</div>
                         <div className={styles.cardContent}>
                             <div className={styles.cardHeader}>
-                                <h3>Estudiantes Activos</h3>
+                                <h3>Estudiantes</h3>
                             </div>
                             <div className={styles.cardNumber}>{estudiantesActivos.activos || 0}</div>
                         </div>

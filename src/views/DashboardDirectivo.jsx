@@ -84,7 +84,7 @@ const DashboardDirectivo = () => {
                             </div>
                             <div className={styles.statContent}>
                                 <div className={styles.statNumber}>{stats.estudiantes}</div>
-                                <div className={styles.statLabel}>Estudiantes activos</div>
+                                <div className={styles.statLabel}>Estudiantes</div>
                             </div>
                         </div>
 
@@ -99,7 +99,7 @@ const DashboardDirectivo = () => {
                             </div>
                             <div className={styles.statContent}>
                                 <div className={styles.statNumber}>{stats.profesores}</div>
-                                <div className={styles.statLabel}>Profesores Activos</div>
+                                <div className={styles.statLabel}>Profesores</div>
                             </div>
                         </div>
 
@@ -112,7 +112,7 @@ const DashboardDirectivo = () => {
                             </div>
                             <div className={styles.statContent}>
                                 <div className={styles.statNumber}>{stats.asignaturas}</div>
-                                <div className={styles.statLabel}>Asignaturas Registradas</div>
+                                <div className={styles.statLabel}>Asignaturas</div>
                             </div>
                         </div>
 
