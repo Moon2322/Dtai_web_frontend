@@ -1,0 +1,473 @@
+/* src/styles/NuevasAsignaturas.module.css */
+
+.container {
+    min-height: 100vh;
+    background-color: #f8fafc;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Encabezado */
+.header {
+    margin-bottom: 1.3rem;
+    text-align: center;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1a202c;
+    margin-bottom: 0.4rem;
+}
+
+.subtitle {
+    color: #64748b;
+    font-size: 1rem;
+}
+
+/* Loading */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 40vh;
+    color: #64748b;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e2e8f0;
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 0.7rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Grid principal */
+.mainGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.3rem;
+}
+
+@media (max-width: 1200px) {
+    .mainGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tarjetas */
+.formCard,
+.listCard {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    height: fit-content;
+}
+
+.cardHeader {
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    padding: 1.1rem;
+    color: white;
+}
+
+.cardTitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.cardBody {
+    padding: 1.3rem;
+}
+
+/* Secciones */
+.section {
+    margin-bottom: 1.3rem;
+}
+
+.section:last-child {
+    margin-bottom: 0;
+}
+
+.sectionTitle {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a202c;
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* Formularios */
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.4rem;
+}
+
+.select,
+.input {
+    padding: 0.6rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 7px;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+    background: white;
+}
+
+.select:focus,
+.input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Configuración de horarios */
+.horarioForm {
+    background: #f8fafc;
+    border: 2px dashed #cbd5e1;
+    border-radius: 10px;
+    padding: 1.1rem;
+    margin-bottom: 1.1rem;
+}
+
+.horarioGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 0.7rem;
+    align-items: end;
+}
+
+@media (max-width: 768px) {
+    .horarioGrid {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+}
+
+.addHorarioBtn {
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    height: fit-content;
+}
+
+.addHorarioBtn:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+/* Lista de horarios */
+.horariosLista {
+    margin-top: 1.1rem;
+}
+
+.listaTitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.7rem;
+}
+
+.horariosGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 0.7rem;
+}
+
+.horarioItem {
+    background: #dbeafe;
+    border: 1px solid #3b82f6;
+    border-radius: 7px;
+    padding: 0.7rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.horarioItem:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(59, 130, 246, 0.15);
+}
+
+.horarioInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.horarioDia {
+    font-weight: 600;
+    color: #1e40af;
+    font-size: 0.8rem;
+}
+
+.horarioHoras {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 0.2rem;
+}
+
+.deleteHorarioBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.2rem;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+
+.deleteHorarioBtn:hover {
+    background: rgba(239, 68, 68, 0.1);
+    transform: scale(1.08);
+}
+
+/* Botones principales */
+.formActions {
+    margin-top: 1.3rem;
+    padding-top: 1.3rem;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+.saveBtn {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.22);
+}
+
+.saveBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3);
+}
+
+/* Lista de asignaturas registradas */
+.emptyState {
+    text-align: center;
+    padding: 2rem 0.7rem;
+    color: #64748b;
+}
+
+.emptyIcon {
+    font-size: 2.2rem;
+    margin-bottom: 0.7rem;
+}
+
+.emptyState p {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    color: #374151;
+}
+
+.emptyState span {
+    font-size: 0.8rem;
+}
+
+.asignaturasLista {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.asignaturaCard {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 1.1rem;
+    transition: all 0.2s;
+}
+
+.asignaturaCard:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 3px 10px rgba(59, 130, 246, 0.13);
+    transform: translateY(-2px);
+}
+
+.asignaturaHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.7rem;
+}
+
+.asignaturaInfo {
+    flex: 1;
+}
+
+.asignaturaNombre {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 0.4rem 0;
+}
+
+.asignaturaDetalles {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin: 0;
+}
+
+.deleteBtn {
+    background: #fee2e2;
+    color: #dc2626;
+    border: none;
+    border-radius: 7px;
+    padding: 0.4rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+
+.deleteBtn:hover {
+    background: #fecaca;
+    transform: scale(1.08);
+}
+
+.asignaturaBody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.infoRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.infoRow:last-child {
+    border-bottom: none;
+}
+
+.infoLabel {
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.8rem;
+}
+
+.infoValue {
+    color: #1a202c;
+    font-size: 0.8rem;
+}
+
+.horariosSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.horariosChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.horarioChip {
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 0.18rem 0.6rem;
+    border-radius: 16px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    border: 1px solid #93c5fd;
+}
+
+.sinHorarios {
+    color: #ef4444;
+    font-size: 0.7rem;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 0.7rem;
+    }
+    
+    .title {
+        font-size: 1.5rem;
+    }
+    
+    .subtitle {
+        font-size: 0.95rem;
+    }
+    
+    .cardBody {
+        padding: 1rem;
+    }
+    
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .asignaturaHeader {
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+    
+    .horariosChips {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0.3rem;
+    }
+    
+    .cardBody {
+        padding: 0.7rem;
+    }
+    
+    .horarioGrid {
+        gap: 0.5rem;
+    }
+    
+    .addHorarioBtn {
+        padding: 0.4rem;
+        font-size: 0.7rem;
+    }
+}

@@ -1,11 +1,16 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../css/Header_profesor.module.css";
 
 const Header = () => {
   const userName = "Prof. Juan Pérez";
+  const navigate = useNavigate(); // ✅ Para redirigir
 
   const handleLogout = () => {
-    console.log("Cerrando sesión…");
+    // ✅ Borrar el token del localStorage
+    localStorage.removeItem("token");
+
+    // ✅ Redirigir a /login
+    navigate("/login");
   };
 
   return (
@@ -20,19 +25,19 @@ const Header = () => {
         <NavLink to="/profesor/dashboard_profesor" className={styles.navButton}>
           Inicio
         </NavLink>
-        <NavLink to="/asignaturas" className={styles.navButton}>
+        <NavLink to="/profesor/Nueva_asignatura" className={styles.navButton}>
           Asignaturas
         </NavLink>
         <NavLink to="/profesor/Administracion_estudiantes" className={styles.navButton}>
           Estudiantes
         </NavLink>
-        <NavLink to="/calificaciones" className={styles.navButton}>
+        <NavLink to="/profesor/Gestion_calificaiones" className={styles.navButton}>
           Calificaciones
         </NavLink>
-        <NavLink to="/foro" className={styles.navButton}>
+        <NavLink to="/profesor/foro_profesor" className={styles.navButton}>
           Foro
         </NavLink>
-        <NavLink to="/ayuda" className={styles.navButton}>
+        <NavLink to="/profesor/Ayuda_alumno" className={styles.navButton}>
           Centro de Ayuda
         </NavLink>
         <NavLink to="/encuestas" className={styles.navButton}>

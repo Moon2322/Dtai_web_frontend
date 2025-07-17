@@ -1,0 +1,714 @@
+.container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+}
+
+.mainContent {
+  padding: 1.3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header de la página */
+.pageHeader {
+  margin-bottom: 1.3rem;
+  text-align: center;
+}
+
+.pageHeader h1 {
+  color: #2c3e50;
+  margin: 0 0 0.35rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.pageHeader p {
+  color: #7f8c8d;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Estadísticas */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.3rem;
+}
+
+.statCard {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  transition: transform 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+}
+
+.statIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.statInfo h3 {
+  color: #7f8c8d;
+  margin: 0 0 0.35rem 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.statNumber {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Controles */
+.controls {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.3rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.searchSection {
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.filters {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.filterSelect {
+  padding: 0.6rem 0.8rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  flex: 1;
+  min-width: 120px;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+/* Posts */
+.postsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.postCard {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.postCard:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.postHeader {
+  padding: 1rem 1rem 0.7rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.postInfo {
+  flex: 1;
+}
+
+.postTitle {
+  color: #2c3e50;
+  margin: 0 0 0.6rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.postMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.student {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.matricula {
+  color: #7f8c8d;
+  font-size: 0.8rem;
+}
+
+.date {
+  color: #95a5a6;
+  font-size: 0.8rem;
+}
+
+.category {
+  color: white;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.postActions {
+  flex-shrink: 0;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 50%;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.deleteButton:hover {
+  background: #ffebee;
+  transform: scale(1.07);
+}
+
+.postContent {
+  padding: 0 1rem;
+}
+
+.postContent p {
+  color: #34495e;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.postFooter {
+  padding: 0.7rem 1rem 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f2f6;
+  margin-top: 0.7rem;
+}
+
+.postStats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.likeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #e74c3c;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.4rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.likeButton:hover {
+  background: #ffebee;
+}
+
+.likeButton.liked {
+  background: #ffebee;
+  font-weight: 600;
+}
+
+.responsesCount {
+  color: #3498db;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.status {
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.status.answered {
+  background: #d5f4e6;
+  color: #27ae60;
+}
+
+.status.pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.viewAnswersButton, .responseButton {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.viewAnswersButton {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.viewAnswersButton:hover {
+  background: #bbdefb;
+}
+
+.responseButton {
+  background: #27ae60;
+  color: white;
+}
+
+.responseButton:hover {
+  background: #229954;
+  transform: translateY(-1px);
+}
+
+.noResults {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.noResults p {
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Modales */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 0.7rem;
+}
+
+.modal {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 540px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.22);
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalHeader {
+  padding: 1.3rem 1.3rem 0.7rem 1.3rem;
+  border-bottom: 1px solid #e1e8ed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #7f8c8d;
+  padding: 0.4rem;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.closeButton:hover {
+  background: #f8f9fa;
+  color: #2c3e50;
+}
+
+.modalContent {
+  padding: 1.3rem;
+}
+
+.originalPost {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.3rem;
+  border-left: 4px solid #3498db;
+}
+
+.originalPost h4 {
+  color: #2c3e50;
+  margin: 0 0 0.7rem 0;
+  font-size: 1rem;
+}
+
+.originalPost p {
+  color: #34495e;
+  margin: 0 0 0.3rem 0;
+  line-height: 1.5;
+}
+
+.originalPost small {
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+/* Formulario de respuesta */
+.responseForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formGroup label {
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.formGroup textarea {
+  padding: 0.8rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 90px;
+  transition: border-color 0.3s ease;
+}
+
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.modalActions {
+  display: flex;
+  gap: 0.7rem;
+  justify-content: flex-end;
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid #e1e8ed;
+}
+
+.cancelButton {
+  background: #95a5a6;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.cancelButton:hover {
+  background: #7f8c8d;
+}
+
+.submitButton {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.1rem;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.submitButton:hover {
+  background: #2980b9;
+  transform: translateY(-1px);
+}
+
+/* Sección de respuestas */
+.answersSection {
+  margin-top: 1.3rem;
+}
+
+.answersSection h4 {
+  color: #2c3e50;
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.answerCard {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.7rem;
+  border-left: 4px solid #e1e8ed;
+  transition: all 0.3s ease;
+}
+
+.answerCard:hover {
+  background: #f1f2f6;
+  border-left-color: #3498db;
+}
+
+.answerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.7rem;
+}
+
+.answerAuthor {
+  color: #2c3e50;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.answerAuthor.professor {
+  color: #27ae60;
+}
+
+.answerAuthor.student {
+  color: #3498db;
+}
+
+.professorBadge {
+  background: #27ae60;
+  color: white;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.answerDate {
+  color: #7f8c8d;
+  font-size: 0.8rem;
+}
+
+.answerContent p {
+  color: #34495e;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.answerFooter {
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid #e1e8ed;
+}
+
+.answerLikes {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 0.7rem;
+  }
+  
+  .pageHeader h1 {
+    font-size: 1.5rem;
+  }
+  
+  .statsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.7rem;
+  }
+  
+  .statCard {
+    padding: 0.7rem;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .statIcon {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+  
+  .statNumber {
+    font-size: 1.1rem;
+  }
+  
+  .controls {
+    padding: 0.7rem;
+  }
+  
+  .filters {
+    flex-direction: column;
+  }
+  
+  .filterSelect {
+    min-width: auto;
+  }
+  
+  .postMeta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+  }
+  
+  .postFooter {
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: stretch;
+  }
+  
+  .actionButtons {
+    justify-content: center;
+  }
+  
+  .modalContent {
+    padding: 0.7rem;
+  }
+  
+  .modalActions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageHeader h1 {
+    font-size: 1.2rem;
+  }
+  
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .postCard {
+    margin: 0 -0.3rem;
+  }
+  
+  .postHeader {
+    padding: 0.7rem;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  
+  .postContent {
+    padding: 0 0.7rem;
+  }
+  
+  .postFooter {
+    padding: 0.7rem;
+  }
+  
+  .postStats {
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+  
+  .modal {
+    margin: 0.3rem;
+    max-width: none;
+  }
+  
+  .modalHeader {
+    padding: 0.7rem;
+  }
+}

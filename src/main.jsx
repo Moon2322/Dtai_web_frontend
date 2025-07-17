@@ -26,6 +26,10 @@ import ForoEstudiante from './views/ForoEstudiante.jsx';
 import PostDetalle from './views/PostDetalle.jsx';
 import NoticiasPublicas from './views/NoticiasPublicas.jsx';
 import NoticiaDetallePublico from './views/NoticiaDetallePublico.jsx';
+import Foroprofesor from './views/Foroprofesor.jsx';
+import Gestioncalifaciones from './views/Gestioncalificaciones.jsx';
+import Nueva_asignatura from './views/Nueva_asignatura.jsx';
+import Ayuda_alumno from './views/Ayuda_alumno.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -37,7 +41,13 @@ root.render(
     <Route path="/noticia-detalle/:id" element={<NoticiaDetallePublico />} />
     <Route path="/login" element={<Login />} />
     <Route path="/profesor/dashboard_profesor" element={<Dashboard_profesor />} />
+    <Route path="/profesor/foro_profesor" element={<Foroprofesor />} />
     <Route path="/profesor/Administracion_estudiantes" element={<Admin_estudiantes_profesor />} />
+    <Route path="/profesor/Gestion_calificaiones" element={<Gestioncalifaciones />} />
+    <Route path="/profesor/Nueva_asignatura" element={<Nueva_asignatura />} />
+    <Route path="/profesor/Ayuda_alumno" element={<Ayuda_alumno />} />
+
+
       <Route path="/dashboard-directivo" element={<DashboardDirectivo />} />
       <Route path="/asignaturas-directivo" element={<GestionAsignaturas />} />
       <Route path="/profesores-directivo" element={<GestionProfesores />} />

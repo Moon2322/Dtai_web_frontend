@@ -81,7 +81,7 @@ const Login = () => {
                         navigate('/dashboard-alumno');
                         break;
                     case 'profesor':
-                        navigate('/dashboard-profesor');
+                        navigate('/profesor/dashboard_profesor');
                         break;
                     case 'directivo':
                         navigate('/dashboard-directivo');
