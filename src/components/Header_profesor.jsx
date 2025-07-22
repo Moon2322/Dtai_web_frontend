@@ -1,15 +1,53 @@
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "../css/Header_profesor.module.css";
 
 const Header = () => {
-  const userName = "Prof. Juan Pérez";
-  const navigate = useNavigate(); // ✅ Para redirigir
+  const [nombreProfesor, setNombreProfesor] = useState("Profesor");
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    cargarPerfilProfesor();
+  }, []);
+
+  const cargarPerfilProfesor = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setNombreProfesor("Profesor");
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch('http://localhost:5000/api/profesor/perfil', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      const data = await response.json();
+      if (data.success && data.data) {
+        const { nombre, apellido, titulo_academico } = data.data;
+        const nombreCompleto = titulo_academico 
+          ? `${titulo_academico} ${nombre} ${apellido}`
+          : `Prof. ${nombre} ${apellido}`;
+        setNombreProfesor(nombreCompleto);
+      } else {
+        setNombreProfesor("Profesor");
+      }
+    } catch (error) {
+      console.error('Error al cargar perfil del profesor:', error);
+      setNombreProfesor("Profesor");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = () => {
-    // ✅ Borrar el token del localStorage
+    // Borrar datos del localStorage
     localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
 
-    // ✅ Redirigir a /login
+    // Redirigir a login
     navigate("/login");
   };
 
@@ -47,7 +85,9 @@ const Header = () => {
 
       {/* Usuario y logout */}
       <div className={styles.userSection}>
-        <span className={styles.userName}>{userName}</span>
+        <span className={styles.userName}>
+          {loading ? "Cargando..." : nombreProfesor}
+        </span>
         <button className={styles.logoutButton} onClick={handleLogout}>
           Cerrar Sesión
         </button>

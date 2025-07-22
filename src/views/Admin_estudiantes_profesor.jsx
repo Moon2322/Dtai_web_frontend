@@ -1,141 +1,311 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/header_profesor';
 import styles from '../css/Admin_estudiantes_profesor.module.css';
 
 const Admin_estudiantes_profesor = () => {
-  // Datos estáticos de estudiantes (simulando base de datos)
-  const [students, setStudents] = useState([
-    { 
-      id: 1, 
-      nombre: 'Ana García', 
-      email: 'ana.garcia@email.com', 
-      carrera: 'Ingeniería en Sistemas', 
-      matricula: '2022371054', 
-      promedio: 8.5,
-      estatus: 'Activo'
-    },
-    { 
-      id: 2, 
-      nombre: 'Carlos López', 
-      email: 'carlos.lopez@email.com', 
-      carrera: 'Ingeniería Industrial', 
-      matricula: '2023451287', 
-      promedio: 7.8,
-      estatus: 'Activo'
-    },
-    { 
-      id: 3, 
-      nombre: 'María Rodríguez', 
-      email: 'maria.rodriguez@email.com', 
-      carrera: 'Ingeniería en Sistemas', 
-      matricula: '2021298743', 
-      promedio: 9.2,
-      estatus: 'Activo'
-    },
-    { 
-      id: 4, 
-      nombre: 'Diego Martínez', 
-      email: 'diego.martinez@email.com', 
-      carrera: 'Ingeniería Civil', 
-      matricula: '2024156892', 
-      promedio: 6.9,
-      estatus: 'En Prueba'
-    },
-    { 
-      id: 5, 
-      nombre: 'Sofia Hernández', 
-      email: 'sofia.hernandez@email.com', 
-      carrera: 'Ingeniería Industrial', 
-      matricula: '2022583741', 
-      promedio: 8.8,
-      estatus: 'Activo'
-    }
-  ]);
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [estudiantes, setEstudiantes] = useState([]);
+  const [carreras, setCarreras] = useState([]);
+  
   // Estados para filtros
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterCarrera, setFilterCarrera] = useState('');
-  const [filterEstatus, setFilterEstatus] = useState('');
+  const [filtros, setFiltros] = useState({
+    busqueda: '',
+    carrera: '',
+    estatus: '',
+    grupo: ''
+  });
 
   // Estados para modal
-  const [showModal, setShowModal] = useState(false);
-  const [editingStudent, setEditingStudent] = useState(null);
-  const [formData, setFormData] = useState({
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [estudianteEditando, setEstudianteEditando] = useState(null);
+  const [modoEdicion, setModoEdicion] = useState(false);
+  
+  const [formulario, setFormulario] = useState({
     nombre: '',
-    email: '',
-    carrera: '',
-    semestre: '',
-    promedio: '',
-    fechaIngreso: '',
-    estatus: 'Activo'
+    apellido: '',
+    correo: '',
+    matricula: '',
+    carrera_id: '',
+    cuatrimestre_actual: '',
+    telefono: '',
+    fecha_ingreso: '',
+    estado_alumno: 'activo'
   });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Verificar autenticación
+    const userData = localStorage.getItem('usuario');
+    const token = localStorage.getItem('token');
+    
+    if (!userData || !token) {
+      navigate('/login');
+      return;
+    }
+
+    const user = JSON.parse(userData);
+    if (user.rol !== 'profesor') {
+      navigate('/login');
+      return;
+    }
+
+    cargarDatos();
+  }, [navigate]);
+
+  const cargarDatos = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+
+      // Cargar estudiantes del profesor
+      const estudiantesRes = await fetch('http://localhost:5000/api/profesor/estudiantes', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      // Cargar carreras disponibles
+      const carrerasRes = await fetch('http://localhost:5000/api/carreras', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      const [estudiantesData, carrerasData] = await Promise.all([
+        estudiantesRes.json(),
+        carrerasRes.json()
+      ]);
+
+      if (estudiantesData.success) {
+        setEstudiantes(estudiantesData.data);
+      }
+
+      if (carrerasData.success) {
+        setCarreras(carrerasData.data);
+      }
+
+    } catch (error) {
+      console.error('Error al cargar datos:', error);
+      setError('Error al cargar los datos');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filtrar estudiantes
-  const filteredStudents = students.filter(student => {
-    return (
-      student.nombre.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (filterCarrera === '' || student.carrera === filterCarrera) &&
-      (filterEstatus === '' || student.estatus === filterEstatus)
-    );
+  const estudiantesFiltrados = estudiantes.filter(estudiante => {
+    const coincideBusqueda = !filtros.busqueda || 
+      estudiante.nombre_completo.toLowerCase().includes(filtros.busqueda.toLowerCase()) ||
+      estudiante.matricula.includes(filtros.busqueda) ||
+      estudiante.correo.toLowerCase().includes(filtros.busqueda.toLowerCase());
+
+    const coincideCarrera = !filtros.carrera || estudiante.carrera_id.toString() === filtros.carrera;
+    const coincideEstatus = !filtros.estatus || estudiante.estado_alumno === filtros.estatus;
+    const coincideGrupo = !filtros.grupo || estudiante.grupo_codigo === filtros.grupo;
+
+    return coincideBusqueda && coincideCarrera && coincideEstatus && coincideGrupo;
   });
 
-  // Obtener opciones únicas para filtros
-  const carreras = [...new Set(students.map(s => s.carrera))];
-  const estatuses = [...new Set(students.map(s => s.estatus))];
+  // Obtener grupos únicos
+  const gruposUnicos = [...new Set(estudiantes.map(e => e.grupo_codigo))].filter(Boolean);
 
-  // Funciones CRUD
-  const handleAdd = () => {
-    setEditingStudent(null);
-    setFormData({
+  // Obtener estados únicos
+  const estadosUnicos = [...new Set(estudiantes.map(e => e.estado_alumno))];
+
+  // Manejar cambios en filtros
+  const manejarCambioFiltro = (campo, valor) => {
+    setFiltros(prev => ({
+      ...prev,
+      [campo]: valor
+    }));
+  };
+
+  // Abrir modal para agregar
+  const abrirModalAgregar = () => {
+    setFormulario({
       nombre: '',
-      email: '',
-      carrera: '',
+      apellido: '',
+      correo: '',
       matricula: '',
-      promedio: '',
-      estatus: 'Activo'
+      carrera_id: '',
+      cuatrimestre_actual: '1',
+      telefono: '',
+      fecha_ingreso: new Date().toISOString().split('T')[0],
+      estado_alumno: 'activo'
     });
-    setShowModal(true);
+    setEstudianteEditando(null);
+    setModoEdicion(false);
+    setMostrarModal(true);
   };
 
-  const handleEdit = (student) => {
-    setEditingStudent(student);
-    setFormData({ ...student });
-    setShowModal(true);
+  // Abrir modal para editar
+  const abrirModalEditar = (estudiante) => {
+    setFormulario({
+      nombre: estudiante.nombre,
+      apellido: estudiante.apellido,
+      correo: estudiante.correo,
+      matricula: estudiante.matricula,
+      carrera_id: estudiante.carrera_id.toString(),
+      cuatrimestre_actual: estudiante.cuatrimestre_actual.toString(),
+      telefono: estudiante.telefono || '',
+      fecha_ingreso: estudiante.fecha_ingreso ? estudiante.fecha_ingreso.split('T')[0] : '',
+      estado_alumno: estudiante.estado_alumno
+    });
+    setEstudianteEditando(estudiante);
+    setModoEdicion(true);
+    setMostrarModal(true);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar este estudiante?')) {
-      setStudents(students.filter(s => s.id !== id));
-    }
+  // Manejar cambios en formulario
+  const manejarCambioFormulario = (campo, valor) => {
+    setFormulario(prev => ({
+      ...prev,
+      [campo]: valor
+    }));
   };
 
-  const handleSubmit = (e) => {
+  // Guardar estudiante (crear o actualizar)
+  const guardarEstudiante = async (e) => {
     e.preventDefault();
     
-    if (editingStudent) {
-      // Editar estudiante existente
-      setStudents(students.map(s => 
-        s.id === editingStudent.id ? { ...formData, id: editingStudent.id } : s
-      ));
-    } else {
-      // Agregar nuevo estudiante
-      const newStudent = {
-        ...formData,
-        id: Math.max(...students.map(s => s.id)) + 1,
-        promedio: parseFloat(formData.promedio)
-      };
-      setStudents([...students, newStudent]);
+    try {
+      const token = localStorage.getItem('token');
+      const url = modoEdicion 
+        ? `http://localhost:5000/api/profesor/estudiantes/${estudianteEditando.id}`
+        : 'http://localhost:5000/api/profesor/estudiantes';
+      
+      const method = modoEdicion ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formulario)
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        await cargarDatos(); // Recargar datos
+        setMostrarModal(false);
+        alert(modoEdicion ? 'Estudiante actualizado exitosamente' : 'Estudiante agregado exitosamente');
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error al guardar estudiante:', error);
+      alert('Error al guardar el estudiante');
     }
-    
-    setShowModal(false);
   };
 
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  // Eliminar estudiante
+  const eliminarEstudiante = async (id) => {
+    if (!confirm('¿Estás seguro de que deseas eliminar este estudiante?')) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/api/profesor/estudiantes/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        await cargarDatos(); // Recargar datos
+        alert('Estudiante eliminado exitosamente');
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error al eliminar estudiante:', error);
+      alert('Error al eliminar el estudiante');
+    }
   };
+
+  // Cambiar estado del estudiante
+  const cambiarEstadoEstudiante = async (id, nuevoEstado) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/api/profesor/estudiantes/${id}/estado`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ estado: nuevoEstado })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        await cargarDatos(); // Recargar datos
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error al cambiar estado:', error);
+      alert('Error al cambiar el estado del estudiante');
+    }
+  };
+
+  // Función para obtener clase CSS según promedio
+  const obtenerClasePromedio = (promedio) => {
+    if (promedio >= 8.5) return styles.goodGrade;
+    if (promedio >= 7.0) return styles.averageGrade;
+    return styles.lowGrade;
+  };
+
+  // Función para obtener clase CSS según estado
+  const obtenerClaseEstado = (estado) => {
+    switch (estado) {
+      case 'activo': return styles.active;
+      case 'baja_temporal': return styles.trial;
+      case 'egresado': return styles.graduated;
+      case 'baja_definitiva': return styles.inactive;
+      default: return styles.inactive;
+    }
+  };
+
+  // Función para formatear estado
+  const formatearEstado = (estado) => {
+    const estados = {
+      'activo': 'Activo',
+      'baja_temporal': 'Baja Temporal',
+      'egresado': 'Egresado',
+      'baja_definitiva': 'Baja Definitiva'
+    };
+    return estados[estado] || estado;
+  };
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <Header />
+        <div className={styles.loadingContainer}>
+          <div className={styles.spinner}></div>
+          <p>Cargando estudiantes...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <Header />
+        <div className={styles.errorContainer}>
+          <p className={styles.errorMessage}>{error}</p>
+          <button onClick={cargarDatos} className={styles.retryButton}>
+            Reintentar
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -144,15 +314,15 @@ const Admin_estudiantes_profesor = () => {
       <main className={styles.mainContent}>
         <div className={styles.pageHeader}>
           <h1>Gestión de Estudiantes</h1>
-          <p>Administra a tus estudiantes tutorados</p>
+          <p>Administra a los estudiantes de tus grupos y asignaturas</p>
         </div>
 
-        {/* Card con total de estudiantes */}
+        {/* Card con estadísticas */}
         <div className={styles.statsCard}>
           <div className={styles.statInfo}>
             <h3>Total de Estudiantes</h3>
-            <div className={styles.totalNumber}>{filteredStudents.length}</div>
-            <p>de {students.length} estudiantes registrados</p>
+            <div className={styles.totalNumber}>{estudiantesFiltrados.length}</div>
+            <p>de {estudiantes.length} estudiantes en tus grupos</p>
           </div>
           <div className={styles.statIcon}>👥</div>
         </div>
@@ -162,7 +332,7 @@ const Admin_estudiantes_profesor = () => {
           <div className={styles.leftControls}>
             <button 
               className={styles.addButton}
-              onClick={handleAdd}
+              onClick={abrirModalAgregar}
             >
               + Agregar Estudiante
             </button>
@@ -171,31 +341,46 @@ const Admin_estudiantes_profesor = () => {
           <div className={styles.filters}>
             <input
               type="text"
-              placeholder="Buscar por nombre..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Buscar por nombre, matrícula o email..."
+              value={filtros.busqueda}
+              onChange={(e) => manejarCambioFiltro('busqueda', e.target.value)}
               className={styles.searchInput}
             />
             
             <select
-              value={filterCarrera}
-              onChange={(e) => setFilterCarrera(e.target.value)}
+              value={filtros.carrera}
+              onChange={(e) => manejarCambioFiltro('carrera', e.target.value)}
               className={styles.filterSelect}
             >
               <option value="">Todas las carreras</option>
               {carreras.map(carrera => (
-                <option key={carrera} value={carrera}>{carrera}</option>
+                <option key={carrera.id} value={carrera.id}>
+                  {carrera.nombre}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={filtros.grupo}
+              onChange={(e) => manejarCambioFiltro('grupo', e.target.value)}
+              className={styles.filterSelect}
+            >
+              <option value="">Todos los grupos</option>
+              {gruposUnicos.map(grupo => (
+                <option key={grupo} value={grupo}>{grupo}</option>
               ))}
             </select>
             
             <select
-              value={filterEstatus}
-              onChange={(e) => setFilterEstatus(e.target.value)}
+              value={filtros.estatus}
+              onChange={(e) => manejarCambioFiltro('estatus', e.target.value)}
               className={styles.filterSelect}
             >
               <option value="">Todos los estatus</option>
-              {estatuses.map(estatus => (
-                <option key={estatus} value={estatus}>{estatus}</option>
+              {estadosUnicos.map(estatus => (
+                <option key={estatus} value={estatus}>
+                  {formatearEstado(estatus)}
+                </option>
               ))}
             </select>
           </div>
@@ -206,50 +391,61 @@ const Admin_estudiantes_profesor = () => {
           <table className={styles.studentsTable}>
             <thead>
               <tr>
-                <th>Nombre</th>
+                <th>Estudiante</th>
                 <th>Email</th>
                 <th>Carrera</th>
-                <th>Matrícula</th>
+                <th>Grupo</th>
+                <th>Cuatrimestre</th>
                 <th>Promedio</th>
-                <th>Estatus</th>
+                <th>Estado</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {filteredStudents.map(student => (
-                <tr key={student.id}>
-                  <td className={styles.nameCell}>{student.nombre}</td>
-                  <td>{student.email}</td>
-                  <td>{student.carrera}</td>
-                  <td className={styles.centerCell}>{student.matricula}</td>
+              {estudiantesFiltrados.map(estudiante => (
+                <tr key={estudiante.id}>
+                  <td className={styles.nameCell}>
+                    <div className={styles.studentInfo}>
+                      <div className={styles.studentName}>
+                        {estudiante.nombre_completo}
+                      </div>
+                      <div className={styles.studentMatricula}>
+                        {estudiante.matricula}
+                      </div>
+                    </div>
+                  </td>
+                  <td>{estudiante.correo}</td>
+                  <td>{estudiante.carrera_nombre}</td>
+                  <td className={styles.centerCell}>{estudiante.grupo_codigo || 'Sin grupo'}</td>
+                  <td className={styles.centerCell}>{estudiante.cuatrimestre_actual}°</td>
                   <td className={styles.centerCell}>
-                    <span className={`${styles.gradeCell} ${
-                      student.promedio >= 8 ? styles.goodGrade : 
-                      student.promedio >= 7 ? styles.averageGrade : 
-                      styles.lowGrade
-                    }`}>
-                      {student.promedio}
-                    </span>
+                    <span className={`${styles.gradeCell} ${obtenerClasePromedio(estudiante.promedio_general)}`}>
+{estudiante.promedio_general ? parseFloat(estudiante.promedio_general).toFixed(1) : 'S/P'}                    </span>
                   </td>
                   <td>
-                    <span className={`${styles.statusBadge} ${
-                      student.estatus === 'Activo' ? styles.active : 
-                      student.estatus === 'En Prueba' ? styles.trial : 
-                      styles.inactive
-                    }`}>
-                      {student.estatus}
-                    </span>
+                    <select
+                      value={estudiante.estado_alumno}
+                      onChange={(e) => cambiarEstadoEstudiante(estudiante.id, e.target.value)}
+                      className={`${styles.statusSelect} ${obtenerClaseEstado(estudiante.estado_alumno)}`}
+                    >
+                      <option value="activo">Activo</option>
+                      <option value="baja_temporal">Baja Temporal</option>
+                      <option value="egresado">Egresado</option>
+                      <option value="baja_definitiva">Baja Definitiva</option>
+                    </select>
                   </td>
                   <td className={styles.actionsCell}>
                     <button 
                       className={styles.editButton}
-                      onClick={() => handleEdit(student)}
+                      onClick={() => abrirModalEditar(estudiante)}
+                      title="Editar estudiante"
                     >
                       ✏️
                     </button>
                     <button 
                       className={styles.deleteButton}
-                      onClick={() => handleDelete(student.id)}
+                      onClick={() => eliminarEstudiante(estudiante.id)}
+                      title="Eliminar estudiante"
                     >
                       🗑️
                     </button>
@@ -259,7 +455,7 @@ const Admin_estudiantes_profesor = () => {
             </tbody>
           </table>
           
-          {filteredStudents.length === 0 && (
+          {estudiantesFiltrados.length === 0 && (
             <div className={styles.noResults}>
               <p>No se encontraron estudiantes con los filtros aplicados.</p>
             </div>
@@ -267,39 +463,60 @@ const Admin_estudiantes_profesor = () => {
         </div>
 
         {/* Modal para agregar/editar estudiante */}
-        {showModal && (
+        {mostrarModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modal}>
               <div className={styles.modalHeader}>
-                <h2>{editingStudent ? 'Editar Estudiante' : 'Agregar Estudiante'}</h2>
+                <h2>{modoEdicion ? 'Editar Estudiante' : 'Agregar Estudiante'}</h2>
                 <button 
                   className={styles.closeButton}
-                  onClick={() => setShowModal(false)}
+                  onClick={() => setMostrarModal(false)}
                 >
                   ✕
                 </button>
               </div>
               
-              <form onSubmit={handleSubmit} className={styles.modalForm}>
+              <form onSubmit={guardarEstudiante} className={styles.modalForm}>
                 <div className={styles.formRow}>
                   <div className={styles.formGroup}>
-                    <label>Nombre completo</label>
+                    <label>Nombre *</label>
                     <input
                       type="text"
-                      name="nombre"
-                      value={formData.nombre}
-                      onChange={handleInputChange}
+                      value={formulario.nombre}
+                      onChange={(e) => manejarCambioFormulario('nombre', e.target.value)}
                       required
                     />
                   </div>
                   
                   <div className={styles.formGroup}>
-                    <label>Email</label>
+                    <label>Apellido *</label>
+                    <input
+                      type="text"
+                      value={formulario.apellido}
+                      onChange={(e) => manejarCambioFormulario('apellido', e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label>Email *</label>
                     <input
                       type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
+                      value={formulario.correo}
+                      onChange={(e) => manejarCambioFormulario('correo', e.target.value)}
+                      required
+                    />
+                  </div>
+                  
+                  <div className={styles.formGroup}>
+                    <label>Matrícula *</label>
+                    <input
+                      type="text"
+                      value={formulario.matricula}
+                      onChange={(e) => manejarCambioFormulario('matricula', e.target.value)}
+                      placeholder="2022371054"
                       required
                     />
                   </div>
@@ -307,85 +524,95 @@ const Admin_estudiantes_profesor = () => {
                 
                 <div className={styles.formRow}>
                   <div className={styles.formGroup}>
-                    <label>Carrera</label>
+                    <label>Carrera *</label>
                     <select
-                      name="carrera"
-                      value={formData.carrera}
-                      onChange={handleInputChange}
+                      value={formulario.carrera_id}
+                      onChange={(e) => manejarCambioFormulario('carrera_id', e.target.value)}
                       required
                     >
                       <option value="">Seleccionar carrera</option>
-                      <option value="Ingeniería en Sistemas">Ingeniería en Sistemas</option>
-                      <option value="Ingeniería Industrial">Ingeniería Industrial</option>
-                      <option value="Ingeniería Civil">Ingeniería Civil</option>
-                      <option value="Ingeniería Mecánica">Ingeniería Mecánica</option>
+                      {carreras.map(carrera => (
+                        <option key={carrera.id} value={carrera.id}>
+                          {carrera.nombre}
+                        </option>
+                      ))}
                     </select>
                   </div>
                   
                   <div className={styles.formGroup}>
-                    <label>Matrícula</label>
-                    <input
-                      type="text"
-                      name="matricula"
-                      value={formData.matricula}
-                      onChange={handleInputChange}
-                      placeholder="2022371054"
-                      pattern="[0-9]{10}"
-                      title="La matrícula debe tener 10 dígitos"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label>Promedio</label>
-                    <input
-                      type="number"
-                      name="promedio"
-                      value={formData.promedio}
-                      onChange={handleInputChange}
-                      min="0"
-                      max="10"
-                      step="0.1"
-                      required
-                    />
-                  </div>
-                  
-                  <div className={styles.formGroup}>
-                    <label>Estatus</label>
+                    <label>Cuatrimestre Actual *</label>
                     <select
-                      name="estatus"
-                      value={formData.estatus}
-                      onChange={handleInputChange}
+                      value={formulario.cuatrimestre_actual}
+                      onChange={(e) => manejarCambioFormulario('cuatrimestre_actual', e.target.value)}
                       required
                     >
-                      <option value="Activo">Activo</option>
-                      <option value="En Prueba">En Prueba</option>
-                      <option value="Inactivo">Inactivo</option>
+                      {[1,2,3,4,5,6,7,8,9,10,11].map(cuatri => (
+                        <option key={cuatri} value={cuatri}>
+                          {cuatri}° Cuatrimestre
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
-                
+
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label>Teléfono</label>
+                    <input
+                      type="tel"
+                      value={formulario.telefono}
+                      onChange={(e) => manejarCambioFormulario('telefono', e.target.value)}
+                      placeholder="442 123 4567"
+                    />
+                  </div>
+                  
+                  <div className={styles.formGroup}>
+                    <label>Fecha de Ingreso *</label>
+                    <input
+                      type="date"
+                      value={formulario.fecha_ingreso}
+                      onChange={(e) => manejarCambioFormulario('fecha_ingreso', e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label>Estado del Alumno *</label>
+                    <select
+                      value={formulario.estado_alumno}
+                      onChange={(e) => manejarCambioFormulario('estado_alumno', e.target.value)}
+                      required
+                    >
+                      <option value="activo">Activo</option>
+                      <option value="baja_temporal">Baja Temporal</option>
+                      <option value="egresado">Egresado</option>
+                      <option value="baja_definitiva">Baja Definitiva</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div className={styles.modalActions}>
                   <button 
-                    type="button" 
+                    type="button"
                     className={styles.cancelButton}
-                    onClick={() => setShowModal(false)}
+                    onClick={() => setMostrarModal(false)}
                   >
                     Cancelar
                   </button>
                   <button 
-                    type="submit" 
-                    className={styles.saveButton}
+                    type="submit"
+                    className={styles.submitButton}
                   >
-                    {editingStudent ? 'Actualizar' : 'Guardar'}
+                    {modoEdicion ? 'Actualizar' : 'Agregar'}
                   </button>
                 </div>
               </form>
             </div>
           </div>
         )}
+
       </main>
     </div>
   );

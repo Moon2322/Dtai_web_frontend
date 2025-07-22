@@ -43,7 +43,7 @@ root.render(
     <Route path="/profesor/dashboard_profesor" element={<Dashboard_profesor />} />
     <Route path="/profesor/foro_profesor" element={<Foroprofesor />} />
     <Route path="/profesor/Administracion_estudiantes" element={<Admin_estudiantes_profesor />} />
-    <Route path="/profesor/Gestion_calificaiones" element={<Gestioncalifaciones />} />
+    <Route path="/profesor/Gestion_calificaciones" element={<Gestioncalifaciones />} />
     <Route path="/profesor/Nueva_asignatura" element={<Nueva_asignatura />} />
     <Route path="/profesor/Ayuda_alumno" element={<Ayuda_alumno />} />
 
