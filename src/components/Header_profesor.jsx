@@ -69,7 +69,7 @@ const Header = () => {
         <NavLink to="/profesor/Administracion_estudiantes" className={styles.navButton}>
           Estudiantes
         </NavLink>
-        <NavLink to="/profesor/Gestion_calificaiones" className={styles.navButton}>
+        <NavLink to="/profesor/Gestion_calificaciones" className={styles.navButton}>
           Calificaciones
         </NavLink>
         <NavLink to="/profesor/foro_profesor" className={styles.navButton}>

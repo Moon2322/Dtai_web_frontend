@@ -70,6 +70,60 @@ const AyudaAlumno = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mensajesChat, setMensajesChat] = useState([]);
+const [nuevoMensaje, setNuevoMensaje] = useState('');
+const [enviandoMensaje, setEnviandoMensaje] = useState(false);
+
+// Función para cargar mensajes del chat
+const cargarMensajesChat = async (solicitudId) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:5000/api/profesor/solicitudes-ayuda/${solicitudId}/chat`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+    if (data.success) {
+      setMensajesChat(data.data);
+    }
+  } catch (error) {
+    console.error('Error al cargar mensajes:', error);
+  }
+};
+
+// Función para enviar mensaje
+const enviarMensaje = async () => {
+  if (!nuevoMensaje.trim() || enviandoMensaje) return;
+
+  try {
+    setEnviandoMensaje(true);
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:5000/api/profesor/solicitudes-ayuda/${solicitudSeleccionada.id}/chat`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ mensaje: nuevoMensaje })
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setNuevoMensaje('');
+      cargarMensajesChat(solicitudSeleccionada.id);
+    }
+  } catch (error) {
+    console.error('Error al enviar mensaje:', error);
+  } finally {
+    setEnviandoMensaje(false);
+  }
+};
+
+// Modificar la función verDetalles para cargar mensajes
+const verDetalles = (solicitud) => {
+  setSolicitudSeleccionada(solicitud);
+  setMostrarModal(true);
+  cargarMensajesChat(solicitud.id);
+};
 
   // Opciones para filtros
   const opcionesUrgencia = [
@@ -99,8 +153,8 @@ const AyudaAlumno = () => {
   const cargarSolicitudes = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/solicitudes-ayuda', {
-        headers: { 'Authorization': `Bearer ${token}` }
+const response = await fetch('http://localhost:5000/api/profesor/solicitudes-ayuda', {
+          headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
       if (data.success) {
@@ -149,18 +203,14 @@ const AyudaAlumno = () => {
     }));
   };
 
-  // Abrir modal con detalles de solicitud
-  const verDetalles = (solicitud) => {
-    setSolicitudSeleccionada(solicitud);
-    setMostrarModal(true);
-  };
+
 
   // Cambiar estado de una solicitud
   const cambiarEstado = async (id, nuevoEstado) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/solicitudes-ayuda/${id}/estado`, {
-        method: 'PUT',
+const response = await fetch(`http://localhost:5000/api/profesor/solicitudes-ayuda/${id}/estado`, {
+          method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -514,10 +564,7 @@ const AyudaAlumno = () => {
               <div className={styles.modalSection}>
                 <h4 className={styles.modalSectionTitle}>📝 Información de la Solicitud</h4>
                 <div className={styles.modalGrid}>
-                  <div className={styles.modalField}>
-                    <label>Asunto:</label>
-                    <span>{solicitudSeleccionada.asunto}</span>
-                  </div>
+                  
                   <div className={styles.modalField}>
                     <label>Categoría:</label>
                     <span>{solicitudSeleccionada.categoria}</span>
@@ -545,9 +592,37 @@ const AyudaAlumno = () => {
               <div className={styles.modalSection}>
                 <h4 className={styles.modalSectionTitle}>📖 Descripción Completa</h4>
                 <div className={styles.descripcionCompleta}>
-                  {solicitudSeleccionada.descripcion}
+  <span className="detail-value">{solicitudSeleccionada?.asunto}</span>
                 </div>
               </div>
+
+              {/* Sección de Chat */}
+<div className="chat-section">
+  <h4>Conversación</h4>
+  <div className="chat-messages">
+    {mensajesChat.map(mensaje => (
+      <div key={mensaje.id} className={`mensaje ${mensaje.tipo_usuario}`}>
+        <div className="mensaje-header">
+          <strong>{mensaje.nombre_usuario}</strong>
+          <span className="fecha">{new Date(mensaje.fecha_mensaje).toLocaleString()}</span>
+        </div>
+        <div className="mensaje-contenido">{mensaje.mensaje}</div>
+      </div>
+    ))}
+  </div>
+  
+  <div className="chat-input">
+    <textarea
+      value={nuevoMensaje}
+      onChange={(e) => setNuevoMensaje(e.target.value)}
+      placeholder="Escribe tu respuesta..."
+      rows="3"
+    />
+    <button onClick={enviarMensaje} disabled={enviandoMensaje}>
+      {enviandoMensaje ? 'Enviando...' : 'Enviar'}
+    </button>
+  </div>
+</div>
 
             </div>
 
