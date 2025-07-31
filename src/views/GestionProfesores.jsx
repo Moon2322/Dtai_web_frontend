@@ -248,10 +248,19 @@ const GestionProfesores = () => {
                             <h2>Gestión de Profesores</h2>
                             <p>Administra el personal docente de DTAI</p>
                         </div>
-                        <button className={styles.btnNew} onClick={handleNewProfesor}>
-                            <span className={styles.plusIcon}>+</span>
-                            Nuevo Profesor
-                        </button>
+                        <div className={styles.headerActions}>
+                            <button 
+                                className={styles.btnTutores} 
+                                onClick={() => navigate('/asignacion-tutores')}
+                            >
+                                <span className={styles.tutorIcon}>👥</span>
+                                Asignar Tutores
+                            </button>
+                            <button className={styles.btnNew} onClick={handleNewProfesor}>
+                                <span className={styles.plusIcon}>+</span>
+                                Nuevo Profesor
+                            </button>
+                        </div>
                     </div>
                     
                     <div className={styles.statsCards}>
@@ -550,12 +559,6 @@ const GestionProfesores = () => {
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div className={styles.profesorStatus}>
-                                <span className={styles.statusIcon}>👨‍🏫</span>
-                                <span>Profesor Activo</span>
-                            </div>
-                            
                             <div className={styles.modalActions}>
                                 <button type="button" className={styles.btnCancel} onClick={() => setShowModal(false)}>
                                     Cancelar

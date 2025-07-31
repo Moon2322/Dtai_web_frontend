@@ -677,3 +677,47 @@
         display: none;
     }
 }
+
+.headerActions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.btnTutores {
+    background: #2E4A7D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.btnTutores:hover {
+    background: #1C2A44;
+    transform: translateY(-1px);
+}
+
+.tutorIcon {
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .headerActions {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .btnTutores,
+    .btnNew {
+        width: 100%;
+        justify-content: center;
+    }
+}

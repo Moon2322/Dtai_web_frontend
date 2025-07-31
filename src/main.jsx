@@ -30,6 +30,7 @@ import Foroprofesor from './views/Foroprofesor.jsx';
 import Gestioncalifaciones from './views/Gestioncalificaciones.jsx';
 import Nueva_asignatura from './views/Nueva_asignatura.jsx';
 import Ayuda_alumno from './views/Ayuda_alumno.jsx';
+import AsignacionTutores from './views/AsignacionTutores.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -68,6 +69,7 @@ root.render(
       <Route path="/solicitud-ayuda-detalle/:id" element={<SolicitudAyudaDetalle />} />
       <Route path="/foro-estudiante" element={<ForoEstudiante />} />
       <Route path="/foro-post/:id" element={<PostDetalle />} />
+      <Route path="/asignacion-tutores" element={<AsignacionTutores />} />
     </Routes>
   </Router>
 );
