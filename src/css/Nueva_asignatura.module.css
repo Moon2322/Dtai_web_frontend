@@ -1,121 +1,63 @@
-/* src/styles/NuevasAsignaturas.module.css */
+/* Agregar estos estilos al archivo Nueva_asignatura.module.css */
 
 .container {
     min-height: 100vh;
-    background-color: #f8fafc;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+    background: #f8fafc;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+
 }
 
 .content {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 2rem 1rem;
 }
 
-/* Encabezado */
 .header {
-    margin-bottom: 1.3rem;
     text-align: center;
+    margin-bottom: 2rem;
 }
 
 .title {
     font-size: 2rem;
-    font-weight: bold;
-    color: #1a202c;
-    margin-bottom: 0.4rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 0.5rem 0;
 }
 
 .subtitle {
-    color: #64748b;
-    font-size: 1rem;
-}
-
-/* Loading */
-.loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 40vh;
-    color: #64748b;
-}
-
-.spinner {
-    width: 32px;
-    height: 32px;
-    border: 3px solid #e2e8f0;
-    border-top: 3px solid #3b82f6;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 0.7rem;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Grid principal */
-.mainGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.3rem;
-}
-
-@media (max-width: 1200px) {
-    .mainGrid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Tarjetas */
-.formCard,
-.listCard {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.04);
-    overflow: hidden;
-    height: fit-content;
-}
-
-.cardHeader {
-    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-    padding: 1.1rem;
-    color: white;
-}
-
-.cardTitle {
-    font-size: 1.1rem;
-    font-weight: 600;
+    font-size: 1.125rem;
+    color: #6b7280;
     margin: 0;
 }
 
-.cardBody {
-    padding: 1.3rem;
+/* Cards */
+.formCard, .tableCard {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    overflow: hidden;
 }
 
-/* Secciones */
-.section {
-    margin-bottom: 1.3rem;
-}
-
-.section:last-child {
-    margin-bottom: 0;
-}
-
-.sectionTitle {
-    font-size: 1rem;
+.cardTitle {
+    font-size: 1.25rem;
     font-weight: 600;
-    color: #1a202c;
-    margin-bottom: 1rem;
-    padding-bottom: 0.4rem;
-    border-bottom: 2px solid #e2e8f0;
+    color: #1f2937;
+    margin: 0 0 1.5rem 0;
+    padding: 1.5rem 1.5rem 0 1.5rem;
 }
 
-/* Formularios */
+/* Formulario */
+.form {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
 .formGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .formGroup {
@@ -124,350 +66,388 @@
 }
 
 .label {
-    font-size: 0.8rem;
+    font-size: 0.875rem;
     font-weight: 500;
     color: #374151;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
 }
 
-.select,
-.input {
-    padding: 0.6rem;
-    border: 2px solid #e5e7eb;
-    border-radius: 7px;
-    font-size: 0.8rem;
-    transition: all 0.2s;
-    background: white;
+.select, .input {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.select:focus,
-.input:focus {
+.select:focus, .input:focus {
     outline: none;
     border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/* Configuración de horarios */
-.horarioForm {
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submitButton {
+    background: #3b82f6;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submitButton:hover {
+    background: #2563eb;
+}
+
+/* Tabla */
+.tableContainer {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
     background: #f8fafc;
-    border: 2px dashed #cbd5e1;
-    border-radius: 10px;
-    padding: 1.1rem;
-    margin-bottom: 1.1rem;
+    padding: 1rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.table td {
+    padding: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+}
+
+.table tr:hover {
+    background: #f8fafc;
+}
+
+/* Información de asignatura y grupo */
+.asignaturaInfo, .grupoInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.asignaturaNombre, .grupoNombre {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1a202c;
+    margin-bottom: 0.25rem;
+}
+
+.asignaturaCodigo, .carreraNombre {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+/* Badges y elementos de tabla */
+.cuatrimestre, .cicloEscolar, .totalEstudiantes, .fechaAsignacion {
+    font-size: 0.875rem;
+    color: #1a202c;
+}
+
+.cuatrimestre {
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+/* Acciones */
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.horariosButton, .deleteButton {
+    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.horariosButton {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.horariosButton:hover {
+    background: #bae6fd;
+}
+
+.deleteButton {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.deleteButton:hover {
+    background: #fee2e2;
+}
+
+/* Estado vacío */
+.emptyState {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b7280;
+}
+
+.emptyState p {
+    margin: 0.5rem 0;
+}
+
+/* Modal */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modal {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modalHeader {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    position: relative;
+}
+
+.modalHeader h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.modalSubtitle {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.closeButton:hover {
+    color: #374151;
+}
+
+.modalContent {
+    padding: 1.5rem;
+}
+
+/* Formulario de horarios */
+.horarioForm {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.horarioForm h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
 }
 
 .horarioGrid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr auto;
-    gap: 0.7rem;
-    align-items: end;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-@media (max-width: 768px) {
-    .horarioGrid {
-        grid-template-columns: 1fr;
-        align-items: stretch;
-    }
-}
-
-.addHorarioBtn {
-    background: #10b981;
+.addHorarioButton {
+    background: #059669;
     color: white;
+    padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 7px;
-    padding: 0.6rem 0.8rem;
-    font-size: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-    height: fit-content;
+    transition: background-color 0.2s;
 }
 
-.addHorarioBtn:hover {
-    background: #059669;
-    transform: translateY(-1px);
+.addHorarioButton:hover {
+    background: #047857;
 }
 
-/* Lista de horarios */
-.horariosLista {
-    margin-top: 1.1rem;
-}
-
-.listaTitle {
-    font-size: 0.95rem;
+/* Horarios existentes */
+.horariosExistentes h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.125rem;
     font-weight: 600;
-    color: #374151;
-    margin-bottom: 0.7rem;
+    color: #1f2937;
+}
+
+.emptyHorarios {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+}
+
+.emptyHorarios p {
+    margin: 0.5rem 0;
 }
 
 .horariosGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 0.7rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
 }
 
-.horarioItem {
-    background: #dbeafe;
-    border: 1px solid #3b82f6;
-    border-radius: 7px;
-    padding: 0.7rem;
+.horarioCard {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.horarioHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: all 0.2s;
+    margin-bottom: 0.75rem;
 }
 
-.horarioItem:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 3px 6px rgba(59, 130, 246, 0.15);
-}
-
-.horarioInfo {
-    display: flex;
-    flex-direction: column;
-}
-
-.horarioDia {
+.dia {
+    font-size: 0.875rem;
     font-weight: 600;
-    color: #1e40af;
-    font-size: 0.8rem;
+    color: #1f2937;
+    background: #3b82f6;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
 }
 
-.horarioHoras {
-    font-size: 0.7rem;
-    color: #64748b;
-    margin-top: 0.2rem;
-}
-
-.deleteHorarioBtn {
+.deleteHorarioButton {
     background: none;
     border: none;
-    cursor: pointer;
-    padding: 0.2rem;
-    border-radius: 4px;
-    transition: all 0.2s;
-    font-size: 0.95rem;
-}
-
-.deleteHorarioBtn:hover {
-    background: rgba(239, 68, 68, 0.1);
-    transform: scale(1.08);
-}
-
-/* Botones principales */
-.formActions {
-    margin-top: 1.3rem;
-    padding-top: 1.3rem;
-    border-top: 1px solid #e5e7eb;
-    text-align: center;
-}
-
-.saveBtn {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 0.8rem 1.5rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.22);
-}
-
-.saveBtn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.3);
-}
-
-/* Lista de asignaturas registradas */
-.emptyState {
-    text-align: center;
-    padding: 2rem 0.7rem;
-    color: #64748b;
-}
-
-.emptyIcon {
-    font-size: 2.2rem;
-    margin-bottom: 0.7rem;
-}
-
-.emptyState p {
     font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 0.4rem;
-    color: #374151;
-}
-
-.emptyState span {
-    font-size: 0.8rem;
-}
-
-.asignaturasLista {
-    display: flex;
-    flex-direction: column;
-    gap: 1.1rem;
-}
-
-.asignaturaCard {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 1.1rem;
-    transition: all 0.2s;
-}
-
-.asignaturaCard:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 3px 10px rgba(59, 130, 246, 0.13);
-    transform: translateY(-2px);
-}
-
-.asignaturaHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.7rem;
-}
-
-.asignaturaInfo {
-    flex: 1;
-}
-
-.asignaturaNombre {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1a202c;
-    margin: 0 0 0.4rem 0;
-}
-
-.asignaturaDetalles {
-    font-size: 0.8rem;
-    color: #64748b;
-    margin: 0;
-}
-
-.deleteBtn {
-    background: #fee2e2;
     color: #dc2626;
-    border: none;
-    border-radius: 7px;
-    padding: 0.4rem;
     cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.95rem;
+    padding: 0.25rem;
 }
 
-.deleteBtn:hover {
-    background: #fecaca;
-    transform: scale(1.08);
+.deleteHorarioButton:hover {
+    background: #fee2e2;
+    border-radius: 4px;
 }
 
-.asignaturaBody {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-}
-
-.infoRow {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.4rem 0;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.infoRow:last-child {
-    border-bottom: none;
-}
-
-.infoLabel {
-    font-weight: 500;
-    color: #374151;
-    font-size: 0.8rem;
-}
-
-.infoValue {
-    color: #1a202c;
-    font-size: 0.8rem;
-}
-
-.horariosSection {
+.horarioDetalle {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.horariosChips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
+.horarioTiempo, .horarioAula, .horarioTipo {
+    font-size: 0.875rem;
+    color: #374151;
 }
 
-.horarioChip {
-    background: #dbeafe;
-    color: #1e40af;
-    padding: 0.18rem 0.6rem;
-    border-radius: 16px;
-    font-size: 0.7rem;
+.horarioTiempo {
     font-weight: 500;
-    border: 1px solid #93c5fd;
 }
 
-.sinHorarios {
-    color: #ef4444;
-    font-size: 0.7rem;
-    font-style: italic;
+/* Acciones del modal */
+.modalActions {
+    padding: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.closeModalButton {
+    background: #6b7280;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.closeModalButton:hover {
+    background: #4b5563;
+}
+
+/* Loading */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    font-size: 1.125rem;
+    color: #6b7280;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .container {
-        padding: 0.7rem;
-    }
-    
-    .title {
-        font-size: 1.5rem;
-    }
-    
-    .subtitle {
-        font-size: 0.95rem;
-    }
-    
-    .cardBody {
-        padding: 1rem;
-    }
-    
-    .formGrid {
+    .formGrid, .horarioGrid {
         grid-template-columns: 1fr;
     }
     
-    .asignaturaHeader {
+    .modal {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
+    
+    .horariosGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .actions {
         flex-direction: column;
-        gap: 0.7rem;
+        gap: 0.25rem;
     }
     
-    .horariosChips {
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 480px) {
-    .container {
-        padding: 0.3rem;
-    }
-    
-    .cardBody {
-        padding: 0.7rem;
-    }
-    
-    .horarioGrid {
-        gap: 0.5rem;
-    }
-    
-    .addHorarioBtn {
-        padding: 0.4rem;
-        font-size: 0.7rem;
+    .horariosButton, .deleteButton {
+        text-align: center;
     }
 }

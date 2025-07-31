@@ -491,4 +491,313 @@
         margin: 0.5rem;
         max-width: calc(100vw - 1rem);
     }
+
+    /* Agregar estos estilos al final de Gestioncalificaciones.module.css */
+
+/* Filtros */
+.filtersContainer {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.filters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filterSelect {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    background: white;
+    cursor: pointer;
+    min-width: 200px;
+}
+
+.filterSelect:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Estados y evaluaciones */
+.calificacionAprobado {
+    color: #059669;
+    font-weight: 600;
+}
+
+.calificacionReprobado {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.estatusBadge {
+    display: inline-flex;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 6px;
+    text-transform: capitalize;
+}
+
+.estatuscursando {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.estatusaprobado {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.estatusreprobado {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.estatusextraordinario {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+/* Acciones */
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.editButton, .deleteButton {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+}
+
+.editButton {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.editButton:hover {
+    background: #e5e7eb;
+}
+
+.deleteButton {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.deleteButton:hover {
+    background: #fee2e2;
+}
+
+/* Modal */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modal {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modalHeader h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+}
+
+.closeButton:hover {
+    color: #374151;
+}
+
+/* Formulario del Modal */
+.modalForm {
+    padding: 1.5rem;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.formLabel {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.formInput, .formSelect, .formTextarea {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.formInput:focus, .formSelect:focus, .formTextarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.formTextarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Sección de Calificaciones */
+.calificacionesSection {
+    margin-bottom: 1.5rem;
+}
+
+.calificacionesSection h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.calificacionesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+/* Acciones del Modal */
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.cancelButton, .saveButton {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancelButton {
+    background: #f9fafb;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.cancelButton:hover {
+    background: #f3f4f6;
+}
+
+.saveButton {
+    background: #3b82f6;
+    color: white;
+    border: 1px solid #3b82f6;
+}
+
+.saveButton:hover {
+    background: #2563eb;
+}
+
+/* Estado vacío */
+.emptyState {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6b7280;
+}
+
+.emptyState p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Loading */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    font-size: 1.125rem;
+    color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
+    
+    .formGrid, .calificacionesGrid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filters {
+        flex-direction: column;
+    }
+    
+    .filterSelect {
+        min-width: auto;
+    }
+    
+    .modalActions {
+        flex-direction: column-reverse;
+    }
+    
+    .cancelButton, .saveButton {
+        width: 100%;
+    }
+}
 }
