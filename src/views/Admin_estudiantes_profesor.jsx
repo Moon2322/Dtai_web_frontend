@@ -8,6 +8,9 @@ const Admin_estudiantes_profesor = () => {
   const [error, setError] = useState('');
   const [estudiantes, setEstudiantes] = useState([]);
   const [carreras, setCarreras] = useState([]);
+  const [grupos, setGrupos] = useState([]);
+
+
   
   // Estados para filtros
   const [filtros, setFiltros] = useState({
@@ -22,18 +25,16 @@ const Admin_estudiantes_profesor = () => {
   const [estudianteEditando, setEstudianteEditando] = useState(null);
   const [modoEdicion, setModoEdicion] = useState(false);
   
-  const [formulario, setFormulario] = useState({
-    nombre: '',
-    apellido: '',
-    correo: '',
-    matricula: '',
-    carrera_id: '',
-    cuatrimestre_actual: '',
-    telefono: '',
-    fecha_ingreso: '',
-    estado_alumno: 'activo'
-  });
-
+const [formulario, setFormulario] = useState({
+  nombre: '',
+  apellido: '',
+  correo: '',
+  matricula: '',
+  grupo_id: '', // Solo necesitamos el grupo
+  telefono: '',
+  fecha_ingreso: new Date().toISOString().split('T')[0],
+  estado_alumno: 'activo'
+});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,6 +55,30 @@ const Admin_estudiantes_profesor = () => {
 
     cargarDatos();
   }, [navigate]);
+
+// ✅ CORREGIR en Admin_estudiantes_profesor.jsx
+
+// Cambiar esta función:
+const cargarGruposProfesor = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    // ✅ CAMBIAR la URL de:
+    // 'http://localhost:5000/api/profesor/grupos-tutor'
+    // ✅ A:
+    const response = await fetch('http://localhost:5000/api/profesor/estudiantes/grupos-tutor', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setGrupos(data.data);
+    }
+  } catch (error) {
+    console.error('Error al cargar grupos del profesor:', error);
+  }
+};
 
   const cargarDatos = async () => {
     try {
@@ -82,6 +107,7 @@ const Admin_estudiantes_profesor = () => {
       if (carrerasData.success) {
         setCarreras(carrerasData.data);
       }
+  await cargarGruposProfesor();
 
     } catch (error) {
       console.error('Error al cargar datos:', error);
@@ -120,40 +146,38 @@ const Admin_estudiantes_profesor = () => {
   };
 
   // Abrir modal para agregar
-  const abrirModalAgregar = () => {
-    setFormulario({
-      nombre: '',
-      apellido: '',
-      correo: '',
-      matricula: '',
-      carrera_id: '',
-      cuatrimestre_actual: '1',
-      telefono: '',
-      fecha_ingreso: new Date().toISOString().split('T')[0],
-      estado_alumno: 'activo'
-    });
-    setEstudianteEditando(null);
-    setModoEdicion(false);
-    setMostrarModal(true);
-  };
+const abrirModalAgregar = () => {
+  setFormulario({
+    nombre: '',
+    apellido: '',
+    correo: '',
+    matricula: '',
+    grupo_id: '',
+    telefono: '',
+    fecha_ingreso: new Date().toISOString().split('T')[0],
+    estado_alumno: 'activo'
+  });
+  setEstudianteEditando(null);
+  setModoEdicion(false);
+  setMostrarModal(true);
+};
 
   // Abrir modal para editar
-  const abrirModalEditar = (estudiante) => {
-    setFormulario({
-      nombre: estudiante.nombre,
-      apellido: estudiante.apellido,
-      correo: estudiante.correo,
-      matricula: estudiante.matricula,
-      carrera_id: estudiante.carrera_id.toString(),
-      cuatrimestre_actual: estudiante.cuatrimestre_actual.toString(),
-      telefono: estudiante.telefono || '',
-      fecha_ingreso: estudiante.fecha_ingreso ? estudiante.fecha_ingreso.split('T')[0] : '',
-      estado_alumno: estudiante.estado_alumno
-    });
-    setEstudianteEditando(estudiante);
-    setModoEdicion(true);
-    setMostrarModal(true);
-  };
+const abrirModalEditar = (estudiante) => {
+  setFormulario({
+    nombre: estudiante.nombre,
+    apellido: estudiante.apellido,
+    correo: estudiante.correo,
+    matricula: estudiante.matricula,
+    grupo_id: estudiante.grupo_id ? estudiante.grupo_id.toString() : '',
+    telefono: estudiante.telefono || '',
+    fecha_ingreso: estudiante.fecha_ingreso ? estudiante.fecha_ingreso.split('T')[0] : '',
+    estado_alumno: estudiante.estado_alumno
+  });
+  setEstudianteEditando(estudiante);
+  setModoEdicion(true);
+  setMostrarModal(true);
+};
 
   // Manejar cambios en formulario
   const manejarCambioFormulario = (campo, valor) => {
@@ -463,154 +487,153 @@ const Admin_estudiantes_profesor = () => {
         </div>
 
         {/* Modal para agregar/editar estudiante */}
-        {mostrarModal && (
-          <div className={styles.modalOverlay}>
-            <div className={styles.modal}>
-              <div className={styles.modalHeader}>
-                <h2>{modoEdicion ? 'Editar Estudiante' : 'Agregar Estudiante'}</h2>
-                <button 
-                  className={styles.closeButton}
-                  onClick={() => setMostrarModal(false)}
-                >
-                  ✕
-                </button>
-              </div>
-              
-              <form onSubmit={guardarEstudiante} className={styles.modalForm}>
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label>Nombre *</label>
-                    <input
-                      type="text"
-                      value={formulario.nombre}
-                      onChange={(e) => manejarCambioFormulario('nombre', e.target.value)}
-                      required
-                    />
-                  </div>
-                  
-                  <div className={styles.formGroup}>
-                    <label>Apellido *</label>
-                    <input
-                      type="text"
-                      value={formulario.apellido}
-                      onChange={(e) => manejarCambioFormulario('apellido', e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label>Email *</label>
-                    <input
-                      type="email"
-                      value={formulario.correo}
-                      onChange={(e) => manejarCambioFormulario('correo', e.target.value)}
-                      required
-                    />
-                  </div>
-                  
-                  <div className={styles.formGroup}>
-                    <label>Matrícula *</label>
-                    <input
-                      type="text"
-                      value={formulario.matricula}
-                      onChange={(e) => manejarCambioFormulario('matricula', e.target.value)}
-                      placeholder="2022371054"
-                      required
-                    />
-                  </div>
-                </div>
-                
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label>Carrera *</label>
-                    <select
-                      value={formulario.carrera_id}
-                      onChange={(e) => manejarCambioFormulario('carrera_id', e.target.value)}
-                      required
-                    >
-                      <option value="">Seleccionar carrera</option>
-                      {carreras.map(carrera => (
-                        <option key={carrera.id} value={carrera.id}>
-                          {carrera.nombre}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div className={styles.formGroup}>
-                    <label>Cuatrimestre Actual *</label>
-                    <select
-                      value={formulario.cuatrimestre_actual}
-                      onChange={(e) => manejarCambioFormulario('cuatrimestre_actual', e.target.value)}
-                      required
-                    >
-                      {[1,2,3,4,5,6,7,8,9,10,11].map(cuatri => (
-                        <option key={cuatri} value={cuatri}>
-                          {cuatri}° Cuatrimestre
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label>Teléfono</label>
-                    <input
-                      type="tel"
-                      value={formulario.telefono}
-                      onChange={(e) => manejarCambioFormulario('telefono', e.target.value)}
-                      placeholder="442 123 4567"
-                    />
-                  </div>
-                  
-                  <div className={styles.formGroup}>
-                    <label>Fecha de Ingreso *</label>
-                    <input
-                      type="date"
-                      value={formulario.fecha_ingreso}
-                      onChange={(e) => manejarCambioFormulario('fecha_ingreso', e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div className={styles.formRow}>
-                  <div className={styles.formGroup}>
-                    <label>Estado del Alumno *</label>
-                    <select
-                      value={formulario.estado_alumno}
-                      onChange={(e) => manejarCambioFormulario('estado_alumno', e.target.value)}
-                      required
-                    >
-                      <option value="activo">Activo</option>
-                      <option value="baja_temporal">Baja Temporal</option>
-                      <option value="egresado">Egresado</option>
-                      <option value="baja_definitiva">Baja Definitiva</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className={styles.modalActions}>
-                  <button 
-                    type="button"
-                    className={styles.cancelButton}
-                    onClick={() => setMostrarModal(false)}
-                  >
-                    Cancelar
-                  </button>
-                  <button 
-                    type="submit"
-                    className={styles.submitButton}
-                  >
-                    {modoEdicion ? 'Actualizar' : 'Agregar'}
-                  </button>
-                </div>
-              </form>
-            </div>
+{mostrarModal && (
+  <div className={styles.modalOverlay}>
+    <div className={styles.modal}>
+      <div className={styles.modalHeader}>
+        <h2>{modoEdicion ? 'Editar Estudiante' : 'Agregar Estudiante'}</h2>
+        <button 
+          className={styles.closeButton}
+          onClick={() => setMostrarModal(false)}
+        >
+          ✕
+        </button>
+      </div>
+      
+      <form onSubmit={guardarEstudiante} className={styles.modalForm}>
+        
+        {/* Información Personal */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label>Nombre *</label>
+            <input
+              type="text"
+              value={formulario.nombre}
+              onChange={(e) => manejarCambioFormulario('nombre', e.target.value)}
+              required
+              placeholder="Ej. Juan Carlos"
+            />
           </div>
+          
+          <div className={styles.formGroup}>
+            <label>Apellido *</label>
+            <input
+              type="text"
+              value={formulario.apellido}
+              onChange={(e) => manejarCambioFormulario('apellido', e.target.value)}
+              required
+              placeholder="Ej. García López"
+            />
+          </div>
+        </div>
+
+        {/* Información Académica */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label>Correo Electrónico *</label>
+            <input
+              type="email"
+              value={formulario.correo}
+              onChange={(e) => manejarCambioFormulario('correo', e.target.value)}
+              required
+              placeholder="estudiante@correo.com"
+            />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label>Matrícula *</label>
+            <input
+              type="text"
+              value={formulario.matricula}
+              onChange={(e) => manejarCambioFormulario('matricula', e.target.value)}
+              required
+              placeholder="20250001"
+            />
+          </div>
+        </div>
+
+        {/* Grupo (lo más importante) */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
+            <label>Asignar a Grupo *</label>
+            <select
+              value={formulario.grupo_id}
+              onChange={(e) => manejarCambioFormulario('grupo_id', e.target.value)}
+              required
+              className={styles.selectGrupo}
+            >
+              <option value="">Seleccionar grupo</option>
+              {grupos.map(grupo => (
+                <option key={grupo.id} value={grupo.id}>
+                  📚 {grupo.codigo} - {grupo.carrera_nombre} ({grupo.cuatrimestre}° Cuatrimestre)
+                  {grupo.estudiantes_actuales < grupo.capacidad_maxima ? 
+                    ` - ${grupo.capacidad_maxima - grupo.estudiantes_actuales} lugares disponibles` :
+                    ' - LLENO'
+                  }
+                </option>
+              ))}
+            </select>
+            <small className={styles.helpText}>
+              El grupo determina automáticamente la carrera y cuatrimestre del estudiante
+            </small>
+          </div>
+        </div>
+
+        {/* Información Adicional (Opcional) */}
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label>Teléfono</label>
+            <input
+              type="tel"
+              value={formulario.telefono}
+              onChange={(e) => manejarCambioFormulario('telefono', e.target.value)}
+              placeholder="442 123 4567"
+            />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label>Fecha de Ingreso</label>
+            <input
+              type="date"
+              value={formulario.fecha_ingreso}
+              onChange={(e) => manejarCambioFormulario('fecha_ingreso', e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className={styles.formRow}>
+          <div className={styles.formGroup}>
+            <label>Estado del Estudiante</label>
+            <select
+              value={formulario.estado_alumno}
+              onChange={(e) => manejarCambioFormulario('estado_alumno', e.target.value)}
+            >
+              <option value="activo">✅ Activo</option>
+              <option value="baja_temporal">⏸️ Baja Temporal</option>
+              <option value="egresado">🎓 Egresado</option>
+              <option value="baja_definitiva">❌ Baja Definitiva</option>
+            </select>
+          </div>
+        </div>
+
+        <div className={styles.modalActions}>
+          <button 
+            type="button" 
+            className={styles.cancelButton}
+            onClick={() => setMostrarModal(false)}
+          >
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            className={styles.submitButton}
+          >
+            {modoEdicion ? '💾 Actualizar' : '➕ Agregar Estudiante'}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
         )}
 
       </main>

@@ -14,10 +14,13 @@ const GestionCalificaciones = () => {
     aprobados: 0,
     reprobados: 0
   });
-  const [asignaturas, setAsignaturas] = useState([]);
-  const [grupos, setGrupos] = useState([]);
+  const [asignaturas, /* setAsignaturas */] = useState([]);
+  const [grupos, /* s */] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+  const [asignacionesProfesor, setAsignacionesProfesor] = useState([]);
+const [estudiantesDelGrupo, setEstudiantesDelGrupo] = useState([]);
+const [asignacionSeleccionada, setAsignacionSeleccionada] = useState(null);
+
   // Estados para filtros
   const [filtroGrupo, setFiltroGrupo] = useState('');
   const [filtroAsignatura, setFiltroAsignatura] = useState('');
@@ -26,102 +29,207 @@ const GestionCalificaciones = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [modoEdicion, setModoEdicion] = useState(false);
   const [calificacionSeleccionada, setCalificacionSeleccionada] = useState(null);
-  const [estudiantes, setEstudiantes] = useState([]);
-  
+/*   const [estudiantes, setEstudiantes ] = useState([]);
+ */  
   // Estado del formulario
-  const [formularioCalificacion, setFormularioCalificacion] = useState({
-    alumno_id: '',
-    asignatura_id: '',
-    grupo_id: '',
-    parcial_1: '',
-    parcial_2: '',
-    parcial_3: '',
-    calificacion_ordinario: '',
-    calificacion_extraordinario: '',
-    calificacion_final: '',
-    estatus: 'cursando',
-    observaciones: '',
-    ciclo_escolar: '2025-1'
-  });
+const [formularioCalificacion, setFormularioCalificacion] = useState({
+  asignacion_id: '', // NUEVO: ID de la asignación profesor-asignatura-grupo
+  alumno_id: '',
+  // Se elimina asignatura_id, grupo_id, ciclo_escolar (se obtienen de la asignación)
+  parcial_1: '',
+  parcial_2: '',
+  parcial_3: '',
+  calificacion_ordinario: '',
+  calificacion_extraordinario: '',
+  calificacion_final: '',
+  estatus: 'cursando',
+  observaciones: ''
+});
+
+
+
 
   useEffect(() => {
-    verificarAutenticacion();
-    cargarDatos();
-  }, []);
+  // Verificar autenticación
+  const userData = localStorage.getItem('usuario');
+  const token = localStorage.getItem('token');
+  
+  if (!userData || !token) {
+    navigate('/login');
+    return;
+  }
 
-  const verificarAutenticacion = () => {
-    const userData = localStorage.getItem('usuario');
+  const user = JSON.parse(userData);
+  if (user.rol !== 'profesor') {
+    navigate('/login');
+    return;
+  }
+
+  // Cargar todos los datos necesarios
+  cargarDatos();
+}, [navigate]);
+
+  // ✅ FUNCIÓN para cargar asignaciones del profesor
+const cargarAsignacionesProfesor = async () => {
+  try {
     const token = localStorage.getItem('token');
-    
-    if (!userData || !token) {
-      navigate('/login');
-      return;
-    }
+    const response = await fetch('http://localhost:5000/api/profesor/mis-asignaturas', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
 
-    const user = JSON.parse(userData);
-    if (user.rol !== 'profesor') {
-      navigate('/login');
-      return;
+    const data = await response.json();
+    if (data.success) {
+      setAsignacionesProfesor(data.data);
+      console.log('✅ Asignaciones cargadas:', data.data);
     }
+  } catch (error) {
+    console.error('Error al cargar asignaciones del profesor:', error);
+  }
+};
+
+// Función para calcular el promedio automáticamente
+const calcularCalificacionFinal = (parcial1, parcial2, parcial3, ordinario, extraordinario) => {
+  const calificaciones = [];
+  
+  // Agregar parciales si tienen valor
+  if (parcial1 && parcial1 > 0) calificaciones.push(parseFloat(parcial1));
+  if (parcial2 && parcial2 > 0) calificaciones.push(parseFloat(parcial2));
+  if (parcial3 && parcial3 > 0) calificaciones.push(parseFloat(parcial3));
+  
+  // Si hay ordinario, tiene mayor peso
+  if (ordinario && ordinario > 0) {
+    calificaciones.push(parseFloat(ordinario));
+  }
+  
+  // Si hay extraordinario, reemplaza todo (es la calificación de recuperación)
+  if (extraordinario && extraordinario > 0) {
+    return parseFloat(extraordinario).toFixed(1);
+  }
+  
+  // Si no hay calificaciones, retornar 0
+  if (calificaciones.length === 0) return '';
+  
+  // Calcular promedio
+  const promedio = calificaciones.reduce((sum, cal) => sum + cal, 0) / calificaciones.length;
+  return promedio.toFixed(1);
+};
+
+// Función para determinar el estatus automáticamente
+const determinarEstatus = (calificacionFinal) => {
+  if (!calificacionFinal || calificacionFinal === '') return 'cursando';
+  
+  const cal = parseFloat(calificacionFinal);
+  if (cal >= 6) return 'aprobado';
+  if (cal > 0 && cal < 6) return 'reprobado';
+  return 'cursando';
+};
+
+const calcularEstadisticas = (calificacionesData) => {
+  const stats = {
+    total_calificaciones: calificacionesData.length,
+    promedio_general: 0,
+    aprobados: 0,
+    reprobados: 0
   };
 
-  const cargarDatos = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem('token');
+  if (calificacionesData.length > 0) {
+    const calificacionesFinales = calificacionesData
+      .filter(c => c.calificacion_final && c.calificacion_final > 0)
+      .map(c => parseFloat(c.calificacion_final));
+
+    if (calificacionesFinales.length > 0) {
+      stats.promedio_general = calificacionesFinales.reduce((a, b) => a + b, 0) / calificacionesFinales.length;
+      stats.aprobados = calificacionesFinales.filter(c => c >= 6).length;
+      stats.reprobados = calificacionesFinales.filter(c => c < 6).length;
+    }
+  }
+
+  setEstadisticas(stats);
+};
+
+// ✅ FUNCIÓN para manejar cambio de asignación
+const manejarCambioAsignacion = async (asignacionId) => {
+  if (!asignacionId) {
+    setFormularioCalificacion(prev => ({
+      ...prev,
+      asignacion_id: '',
+      alumno_id: ''
+    }));
+    setEstudiantesDelGrupo([]);
+    setAsignacionSeleccionada(null);
+    return;
+  }
+
+  // Encontrar la asignación seleccionada
+  const asignacion = asignacionesProfesor.find(a => a.id.toString() === asignacionId);
+  setAsignacionSeleccionada(asignacion);
+
+  // Actualizar formulario
+  setFormularioCalificacion(prev => ({
+    ...prev,
+    asignacion_id: asignacionId,
+    alumno_id: '' // Resetear alumno cuando cambia asignación
+  }));
+
+  // Cargar estudiantes del grupo
+  await cargarEstudiantesDelGrupo(asignacion.asignatura_id, asignacion.grupo_id);
+};
+
+// ✅ FUNCIÓN para cargar estudiantes del grupo específico
+const cargarEstudiantesDelGrupo = async (asignaturaId, grupoId) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(
+      `http://localhost:5000/api/profesor/estudiantes-grupo/${grupoId}/asignatura/${asignaturaId}`, 
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+
+    const data = await response.json();
+    if (data.success) {
+      setEstudiantesDelGrupo(data.data);
+      console.log('✅ Estudiantes del grupo cargados:', data.data);
+    }
+  } catch (error) {
+    console.error('Error al cargar estudiantes del grupo:', error);
+    setEstudiantesDelGrupo([]);
+  }
+};
+
+const cargarDatos = async () => {
+  try {
+    setLoading(true);
+    const token = localStorage.getItem('token');
+
+    // Cargar calificaciones existentes
+    const responseCalificaciones = await fetch('http://localhost:5000/api/profesor/calificaciones', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    // Cargar asignaciones del profesor
+    await cargarAsignacionesProfesor();
+
+    const dataCalificaciones = await responseCalificaciones.json();
+    if (dataCalificaciones.success) {
+      setCalificaciones(dataCalificaciones.data);
       
-      // Cargar en paralelo
-      const [calificacionesRes, estadisticasRes, asignaturasRes, gruposRes] = await Promise.all([
-        fetch('http://localhost:5000/api/profesor/calificaciones', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }),
-        fetch('http://localhost:5000/api/profesor/calificaciones/estadisticas', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }),
-        fetch('http://localhost:5000/api/profesor/asignaturas', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }),
-        fetch('http://localhost:5000/api/profesor/grupos', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-      ]);
-
-      if (calificacionesRes.ok) {
-        const data = await calificacionesRes.json();
-        if (data.success) {
-          setCalificaciones(data.data);
-        }
-      }
-
-      if (estadisticasRes.ok) {
-        const data = await estadisticasRes.json();
-        if (data.success) {
-          setEstadisticas(data.data);
-        }
-      }
-
-      if (asignaturasRes.ok) {
-        const data = await asignaturasRes.json();
-        if (data.success) {
-          setAsignaturas(data.data);
-        }
-      }
-
-      if (gruposRes.ok) {
-        const data = await gruposRes.json();
-        if (data.success) {
-          setGrupos(data.data);
-        }
-      }
-
-    } catch (error) {
-      console.error('Error al cargar datos:', error);
-    } finally {
-      setLoading(false);
+      // Calcular estadísticas
+      calcularEstadisticas(dataCalificaciones.data);
     }
-  };
 
-  const cargarEstudiantes = async (grupoId, asignaturaId) => {
+  } catch (error) {
+    console.error('Error al cargar datos:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+/*   const cargarEstudiantes = async (grupoId, asignaturaId) => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:5000/api/profesor/calificaciones/estudiantes/${grupoId}/${asignaturaId}`, {
@@ -135,7 +243,7 @@ const GestionCalificaciones = () => {
     } catch (error) {
       console.error('Error al cargar estudiantes:', error);
     }
-  };
+  }; */
 
   const calificacionesFiltradas = calificaciones.filter(cal => {
     const coincideGrupo = !filtroGrupo || cal.grupo === filtroGrupo;
@@ -183,57 +291,89 @@ const GestionCalificaciones = () => {
     setMostrarModal(true);
   };
 
-  const manejarCambioFormulario = (campo, valor) => {
-    setFormularioCalificacion(prev => ({
-      ...prev,
-      [campo]: valor
-    }));
-
-    // Si cambió grupo o asignatura, cargar estudiantes
-    if (campo === 'grupo_id' || campo === 'asignatura_id') {
-      const grupoId = campo === 'grupo_id' ? valor : formularioCalificacion.grupo_id;
-      const asignaturaId = campo === 'asignatura_id' ? valor : formularioCalificacion.asignatura_id;
-      
-      if (grupoId && asignaturaId) {
-        cargarEstudiantes(grupoId, asignaturaId);
-      }
-    }
+// ✅ MODIFICAR la función manejarCambioFormulario para cálculo automático
+const manejarCambioFormulario = (campo, valor) => {
+  const nuevoFormulario = {
+    ...formularioCalificacion,
+    [campo]: valor
   };
 
-  const guardarCalificacion = async (e) => {
-    e.preventDefault();
+  // Si cambió alguna calificación, recalcular automáticamente
+  if (['parcial_1', 'parcial_2', 'parcial_3', 'calificacion_ordinario', 'calificacion_extraordinario'].includes(campo)) {
+    const calificacionFinal = calcularCalificacionFinal(
+      nuevoFormulario.parcial_1,
+      nuevoFormulario.parcial_2,
+      nuevoFormulario.parcial_3,
+      nuevoFormulario.calificacion_ordinario,
+      nuevoFormulario.calificacion_extraordinario
+    );
     
-    try {
-      const token = localStorage.getItem('token');
-      const url = modoEdicion 
-        ? `http://localhost:5000/api/profesor/calificaciones/${calificacionSeleccionada.id}`
-        : 'http://localhost:5000/api/profesor/calificaciones';
-      
-      const method = modoEdicion ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formularioCalificacion)
-      });
+    const estatus = determinarEstatus(calificacionFinal);
+    
+    nuevoFormulario.calificacion_final = calificacionFinal;
+    nuevoFormulario.estatus = estatus;
+  }
 
-      const data = await response.json();
-      
-      if (data.success) {
-        setMostrarModal(false);
-        cargarDatos(); // Recargar datos
-        alert(modoEdicion ? 'Calificación actualizada exitosamente' : 'Calificación creada exitosamente');
-      } else {
-        alert(data.message || 'Error al guardar la calificación');
-      }
-    } catch (error) {
-      console.error('Error al guardar calificación:', error);
-      alert('Error al guardar la calificación');
+  setFormularioCalificacion(nuevoFormulario);
+
+  // Si cambió grupo o asignatura, cargar estudiantes
+  if (campo === 'asignacion_id') {
+    manejarCambioAsignacion(valor);
+  }
+};
+
+const guardarCalificacion = async (e) => {
+  e.preventDefault();
+  
+  if (!asignacionSeleccionada) {
+    alert('Debes seleccionar una materia y grupo');
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem('token');
+    const url = modoEdicion 
+      ? `http://localhost:5000/api/profesor/calificaciones/${calificacionSeleccionada.id}`
+      : 'http://localhost:5000/api/profesor/calificaciones';
+    
+    const method = modoEdicion ? 'PUT' : 'POST';
+
+    // Preparar datos con información de la asignación
+    const datosCompletos = {
+      ...formularioCalificacion,
+      asignatura_id: asignacionSeleccionada.asignatura_id,
+      grupo_id: asignacionSeleccionada.grupo_id,
+      ciclo_escolar: asignacionSeleccionada.ciclo_escolar
+    };
+
+    console.log('Enviando datos:', datosCompletos);
+
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(datosCompletos)
+    });
+
+    const data = await response.json();
+    
+    if (data.success) {
+      alert(modoEdicion 
+        ? '✅ Calificación actualizada correctamente' 
+        : '✅ Calificación guardada correctamente'
+      );
+      setMostrarModal(false);
+      await cargarDatos();
+    } else {
+      alert(data.message || 'Error al guardar la calificación');
     }
-  };
+  } catch (error) {
+    console.error('Error al guardar calificación:', error);
+    alert('Error de conexión. Inténtalo de nuevo.');
+  }
+};
 
   const eliminarCalificacion = async (id) => {
     if (!confirm('¿Estás seguro de que deseas eliminar esta calificación?')) {
@@ -470,234 +610,270 @@ const GestionCalificaciones = () => {
           )}
         </div>
 
-        {/* Modal para Agregar/Editar Calificación */}
-        {mostrarModal && (
-          <div className={styles.modalOverlay}>
-            <div className={styles.modal}>
-              <div className={styles.modalHeader}>
-                <h2>{modoEdicion ? 'Editar Calificación' : 'Nueva Calificación'}</h2>
-                <button
-                  onClick={() => setMostrarModal(false)}
-                  className={styles.closeButton}
-                >
-                  ✕
-                </button>
-              </div>
 
-              <form onSubmit={guardarCalificacion} className={styles.modalForm}>
-                <div className={styles.formGrid}>
-                  {/* Selección de Asignatura */}
-                  <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Asignatura *</label>
-                    <select
-                      value={formularioCalificacion.asignatura_id}
-                      onChange={(e) => manejarCambioFormulario('asignatura_id', e.target.value)}
-                      className={styles.formSelect}
-                      required
-                      disabled={modoEdicion}
-                    >
-                      <option value="">Seleccionar asignatura</option>
-                      {asignaturas.map(asignatura => (
-                        <option key={asignatura.asignatura_id} value={asignatura.asignatura_id}>
-                          {asignatura.asignatura_nombre} - {asignatura.grupo_codigo}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
 
-                  {/* Selección de Grupo */}
-                  <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Grupo *</label>
-                    <select
-                      value={formularioCalificacion.grupo_id}
-                      onChange={(e) => manejarCambioFormulario('grupo_id', e.target.value)}
-                      className={styles.formSelect}
-                      required
-                      disabled={modoEdicion}
-                    >
-                      <option value="">Seleccionar grupo</option>
-                      {grupos.map(grupo => (
-                        <option key={grupo.id} value={grupo.id}>
-                          {grupo.codigo} - {grupo.cuatrimestre}° Cuatrimestre
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+{/* Modal para Agregar/Editar Calificación */}
+{mostrarModal && (
+  <div className={styles.modalOverlay} onClick={() => setMostrarModal(false)}>
+    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.modalHeader}>
+        <h3 className={styles.modalTitle}>
+          {modoEdicion ? '✏️ Editar Calificación' : '➕ Nueva Calificación'}
+        </h3>
+        <button 
+          className={styles.closeButton}
+          onClick={() => setMostrarModal(false)}
+          type="button"
+        >
+          ✕
+        </button>
+      </div>
 
-                  {/* Selección de Estudiante */}
-                  {!modoEdicion && (
-                    <div className={styles.formGroup}>
-                      <label className={styles.formLabel}>Estudiante *</label>
-                      <select
-                        value={formularioCalificacion.alumno_id}
-                        onChange={(e) => manejarCambioFormulario('alumno_id', e.target.value)}
-                        className={styles.formSelect}
-                        required
-                      >
-                        <option value="">Seleccionar estudiante</option>
-                        {estudiantes.map(estudiante => (
-                          <option key={estudiante.alumno_id} value={estudiante.alumno_id}>
-                            {estudiante.estudiante} - {estudiante.matricula}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-
-                  {/* Ciclo Escolar */}
-                  <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Ciclo Escolar *</label>
-                    <select
-                      value={formularioCalificacion.ciclo_escolar}
-                      onChange={(e) => manejarCambioFormulario('ciclo_escolar', e.target.value)}
-                      className={styles.formSelect}
-                      required
-                    >
-                      <option value="2025-1">2025-1 (Enero-Abril)</option>
-                      <option value="2025-2">2025-2 (Mayo-Agosto)</option>
-                      <option value="2025-3">2025-3 (Septiembre-Diciembre)</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Calificaciones */}
-                <div className={styles.calificacionesSection}>
-                  <h3>Calificaciones</h3>
-                  <div className={styles.calificacionesGrid}>
-                    <div className={styles.formGroup}>
-                      <label className={styles.formLabel}>Parcial 1</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="10"
-                        step="0.1"
-                        value={formularioCalificacion.parcial_1}
-                        onChange={(e) => manejarCambioFormulario('parcial_1', e.target.value)}
-                        className={styles.formInput}
-                        placeholder="0.0"
-                      />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                      <label className={styles.formLabel}>Parcial 2</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="10"
-                        step="0.1"
-                        value={formularioCalificacion.parcial_2}
-                        onChange={(e) => manejarCambioFormulario('parcial_2', e.target.value)}
-                        className={styles.formInput}
-                        placeholder="0.0"
-                      />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                      <label className={styles.formLabel}>Parcial 3</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="10"
-                        step="0.1"
-                        value={formularioCalificacion.parcial_3}
-                        onChange={(e) => manejarCambioFormulario('parcial_3', e.target.value)}
-                        className={styles.formInput}
-                        placeholder="0.0"
-                      />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                      <label className={styles.formLabel}>Ordinario</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="10"
-                        step="0.1"
-                        value={formularioCalificacion.calificacion_ordinario}
-                        onChange={(e) => manejarCambioFormulario('calificacion_ordinario', e.target.value)}
-                        className={styles.formInput}
-                        placeholder="0.0"
-                      />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                      <label className={styles.formLabel}>Extraordinario</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="10"
-                        step="0.1"
-                        value={formularioCalificacion.calificacion_extraordinario}
-                        onChange={(e) => manejarCambioFormulario('calificacion_extraordinario', e.target.value)}
-                        className={styles.formInput}
-                        placeholder="0.0"
-                      />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                      <label className={styles.formLabel}>Final</label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="10"
-                        step="0.1"
-                        value={formularioCalificacion.calificacion_final}
-                        onChange={(e) => manejarCambioFormulario('calificacion_final', e.target.value)}
-                        className={styles.formInput}
-                        placeholder="0.0"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Estatus y Observaciones */}
-                <div className={styles.formGrid}>
-                  <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Estatus</label>
-                    <select
-                      value={formularioCalificacion.estatus}
-                      onChange={(e) => manejarCambioFormulario('estatus', e.target.value)}
-                      className={styles.formSelect}
-                    >
-                      <option value="cursando">Cursando</option>
-                      <option value="aprobado">Aprobado</option>
-                      <option value="reprobado">Reprobado</option>
-                      <option value="extraordinario">Extraordinario</option>
-                    </select>
-                  </div>
-
-                  <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Observaciones</label>
-                    <textarea
-                      value={formularioCalificacion.observaciones}
-                      onChange={(e) => manejarCambioFormulario('observaciones', e.target.value)}
-                      className={styles.formTextarea}
-                      rows="3"
-                      placeholder="Observaciones adicionales..."
-                    />
-                  </div>
-                </div>
-
-                {/* Botones del Modal */}
-                <div className={styles.modalActions}>
-                  <button
-                    type="button"
-                    onClick={() => setMostrarModal(false)}
-                    className={styles.cancelButton}
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="submit"
-                    className={styles.saveButton}
-                  >
-                    {modoEdicion ? 'Actualizar' : 'Guardar'} Calificación
-                  </button>
-                </div>
-              </form>
+      <form onSubmit={guardarCalificacion} className={styles.modalForm}>
+        <div className={styles.modalBody}>
+          
+          {/* Selección de Materia-Grupo (combinado) */}
+          <div className={styles.formSection}>
+            <h4 className={styles.sectionTitle}>📚 Seleccionar Materia y Grupo</h4>
+            
+            <div className={styles.formGroup}>
+              <label className={styles.formLabel}>Materia y Grupo *</label>
+              <select
+                value={formularioCalificacion.asignacion_id || ''}
+                onChange={(e) => manejarCambioAsignacion(e.target.value)}
+                className={styles.formSelect}
+                required
+              >
+                <option value="">Seleccionar materia y grupo</option>
+                {asignacionesProfesor.map(asignacion => (
+                  <option key={asignacion.id} value={asignacion.id}>
+                    📖 {asignacion.asignatura_nombre} ({asignacion.asignatura_codigo}) - 
+                    👥 Grupo {asignacion.grupo_codigo} - 
+                    🎓 {asignacion.carrera_nombre} - 
+                    📅 {asignacion.ciclo_escolar}
+                    ({asignacion.total_estudiantes} estudiantes)
+                  </option>
+                ))}
+              </select>
+              <small className={styles.helpText}>
+                Solo se muestran las materias y grupos que tienes asignados
+              </small>
             </div>
           </div>
-        )}
+
+          {/* Selección de Estudiante (se llena automáticamente según la asignación) */}
+          {formularioCalificacion.asignacion_id && (
+            <div className={styles.formSection}>
+              <h4 className={styles.sectionTitle}>👤 Seleccionar Estudiante</h4>
+              
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Estudiante *</label>
+                <select
+                  value={formularioCalificacion.alumno_id}
+                  onChange={(e) => setFormularioCalificacion({
+                    ...formularioCalificacion,
+                    alumno_id: e.target.value
+                  })}
+                  className={styles.formSelect}
+                  required
+                >
+                  <option value="">Seleccionar estudiante</option>
+                  {estudiantesDelGrupo.map(estudiante => (
+                    <option key={estudiante.id} value={estudiante.id}>
+                      {estudiante.nombre_completo} - {estudiante.matricula}
+                      {estudiante.tiene_calificacion && ' (⚠️ Ya tiene calificación)'}
+                    </option>
+                  ))}
+                </select>
+                {estudiantesDelGrupo.length === 0 && (
+                  <small className={styles.helpText} style={{ color: '#dc2626' }}>
+                    No hay estudiantes inscritos en este grupo
+                  </small>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Calificaciones (solo si ya seleccionó estudiante) */}
+          {/* Calificaciones (solo si ya seleccionó estudiante) */}
+{formularioCalificacion.alumno_id && (
+  <div className={styles.formSection}>
+    <h4 className={styles.sectionTitle}>📊 Calificaciones</h4>
+    
+    <div className={styles.calificacionesGrid}>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Parcial 1</label>
+        <input
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          value={formularioCalificacion.parcial_1}
+          onChange={(e) => manejarCambioFormulario('parcial_1', e.target.value)}
+          className={styles.formInput}
+          placeholder="0.0"
+        />
+      </div>
+
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Parcial 2</label>
+        <input
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          value={formularioCalificacion.parcial_2}
+          onChange={(e) => manejarCambioFormulario('parcial_2', e.target.value)}
+          className={styles.formInput}
+          placeholder="0.0"
+        />
+      </div>
+
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Parcial 3</label>
+        <input
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          value={formularioCalificacion.parcial_3}
+          onChange={(e) => manejarCambioFormulario('parcial_3', e.target.value)}
+          className={styles.formInput}
+          placeholder="0.0"
+        />
+      </div>
+
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Ordinario</label>
+        <input
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          value={formularioCalificacion.calificacion_ordinario}
+          onChange={(e) => manejarCambioFormulario('calificacion_ordinario', e.target.value)}
+          className={styles.formInput}
+          placeholder="0.0"
+        />
+      </div>
+
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Extraordinario</label>
+        <input
+          type="number"
+          min="0"
+          max="10"
+          step="0.1"
+          value={formularioCalificacion.calificacion_extraordinario}
+          onChange={(e) => manejarCambioFormulario('calificacion_extraordinario', e.target.value)}
+          className={styles.formInput}
+          placeholder="0.0"
+        />
+        <small className={styles.helpText}>
+          Si hay extraordinario, esta será la calificación final
+        </small>
+      </div>
+
+      {/* ✅ CAMPO FINAL AUTOMÁTICO - Solo lectura */}
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Final (Automática)</label>
+        <input
+          type="text"
+          value={formularioCalificacion.calificacion_final}
+          className={`${styles.formInput} ${styles.inputReadonly}`}
+          placeholder="Se calcula automáticamente"
+          readOnly
+        />
+        <small className={styles.helpText}>
+          {formularioCalificacion.calificacion_final && 
+            `Promedio: ${formularioCalificacion.calificacion_final} - ${
+              parseFloat(formularioCalificacion.calificacion_final) >= 6 ? '✅ Aprobado' : '❌ Reprobado'
+            }`
+          }
+        </small>
+      </div>
+    </div>
+
+    {/* Explicación del cálculo */}
+    <div className={styles.calculoExplicacion}>
+      <h5>🧮 Cómo se calcula:</h5>
+      <ul>
+        <li><strong>Promedio normal:</strong> Se promedian los parciales y ordinario que tengan valor</li>
+        <li><strong>Con extraordinario:</strong> El extraordinario se convierte en la calificación final</li>
+        <li><strong>Estatus automático:</strong> ≥6.0 = Aprobado, &lt;6.0 = Reprobado</li>
+      </ul>
+    </div>
+  </div>
+)}
+
+{/* Estado y Observaciones - ✅ ESTATUS AUTOMÁTICO */}
+{formularioCalificacion.calificacion_final && (
+  <div className={styles.formSection}>
+    <h4 className={styles.sectionTitle}>📝 Estado y Observaciones</h4>
+    
+    <div className={styles.formGrid}>
+      {/* ✅ ESTATUS AUTOMÁTICO - Solo lectura */}
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>Estado (Automático)</label>
+        <div className={`${styles.estatusDisplay} ${styles[`estatus${formularioCalificacion.estatus}`]}`}>
+          {formularioCalificacion.estatus === 'aprobado' && '✅ Aprobado'}
+          {formularioCalificacion.estatus === 'reprobado' && '❌ Reprobado'}
+          {formularioCalificacion.estatus === 'cursando' && '📚 Cursando'}
+          {formularioCalificacion.estatus === 'extraordinario' && '⚠️ Extraordinario'}
+        </div>
+        <small className={styles.helpText}>
+          Se determina automáticamente según la calificación final
+        </small>
+      </div>
+
+      <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
+        <label className={styles.formLabel}>Observaciones</label>
+        <textarea
+          value={formularioCalificacion.observaciones}
+          onChange={(e) => manejarCambioFormulario('observaciones', e.target.value)}
+          className={styles.formTextarea}
+          placeholder="Comentarios adicionales sobre el rendimiento del estudiante..."
+          rows="3"
+        />
+      </div>
+    </div>
+
+    {/* ✅ INFORMACIÓN ADICIONAL AUTOMÁTICA */}
+    <div className={styles.infoAutomatica}>
+      <h5>ℹ️ Información Automática:</h5>
+      <ul>
+        <li><strong>Materia:</strong> {asignacionSeleccionada?.asignatura_nombre}</li>
+        <li><strong>Grupo:</strong> {asignacionSeleccionada?.grupo_codigo}</li>
+        <li><strong>Carrera:</strong> {asignacionSeleccionada?.carrera_nombre}</li>
+        <li><strong>Ciclo Escolar:</strong> {asignacionSeleccionada?.ciclo_escolar}</li>
+        <li><strong>Calificación Final:</strong> {formularioCalificacion.calificacion_final || 'Pendiente'}</li>
+        <li><strong>Estado:</strong> {formularioCalificacion.estatus}</li>
+      </ul>
+    </div>
+  </div>
+)}
+        </div>
+
+        <div className={styles.modalFooter}>
+          <button 
+            type="button" 
+            className={styles.cancelButton}
+            onClick={() => setMostrarModal(false)}
+          >
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            className={styles.saveButton}
+            disabled={!formularioCalificacion.alumno_id || !formularioCalificacion.calificacion_final}
+          >
+            {modoEdicion ? '💾 Actualizar' : '➕ Guardar Calificación'}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
       </div>
     </div>
   );

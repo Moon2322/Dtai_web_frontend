@@ -311,70 +311,125 @@
     height: 1rem;
 }
 
+/* ✅ CSS CORREGIDO para Gestioncalificaciones.module.css */
+/* Agregar/reemplazar estos estilos en el archivo CSS */
+
 /* Modal */
+/* Modal Overlay */
 .modalOverlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
     z-index: 1000;
+    padding: 1rem;
+    backdrop-filter: blur(2px);
+    overflow-y: auto; /* ✅ Permite scroll si el contenido es muy grande */
 }
 
+/* Modal Content */
 .modalContent {
     background: white;
-    border-radius: 12px;
-    max-width: 600px;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
+    max-width: 800px; /* ✅ Ancho máximo controlado */
+    max-height: calc(100vh - 2rem); /* ✅ Altura máxima basada en viewport */
+    display: flex;
+    flex-direction: column;
+    margin: auto; /* ✅ Centrado automático */
+    position: relative;
 }
 
+/* Modal Header */
 .modalHeader {
-    padding: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    border-radius: 16px 16px 0 0;
+    flex-shrink: 0; /* ✅ No se encoge */
 }
 
 .modalTitle {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1a202c;
     margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
 }
 
 .closeButton {
     background: none;
     border: none;
     font-size: 1.5rem;
-    color: #64748b;
+    color: #6b7280;
     cursor: pointer;
-    padding: 0.25rem;
-    border-radius: 4px;
-    transition: color 0.2s;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    line-height: 1;
 }
 
 .closeButton:hover {
+    background: #f3f4f6;
     color: #374151;
 }
 
-.modalBody {
-    padding: 1.5rem;
+/* Modal Form */
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0; /* ✅ Permite que el contenido se encoja */
 }
 
+/* Modal Body - Scrollable */
+.modalBody {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto; /* ✅ Scroll independiente del contenido */
+    min-height: 0; /* ✅ Permite que se encoja */
+}
+
+/* Secciones del formulario */
+.formSection {
+    margin-bottom: 2rem;
+}
+
+.formSection:last-child {
+    margin-bottom: 0;
+}
+
+.sectionTitle {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* Grids del formulario */
 .formGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.calificacionesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem;
 }
 
+/* Elementos del formulario */
 .formGroup {
     display: flex;
     flex-direction: column;
@@ -387,111 +442,186 @@
     margin-bottom: 0.5rem;
 }
 
-.formInput {
+.formLabel::after {
+    content: " *";
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.formGroup:has(input:not([required])) .formLabel::after,
+.formGroup:has(select:not([required])) .formLabel::after,
+.formGroup:has(textarea:not([required])) .formLabel::after {
+    content: "";
+}
+
+.formInput,
+.formSelect,
+.formTextarea {
     padding: 0.75rem;
     border: 1px solid #d1d5db;
     border-radius: 8px;
     font-size: 0.875rem;
-    transition: all 0.2s;
-}
-
-.formInput:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.formSelect {
-    padding: 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 0.875rem;
+    transition: all 0.2s ease;
     background: white;
-    transition: all 0.2s;
 }
 
-.formSelect:focus {
+.formInput:focus,
+.formSelect:focus,
+.formTextarea:focus {
     outline: none;
     border-color: #3b82f6;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+.formTextarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+/* Inputs de calificaciones con validación visual */
+.formInput[type="number"] {
+    text-align: center;
+    font-weight: 600;
+}
+
+.formInput[type="number"]:valid {
+    border-color: #10b981;
+}
+
+.formInput[type="number"]:invalid {
+    border-color: #ef4444;
+}
+
+/* Footer del modal */
 .modalFooter {
-    padding: 1.5rem;
-    border-top: 1px solid #e5e7eb;
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #e5e7eb;
+    background: #f9fafb;
+}
+
+.cancelButton,
+.saveButton {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
 }
 
 .cancelButton {
-    padding: 0.75rem 1.5rem;
-    border: 1px solid #d1d5db;
     background: white;
     color: #374151;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+    border: 1px solid #d1d5db;
 }
 
 .cancelButton:hover {
-    background: #f9fafb;
+    background: #f3f4f6;
     border-color: #9ca3af;
 }
 
 .saveButton {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    background: #3b82f6;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: white;
-    border-radius: 8px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 }
 
 .saveButton:hover {
-    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .container {
-        padding: 1rem;
+    .modalContent {
+        margin: 0.5rem;
+        max-width: calc(100vw - 1rem);
+        max-height: calc(100vh - 1rem);
     }
     
-    .title {
-        font-size: 1.5rem;
-    }
-    
-    .statsGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .tableContainer {
-        overflow-x: auto;
-    }
-    
-    .table {
-        min-width: 800px;
+    .modalHeader,
+    .modalBody,
+    .modalFooter {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
     
     .formGrid {
         grid-template-columns: 1fr;
     }
+    
+    .calificacionesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .modalFooter {
+        flex-direction: column-reverse;
+    }
+    
+    .cancelButton,
+    .saveButton {
+        width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
-    .statsGrid {
+    .calificacionesGrid {
         grid-template-columns: 1fr;
     }
     
-    .modalContent {
-        margin: 0.5rem;
-        max-width: calc(100vw - 1rem);
+    .modalTitle {
+        font-size: 1.1rem;
     }
+}
 
+/* Estados visuales para los selects */
+.formSelect:invalid {
+    border-color: #f87171;
+    background-color: #fef2f2;
+}
+
+.formSelect:valid {
+    border-color: #10b981;
+}
+
+/* Animaciones */
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modalContent {
+    animation: modalAppear 0.2s ease-out;
+}
+
+/* Scroll personalizado para el modal */
+.modalBody::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modalBody::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.modalBody::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.modalBody::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
     /* Agregar estos estilos al final de Gestioncalificaciones.module.css */
 
 /* Filtros */
@@ -598,206 +728,197 @@
     background: #fee2e2;
 }
 
-/* Modal */
-.modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 1rem;
-}
+/* ✅ ESTILOS ADICIONALES para el modal inteligente */
+/* Agregar a Gestioncalificaciones.module.css */
 
-.modal {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    max-width: 800px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.modalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.modalHeader h2 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-.closeButton {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #6b7280;
-    cursor: pointer;
-    padding: 0.25rem;
-    line-height: 1;
-}
-
-.closeButton:hover {
-    color: #374151;
-}
-
-/* Formulario del Modal */
-.modalForm {
-    padding: 1.5rem;
-}
-
-.formGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.formGroup {
-    display: flex;
-    flex-direction: column;
-}
-
-.formLabel {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #374151;
-    margin-bottom: 0.5rem;
-}
-
-.formInput, .formSelect, .formTextarea {
-    padding: 0.75rem;
-    border: 1px solid #d1d5db;
+/* Información automática */
+.infoAutomatica {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
     border-radius: 8px;
-    font-size: 0.875rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    padding: 1rem;
+    margin-top: 1rem;
 }
 
-.formInput:focus, .formSelect:focus, .formTextarea:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.formTextarea {
-    resize: vertical;
-    min-height: 80px;
-}
-
-/* Sección de Calificaciones */
-.calificacionesSection {
-    margin-bottom: 1.5rem;
-}
-
-.calificacionesSection h3 {
-    margin: 0 0 1rem 0;
-    font-size: 1.125rem;
+.infoAutomatica h5 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: #1f2937;
+    color: #0369a1;
 }
 
+.infoAutomatica ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    list-style: none;
+}
+
+.infoAutomatica li {
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    color: #374151;
+    position: relative;
+}
+
+.infoAutomatica li::before {
+    content: "•";
+    color: #0369a1;
+    font-weight: bold;
+    position: absolute;
+    left: -1rem;
+}
+
+/* Select de asignación destacado */
+.formSelect[data-tipo="asignacion"] {
+    border: 2px solid #3b82f6;
+    background: linear-gradient(135deg, #f8faff 0%, #ffffff 100%);
+    font-weight: 500;
+}
+
+/* Indicadores visuales para estudiantes */
+.formSelect option[data-tiene-calificacion="true"] {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+/* Estados dinámicos del botón guardar */
+.saveButton:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.saveButton:disabled:hover {
+    background: #9ca3af;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Grids responsivos mejorados */
 .calificacionesGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
 
-/* Acciones del Modal */
-.modalActions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e5e7eb;
+/* Progreso visual de llenado */
+.formSection {
+    position: relative;
+    transition: all 0.3s ease;
 }
 
-.cancelButton, .saveButton {
-    padding: 0.75rem 1.5rem;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
+.formSection.completado {
+    background: #f0fdf4;
+    border-left: 4px solid #10b981;
+    padding-left: 1rem;
 }
 
-.cancelButton {
-    background: #f9fafb;
-    color: #374151;
-    border: 1px solid #d1d5db;
+.formSection.incompleto {
+    background: #fefbf3;
+    border-left: 4px solid #f59e0b;
+    padding-left: 1rem;
 }
 
-.cancelButton:hover {
-    background: #f3f4f6;
+/* Animaciones para transiciones */
+.formSection {
+    animation: slideIn 0.3s ease-out;
 }
 
-.saveButton {
-    background: #3b82f6;
-    color: white;
-    border: 1px solid #3b82f6;
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.saveButton:hover {
-    background: #2563eb;
-}
-
-/* Estado vacío */
-.emptyState {
-    text-align: center;
-    padding: 3rem 1rem;
+/* Tooltips informativos */
+.helpText {
+    font-size: 0.8rem;
     color: #6b7280;
-}
-
-.emptyState p {
-    margin: 0;
-    font-size: 1rem;
-}
-
-/* Loading */
-.loading {
+    margin-top: 0.25rem;
+    font-style: italic;
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 50vh;
-    font-size: 1.125rem;
-    color: #6b7280;
+    gap: 0.25rem;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .modal {
-        margin: 1rem;
-        max-height: calc(100vh - 2rem);
+.helpText::before {
+    content: "💡";
+    font-size: 0.9rem;
+}
+
+/* Estados de validación mejorados */
+.formInput:valid,
+.formSelect:valid {
+    border-color: #10b981;
+    background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2310b981' viewBox='0 0 16 16'><path d='M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 35px;
+}
+
+.formInput:invalid,
+.formSelect:invalid {
+    border-color: #ef4444;
+}
+
+/* Responsive mejorado */
+@media (max-width: 640px) {
+    .calificacionesGrid {
+        grid-template-columns: repeat(2, 1fr);
     }
     
-    .formGrid, .calificacionesGrid {
+    .formGrid {
         grid-template-columns: 1fr;
     }
     
-    .filters {
-        flex-direction: column;
+    .infoAutomatica {
+        padding: 0.75rem;
     }
     
-    .filterSelect {
-        min-width: auto;
+    .infoAutomatica ul {
+        padding-left: 1rem;
     }
     
-    .modalActions {
-        flex-direction: column-reverse;
-    }
-    
-    .cancelButton, .saveButton {
-        width: 100%;
+    .infoAutomatica li {
+        font-size: 0.8rem;
     }
 }
+
+@media (max-width: 480px) {
+    .calificacionesGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Loading states */
+.formSelect.loading {
+    background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'><path d='M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1z' opacity='0.3'/><path d='M8 0a8 8 0 0 1 8 8h-1a7 7 0 0 0-7-7V0z'><animateTransform attributeName='transform' type='rotate' values='0 8 8;360 8 8' dur='1s' repeatCount='indefinite'/></path></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 35px;
+}
+
+/* Destacar campos requeridos */
+.formLabel[data-required="true"]::after {
+    content: " *";
+    color: #dc2626;
+    font-weight: bold;
+}
+
+/* Indicadores de progreso del formulario */
+.modalBody::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #10b981 var(--progreso, 0%), #e5e7eb var(--progreso, 0%));
+    transition: --progreso 0.3s ease;
 }
