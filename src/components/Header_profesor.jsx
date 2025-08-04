@@ -78,9 +78,9 @@ const Header = () => {
         <NavLink to="/profesor/Ayuda_alumno" className={styles.navButton}>
           Centro de Ayuda
         </NavLink>
-        <NavLink to="/encuestas" className={styles.navButton}>
+        {/* <NavLink to="/encuestas" className={styles.navButton}>
           Encuestas
-        </NavLink>
+        </NavLink> */}
       </nav>
 
       {/* Usuario y logout */}
