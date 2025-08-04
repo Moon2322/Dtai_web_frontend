@@ -252,7 +252,7 @@ const Dashboard_profesor = () => {
             </button>
             <button 
               className={styles.actionButton}
-              onClick={() => navigate('/profesor/Gestion_calificaiones')}
+              onClick={() => navigate('/profesor/Gestion_calificaciones')}
             >
               <span>📝</span>
               Gestionar Calificaciones

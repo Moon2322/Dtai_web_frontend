@@ -1,3 +1,6 @@
+// ✅ COMPONENTE ACTUALIZADO: Gestioncalificaciones.jsx
+// Reemplazar completamente el archivo existente
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../css/Gestioncalificaciones.module.css';
@@ -12,429 +15,372 @@ const GestionCalificaciones = () => {
     total_calificaciones: 0,
     promedio_general: 0,
     aprobados: 0,
-    reprobados: 0
+    reprobados: 0,
+    cursando: 0,
+    ultimas_oportunidades_usadas: 0
   });
-  const [asignaturas, /* setAsignaturas */] = useState([]);
-  const [grupos, /* s */] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [asignacionesProfesor, setAsignacionesProfesor] = useState([]);
-const [estudiantesDelGrupo, setEstudiantesDelGrupo] = useState([]);
-const [asignacionSeleccionada, setAsignacionSeleccionada] = useState(null);
-
-  // Estados para filtros
-  const [filtroGrupo, setFiltroGrupo] = useState('');
-  const [filtroAsignatura, setFiltroAsignatura] = useState('');
+  const [estudiantesDelGrupo, setEstudiantesDelGrupo] = useState([]);
+  const [loading, setLoading] = useState(true);
   
   // Estados para modal
   const [mostrarModal, setMostrarModal] = useState(false);
-  const [modoEdicion, setModoEdicion] = useState(false);
+  const [modalTipo, setModalTipo] = useState(''); // 'nuevo' | 'evaluar' | 'detalle'
   const [calificacionSeleccionada, setCalificacionSeleccionada] = useState(null);
-/*   const [estudiantes, setEstudiantes ] = useState([]);
- */  
+  const [asignacionSeleccionada, setAsignacionSeleccionada] = useState(null);
+  const [parcialSeleccionado, setParcialSeleccionado] = useState(1);
+  const [evaluacionesDelAlumno, setEvaluacionesDelAlumno] = useState([]);
+  
   // Estado del formulario
-const [formularioCalificacion, setFormularioCalificacion] = useState({
-  asignacion_id: '', // NUEVO: ID de la asignación profesor-asignatura-grupo
-  alumno_id: '',
-  // Se elimina asignatura_id, grupo_id, ciclo_escolar (se obtienen de la asignación)
-  parcial_1: '',
-  parcial_2: '',
-  parcial_3: '',
-  calificacion_ordinario: '',
-  calificacion_extraordinario: '',
-  calificacion_final: '',
-  estatus: 'cursando',
-  observaciones: ''
-});
-
-
-
-
-  useEffect(() => {
-  // Verificar autenticación
-  const userData = localStorage.getItem('usuario');
-  const token = localStorage.getItem('token');
-  
-  if (!userData || !token) {
-    navigate('/login');
-    return;
-  }
-
-  const user = JSON.parse(userData);
-  if (user.rol !== 'profesor') {
-    navigate('/login');
-    return;
-  }
-
-  // Cargar todos los datos necesarios
-  cargarDatos();
-}, [navigate]);
-
-  // ✅ FUNCIÓN para cargar asignaciones del profesor
-const cargarAsignacionesProfesor = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:5000/api/profesor/mis-asignaturas', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    });
-
-    const data = await response.json();
-    if (data.success) {
-      setAsignacionesProfesor(data.data);
-      console.log('✅ Asignaciones cargadas:', data.data);
-    }
-  } catch (error) {
-    console.error('Error al cargar asignaciones del profesor:', error);
-  }
-};
-
-// Función para calcular el promedio automáticamente
-const calcularCalificacionFinal = (parcial1, parcial2, parcial3, ordinario, extraordinario) => {
-  const calificaciones = [];
-  
-  // Agregar parciales si tienen valor
-  if (parcial1 && parcial1 > 0) calificaciones.push(parseFloat(parcial1));
-  if (parcial2 && parcial2 > 0) calificaciones.push(parseFloat(parcial2));
-  if (parcial3 && parcial3 > 0) calificaciones.push(parseFloat(parcial3));
-  
-  // Si hay ordinario, tiene mayor peso
-  if (ordinario && ordinario > 0) {
-    calificaciones.push(parseFloat(ordinario));
-  }
-  
-  // Si hay extraordinario, reemplaza todo (es la calificación de recuperación)
-  if (extraordinario && extraordinario > 0) {
-    return parseFloat(extraordinario).toFixed(1);
-  }
-  
-  // Si no hay calificaciones, retornar 0
-  if (calificaciones.length === 0) return '';
-  
-  // Calcular promedio
-  const promedio = calificaciones.reduce((sum, cal) => sum + cal, 0) / calificaciones.length;
-  return promedio.toFixed(1);
-};
-
-// Función para determinar el estatus automáticamente
-const determinarEstatus = (calificacionFinal) => {
-  if (!calificacionFinal || calificacionFinal === '') return 'cursando';
-  
-  const cal = parseFloat(calificacionFinal);
-  if (cal >= 6) return 'aprobado';
-  if (cal > 0 && cal < 6) return 'reprobado';
-  return 'cursando';
-};
-
-const calcularEstadisticas = (calificacionesData) => {
-  const stats = {
-    total_calificaciones: calificacionesData.length,
-    promedio_general: 0,
-    aprobados: 0,
-    reprobados: 0
-  };
-
-  if (calificacionesData.length > 0) {
-    const calificacionesFinales = calificacionesData
-      .filter(c => c.calificacion_final && c.calificacion_final > 0)
-      .map(c => parseFloat(c.calificacion_final));
-
-    if (calificacionesFinales.length > 0) {
-      stats.promedio_general = calificacionesFinales.reduce((a, b) => a + b, 0) / calificacionesFinales.length;
-      stats.aprobados = calificacionesFinales.filter(c => c >= 6).length;
-      stats.reprobados = calificacionesFinales.filter(c => c < 6).length;
-    }
-  }
-
-  setEstadisticas(stats);
-};
-
-// ✅ FUNCIÓN para manejar cambio de asignación
-const manejarCambioAsignacion = async (asignacionId) => {
-  if (!asignacionId) {
-    setFormularioCalificacion(prev => ({
-      ...prev,
-      asignacion_id: '',
-      alumno_id: ''
-    }));
-    setEstudiantesDelGrupo([]);
-    setAsignacionSeleccionada(null);
-    return;
-  }
-
-  // Encontrar la asignación seleccionada
-  const asignacion = asignacionesProfesor.find(a => a.id.toString() === asignacionId);
-  setAsignacionSeleccionada(asignacion);
-
-  // Actualizar formulario
-  setFormularioCalificacion(prev => ({
-    ...prev,
-    asignacion_id: asignacionId,
-    alumno_id: '' // Resetear alumno cuando cambia asignación
-  }));
-
-  // Cargar estudiantes del grupo
-  await cargarEstudiantesDelGrupo(asignacion.asignatura_id, asignacion.grupo_id);
-};
-
-// ✅ FUNCIÓN para cargar estudiantes del grupo específico
-const cargarEstudiantesDelGrupo = async (asignaturaId, grupoId) => {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await fetch(
-      `http://localhost:5000/api/profesor/estudiantes-grupo/${grupoId}/asignatura/${asignaturaId}`, 
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
-    );
-
-    const data = await response.json();
-    if (data.success) {
-      setEstudiantesDelGrupo(data.data);
-      console.log('✅ Estudiantes del grupo cargados:', data.data);
-    }
-  } catch (error) {
-    console.error('Error al cargar estudiantes del grupo:', error);
-    setEstudiantesDelGrupo([]);
-  }
-};
-
-const cargarDatos = async () => {
-  try {
-    setLoading(true);
-    const token = localStorage.getItem('token');
-
-    // Cargar calificaciones existentes
-    const responseCalificaciones = await fetch('http://localhost:5000/api/profesor/calificaciones', {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
-
-    // Cargar asignaciones del profesor
-    await cargarAsignacionesProfesor();
-
-    const dataCalificaciones = await responseCalificaciones.json();
-    if (dataCalificaciones.success) {
-      setCalificaciones(dataCalificaciones.data);
-      
-      // Calcular estadísticas
-      calcularEstadisticas(dataCalificaciones.data);
-    }
-
-  } catch (error) {
-    console.error('Error al cargar datos:', error);
-  } finally {
-    setLoading(false);
-  }
-};
-
-/*   const cargarEstudiantes = async (grupoId, asignaturaId) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/profesor/calificaciones/estudiantes/${grupoId}/${asignaturaId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      
-      const data = await response.json();
-      if (data.success) {
-        setEstudiantes(data.data);
-      }
-    } catch (error) {
-      console.error('Error al cargar estudiantes:', error);
-    }
-  }; */
-
-  const calificacionesFiltradas = calificaciones.filter(cal => {
-    const coincideGrupo = !filtroGrupo || cal.grupo === filtroGrupo;
-    const coincideAsignatura = !filtroAsignatura || cal.asignatura_codigo === filtroAsignatura;
-    return coincideGrupo && coincideAsignatura;
+  const [formulario, setFormulario] = useState({
+    asignacion_id: '',
+    alumno_id: '',
+    numero_parcial: 1,
+    oportunidad: 'ordinario',
+    calificacion: '',
+    observaciones_parcial: ''
   });
 
-  const abrirModalAgregar = () => {
-    setModoEdicion(false);
-    setCalificacionSeleccionada(null);
-    setFormularioCalificacion({
-      alumno_id: '',
-      asignatura_id: '',
-      grupo_id: '',
-      parcial_1: '',
-      parcial_2: '',
-      parcial_3: '',
-      calificacion_ordinario: '',
-      calificacion_extraordinario: '',
-      calificacion_final: '',
-      estatus: 'cursando',
-      observaciones: '',
-      ciclo_escolar: '2025-1'
-    });
-    setMostrarModal(true);
-  };
-
-  const abrirModalEditar = (calificacion) => {
-    setModoEdicion(true);
-    setCalificacionSeleccionada(calificacion);
-    setFormularioCalificacion({
-      alumno_id: calificacion.alumno_id || '',
-      asignatura_id: calificacion.asignatura_id || '',
-      grupo_id: calificacion.grupo_id || '',
-      parcial_1: calificacion.parcial_1 || '',
-      parcial_2: calificacion.parcial_2 || '',
-      parcial_3: calificacion.parcial_3 || '',
-      calificacion_ordinario: calificacion.calificacion_ordinario || '',
-      calificacion_extraordinario: calificacion.calificacion_extraordinario || '',
-      calificacion_final: calificacion.calificacion_final || '',
-      estatus: calificacion.estatus || 'cursando',
-      observaciones: calificacion.observaciones || '',
-      ciclo_escolar: calificacion.ciclo_escolar || '2025-1'
-    });
-    setMostrarModal(true);
-  };
-
-// ✅ MODIFICAR la función manejarCambioFormulario para cálculo automático
-const manejarCambioFormulario = (campo, valor) => {
-  const nuevoFormulario = {
-    ...formularioCalificacion,
-    [campo]: valor
-  };
-
-  // Si cambió alguna calificación, recalcular automáticamente
-  if (['parcial_1', 'parcial_2', 'parcial_3', 'calificacion_ordinario', 'calificacion_extraordinario'].includes(campo)) {
-    const calificacionFinal = calcularCalificacionFinal(
-      nuevoFormulario.parcial_1,
-      nuevoFormulario.parcial_2,
-      nuevoFormulario.parcial_3,
-      nuevoFormulario.calificacion_ordinario,
-      nuevoFormulario.calificacion_extraordinario
-    );
-    
-    const estatus = determinarEstatus(calificacionFinal);
-    
-    nuevoFormulario.calificacion_final = calificacionFinal;
-    nuevoFormulario.estatus = estatus;
-  }
-
-  setFormularioCalificacion(nuevoFormulario);
-
-  // Si cambió grupo o asignatura, cargar estudiantes
-  if (campo === 'asignacion_id') {
-    manejarCambioAsignacion(valor);
-  }
-};
-
-const guardarCalificacion = async (e) => {
-  e.preventDefault();
-  
-  if (!asignacionSeleccionada) {
-    alert('Debes seleccionar una materia y grupo');
-    return;
-  }
-
-  try {
+  useEffect(() => {
+    // Verificar autenticación
+    const userData = localStorage.getItem('usuario');
     const token = localStorage.getItem('token');
-    const url = modoEdicion 
-      ? `http://localhost:5000/api/profesor/calificaciones/${calificacionSeleccionada.id}`
-      : 'http://localhost:5000/api/profesor/calificaciones';
     
-    const method = modoEdicion ? 'PUT' : 'POST';
-
-    // Preparar datos con información de la asignación
-    const datosCompletos = {
-      ...formularioCalificacion,
-      asignatura_id: asignacionSeleccionada.asignatura_id,
-      grupo_id: asignacionSeleccionada.grupo_id,
-      ciclo_escolar: asignacionSeleccionada.ciclo_escolar
-    };
-
-    console.log('Enviando datos:', datosCompletos);
-
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(datosCompletos)
-    });
-
-    const data = await response.json();
-    
-    if (data.success) {
-      alert(modoEdicion 
-        ? '✅ Calificación actualizada correctamente' 
-        : '✅ Calificación guardada correctamente'
-      );
-      setMostrarModal(false);
-      await cargarDatos();
-    } else {
-      alert(data.message || 'Error al guardar la calificación');
+    if (!userData || !token) {
+      navigate('/login');
+      return;
     }
-  } catch (error) {
-    console.error('Error al guardar calificación:', error);
-    alert('Error de conexión. Inténtalo de nuevo.');
-  }
-};
 
-  const eliminarCalificacion = async (id) => {
-    if (!confirm('¿Estás seguro de que deseas eliminar esta calificación?')) {
+    const user = JSON.parse(userData);
+    if (user.rol !== 'profesor') {
+      navigate('/login');
+      return;
+    }
+
+    cargarDatos();
+  }, [navigate]);
+
+  // ============================================
+  // FUNCIONES DE CARGA DE DATOS
+  // ============================================
+
+  const cargarDatos = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+
+      // Cargar calificaciones y estadísticas en paralelo
+      const [calificacionesRes, estadisticasRes, asignacionesRes] = await Promise.all([
+        fetch('http://localhost:5000/api/profesor/calificaciones', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }),
+        fetch('http://localhost:5000/api/profesor/calificaciones/estadisticas', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }),
+        fetch('http://localhost:5000/api/profesor/mis-asignaturas', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+      ]);
+
+      const [calificacionesData, estadisticasData, asignacionesData] = await Promise.all([
+        calificacionesRes.json(),
+        estadisticasRes.json(),
+        asignacionesRes.json()
+      ]);
+
+      if (calificacionesData.success) {
+        setCalificaciones(calificacionesData.data);
+      }
+
+      if (estadisticasData.success) {
+        setEstadisticas(estadisticasData.data);
+      }
+
+      if (asignacionesData.success) {
+        setAsignacionesProfesor(asignacionesData.data);
+      }
+
+    } catch (error) {
+      console.error('Error al cargar datos:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cargarEstudiantesDelGrupo = async (asignaturaId, grupoId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(
+        `http://localhost:5000/api/profesor/estudiantes-grupo/${grupoId}/asignatura/${asignaturaId}`, 
+        {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }
+      );
+
+      const data = await response.json();
+      if (data.success) {
+        setEstudiantesDelGrupo(data.data);
+      }
+    } catch (error) {
+      console.error('Error al cargar estudiantes del grupo:', error);
+      setEstudiantesDelGrupo([]);
+    }
+  };
+
+  const cargarDetalleCalificacion = async (calificacionId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(
+        `http://localhost:5000/api/profesor/calificaciones/${calificacionId}/detalle`,
+        {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }
+      );
+
+      const data = await response.json();
+      if (data.success) {
+        setCalificacionSeleccionada(data.data.calificacion);
+        setEvaluacionesDelAlumno(data.data.evaluaciones);
+      }
+    } catch (error) {
+      console.error('Error al cargar detalle de calificación:', error);
+    }
+  };
+
+  // ============================================
+  // FUNCIONES DEL MODAL
+  // ============================================
+
+  const abrirModalNuevo = () => {
+    setFormulario({
+      asignacion_id: '',
+      alumno_id: '',
+      numero_parcial: 1,
+      oportunidad: 'ordinario',
+      calificacion: '',
+      observaciones_parcial: ''
+    });
+    setAsignacionSeleccionada(null);
+    setEstudiantesDelGrupo([]);
+    setModalTipo('nuevo');
+    setMostrarModal(true);
+  };
+
+  const abrirModalEvaluar = async (calificacion, parcial = 1) => {
+    await cargarDetalleCalificacion(calificacion.id);
+    setParcialSeleccionado(parcial);
+    
+    // Determinar siguiente oportunidad para este parcial
+    const siguienteOportunidad = await obtenerSiguienteOportunidad(calificacion.id, parcial);
+    
+    setFormulario({
+      calificacion_id: calificacion.id,
+      numero_parcial: parcial,
+      oportunidad: siguienteOportunidad || 'ordinario',
+      calificacion: '',
+      observaciones_parcial: ''
+    });
+    
+    setModalTipo('evaluar');
+    setMostrarModal(true);
+  };
+
+  const abrirModalDetalle = async (calificacion) => {
+    await cargarDetalleCalificacion(calificacion.id);
+    setModalTipo('detalle');
+    setMostrarModal(true);
+  };
+
+  const cerrarModal = () => {
+    setMostrarModal(false);
+    setModalTipo('');
+    setCalificacionSeleccionada(null);
+    setAsignacionSeleccionada(null);
+    setEvaluacionesDelAlumno([]);
+    setFormulario({
+      asignacion_id: '',
+      alumno_id: '',
+      numero_parcial: 1,
+      oportunidad: 'ordinario',
+      calificacion: '',
+      observaciones_parcial: ''
+    });
+  };
+
+  // ============================================
+  // FUNCIONES DE NEGOCIO
+  // ============================================
+
+  const obtenerSiguienteOportunidad = async (calificacionId, parcial) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(
+        `http://localhost:5000/api/profesor/calificaciones/${calificacionId}/siguiente-oportunidad/${parcial}`,
+        {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }
+      );
+
+      const data = await response.json();
+      if (data.success) {
+        return data.data.siguiente_oportunidad;
+      }
+    } catch (error) {
+      console.error('Error al obtener siguiente oportunidad:', error);
+    }
+    return 'ordinario';
+  };
+
+  const manejarCambioAsignacion = async (asignacionId) => {
+    if (!asignacionId) {
+      setAsignacionSeleccionada(null);
+      setEstudiantesDelGrupo([]);
+      return;
+    }
+
+    const asignacion = asignacionesProfesor.find(a => a.id.toString() === asignacionId);
+    setAsignacionSeleccionada(asignacion);
+
+    // Cargar estudiantes del grupo
+    await cargarEstudiantesDelGrupo(asignacion.asignatura_id, asignacion.grupo_id);
+    
+    setFormulario(prev => ({
+      ...prev,
+      asignacion_id: asignacionId,
+      alumno_id: ''
+    }));
+  };
+
+  const evaluarParcial = async (e) => {
+    e.preventDefault();
+    
+    if (!formulario.calificacion) {
+      alert('Debes ingresar una calificación');
       return;
     }
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/profesor/calificaciones/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const url = modalTipo === 'nuevo' 
+        ? 'http://localhost:5000/api/profesor/calificaciones/inicializar'
+        : `http://localhost:5000/api/profesor/calificaciones/${formulario.calificacion_id}/evaluar-parcial`;
 
-      const data = await response.json();
-      
-      if (data.success) {
-        cargarDatos();
-        alert('Calificación eliminada exitosamente');
+      let body;
+      if (modalTipo === 'nuevo') {
+        // Primero inicializar la calificación
+        const initResponse = await fetch('http://localhost:5000/api/profesor/calificaciones/inicializar', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            alumno_id: formulario.alumno_id,
+            asignatura_id: asignacionSeleccionada.asignatura_id,
+            grupo_id: asignacionSeleccionada.grupo_id
+          })
+        });
+
+        const initData = await initResponse.json();
+        if (!initData.success) {
+          alert(initData.message);
+          return;
+        }
+
+        // Luego evaluar el parcial
+        body = {
+          numero_parcial: formulario.numero_parcial,
+          oportunidad: formulario.oportunidad,
+          calificacion: formulario.calificacion,
+          observaciones_parcial: formulario.observaciones_parcial
+        };
+
+        const evalResponse = await fetch(
+          `http://localhost:5000/api/profesor/calificaciones/${initData.calificacion_id}/evaluar-parcial`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+          }
+        );
+
+        const evalData = await evalResponse.json();
+        if (evalData.success) {
+          alert('✅ ' + evalData.message);
+          cerrarModal();
+          await cargarDatos();
+        } else {
+          alert(evalData.message);
+        }
       } else {
-        alert(data.message || 'Error al eliminar la calificación');
+        // Evaluar parcial existente
+        body = {
+          numero_parcial: formulario.numero_parcial,
+          oportunidad: formulario.oportunidad,
+          calificacion: formulario.calificacion,
+          observaciones_parcial: formulario.observaciones_parcial
+        };
+
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          alert('✅ ' + data.message);
+          cerrarModal();
+          await cargarDatos();
+        } else {
+          alert(data.message);
+        }
       }
     } catch (error) {
-      console.error('Error al eliminar calificación:', error);
-      alert('Error al eliminar la calificación');
+      console.error('Error al evaluar parcial:', error);
+      alert('Error de conexión. Inténtalo de nuevo.');
     }
   };
 
-  const obtenerEvaluacionTexto = (calificacion) => {
-    if (calificacion.calificacion_final) return 'Final';
-    if (calificacion.calificacion_extraordinario) return 'Extraordinario';
-    if (calificacion.calificacion_ordinario) return 'Ordinario';
-    if (calificacion.parcial_3) return 'Parcial 3';
-    if (calificacion.parcial_2) return 'Parcial 2';
-    if (calificacion.parcial_1) return 'Parcial 1';
-    return 'Sin calificar';
+  // ============================================
+  // FUNCIONES DE UTILIDAD
+  // ============================================
+
+  const obtenerColorCalificacion = (calificacion) => {
+    if (calificacion === 'NA') return 'reprobado';
+    if (calificacion === null || calificacion === '') return 'cursando';
+    return 'aprobado';
   };
 
-  const obtenerCalificacionValor = (calificacion) => {
-    return calificacion.calificacion_final || 
-           calificacion.calificacion_extraordinario || 
-           calificacion.calificacion_ordinario || 
-           calificacion.parcial_3 || 
-           calificacion.parcial_2 || 
-           calificacion.parcial_1 || 
-           0;
-  };
-
-  const obtenerClaseEvaluacion = (evaluacion) => {
-    switch (evaluacion) {
-      case 'Final': return styles.evaluacionFinal;
-      case 'Ordinario': return styles.evaluacionOrdinario;
-      case 'Extraordinario': return styles.evaluacionExtraordinario;
-      default: return styles.evaluacionParcial;
+  const obtenerIconoOportunidad = (oportunidad) => {
+    switch (oportunidad) {
+      case 'ordinario': return '📘';
+      case 'remedial': return '📙';
+      case 'extraordinario': return '📕';
+      case 'ultima_oportunidad': return '🚨';
+      default: return '📖';
     }
+  };
+
+  const formatearFecha = (fecha) => {
+    return new Date(fecha).toLocaleDateString('es-MX', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
   };
 
   if (loading) {
     return (
       <div className={styles.container}>
         <Header />
-        <div className={styles.loading}>Cargando...</div>
+        <div className={styles.loading}>Cargando calificaciones...</div>
       </div>
     );
   }
@@ -443,438 +389,476 @@ const guardarCalificacion = async (e) => {
     <div className={styles.container}>
       <Header />
       
-      <div className={styles.content}>
+      <main className={styles.content}>
+        {/* Encabezado */}
         <div className={styles.header}>
-          <h1 className={styles.title}>📊 Gestión de Calificaciones</h1>
-          <p className={styles.subtitle}>Administra y consulta las calificaciones de tus estudiantes</p>
+          <h1 className={styles.title}>Gestión de Calificaciones</h1>
+          <p className={styles.subtitle}>Sistema de evaluación por parciales y oportunidades</p>
         </div>
 
         {/* Estadísticas */}
         <div className={styles.statsGrid}>
+          <div className={`${styles.statCard} ${styles.statTotal}`}>
+            <div className={styles.statContent}>
+              <h3>Total Calificaciones</h3>
+              <p>{estadisticas.total_calificaciones}</p>
+            </div>
+            <div className={styles.statIcon}>📊</div>
+          </div>
+          
+          <div className={`${styles.statCard} ${styles.statAprobados}`}>
+            <div className={styles.statContent}>
+              <h3>Aprobados</h3>
+              <p>{estadisticas.aprobados}</p>
+            </div>
+            <div className={styles.statIcon}>✅</div>
+          </div>
+          
+          <div className={`${styles.statCard} ${styles.statReprobados}`}>
+            <div className={styles.statContent}>
+              <h3>Reprobados</h3>
+              <p>{estadisticas.reprobados}</p>
+            </div>
+            <div className={styles.statIcon}>❌</div>
+          </div>
+          
           <div className={`${styles.statCard} ${styles.statPromedio}`}>
             <div className={styles.statContent}>
-              <span className={styles.statLabel}>Promedio General</span>
-              <p>{Number(estadisticas.promedio_general || 0).toFixed(2)}</p>
+              <h3>Promedio General</h3>
+              <p>{estadisticas.promedio_general}</p>
             </div>
             <div className={styles.statIcon}>📈</div>
           </div>
 
-          <div className={`${styles.statCard} ${styles.statTotal}`}>
+          <div className={`${styles.statCard} ${styles.statUltimas}`}>
             <div className={styles.statContent}>
-              <span className={styles.statLabel}>Total Calificaciones</span>
-              <p>{estadisticas.total_calificaciones || 0}</p>
+              <h3>Últimas Oportunidades</h3>
+              <p>{estadisticas.ultimas_oportunidades_usadas}</p>
             </div>
-            <div className={styles.statIcon}>📝</div>
-          </div>
-
-          <div className={`${styles.statCard} ${styles.statAprobados}`}>
-            <div className={styles.statContent}>
-              <span className={styles.statLabel}>Aprobados</span>
-              <p>{estadisticas.aprobados || 0}</p>
-            </div>
-            <div className={styles.statIcon}>✅</div>
-          </div>
-
-          <div className={`${styles.statCard} ${styles.statReprobados}`}>
-            <div className={styles.statContent}>
-              <span className={styles.statLabel}>Reprobados</span>
-              <p>{estadisticas.reprobados || 0}</p>
-            </div>
-            <div className={styles.statIcon}>❌</div>
+            <div className={styles.statIcon}>🚨</div>
           </div>
         </div>
 
-        {/* Filtros */}
-        <div className={styles.filtersContainer}>
-          <div className={styles.filters}>
-            <select
-              value={filtroGrupo}
-              onChange={(e) => setFiltroGrupo(e.target.value)}
-              className={styles.filterSelect}
-            >
-              <option value="">Todos los grupos</option>
-              {grupos.map(grupo => (
-                <option key={grupo.id} value={grupo.codigo}>
-                  {grupo.codigo}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={filtroAsignatura}
-              onChange={(e) => setFiltroAsignatura(e.target.value)}
-              className={styles.filterSelect}
-            >
-              <option value="">Todas las asignaturas</option>
-              {asignaturas.map(asignatura => (
-                <option key={asignatura.asignatura_codigo} value={asignatura.asignatura_codigo}>
-                  {asignatura.asignatura_nombre}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Botón Agregar */}
-        <button onClick={abrirModalAgregar} className={styles.addButton}>
+        {/* Botón agregar */}
+        <button 
+          className={styles.addButton}
+          onClick={abrirModalNuevo}
+        >
           <span className={styles.addIcon}>+</span>
-          Agregar Nueva Calificación
+          Nueva Evaluación
         </button>
 
-        {/* Tabla de Calificaciones */}
+        {/* Tabla de calificaciones */}
         <div className={styles.tableContainer}>
           <table className={styles.table}>
             <thead className={styles.tableHeader}>
               <tr>
                 <th>Estudiante</th>
-                <th>Matrícula</th>
                 <th>Asignatura</th>
-                <th>Evaluación</th>
-                <th>Calificación</th>
-                <th>Estatus</th>
-                <th>Fecha</th>
+                <th>Grupo</th>
+                <th>Parciales</th>
+                <th>Calificación Final</th>
+                <th>Estado</th>
+                <th>Última Actualización</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody className={styles.tableBody}>
-              {calificacionesFiltradas.map((calificacion) => {
-                const evaluacion = obtenerEvaluacionTexto(calificacion);
-                const valor = obtenerCalificacionValor(calificacion);
-                
-                return (
-                  <tr key={calificacion.id}>
-                    <td>
-                      <div className={styles.studentInfo}>
-                        <div className={styles.studentName}>
-                          {calificacion.estudiante}
-                        </div>
-                        <div className={styles.studentGroup}>
-                          Grupo: {calificacion.grupo}
-                        </div>
+              {calificaciones.map(calificacion => (
+                <tr key={calificacion.id}>
+                  <td>
+                    <div className={styles.studentInfo}>
+                      <div className={styles.studentName}>
+                        {calificacion.estudiante_nombre}
                       </div>
-                    </td>
-                    <td>
-                      <span className={styles.cellText}>{calificacion.matricula}</span>
-                    </td>
-                    <td>
-                      <span className={styles.cellText}>{calificacion.asignatura}</span>
-                    </td>
-                    <td>
-                      <span className={`${styles.evaluacionBadge} ${obtenerClaseEvaluacion(evaluacion)}`}>
-                        {evaluacion}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={valor >= 70 ? styles.calificacionAprobado : styles.calificacionReprobado}>
-                        {Number(valor).toFixed(1)}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={`${styles.estatusBadge} ${styles[`estatus${calificacion.estatus}`]}`}>
-                        {calificacion.estatus}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={styles.cellText}>
-                        {new Date(calificacion.fecha_actualizacion).toLocaleDateString()}
-                      </span>
-                    </td>
-                    <td>
-                      <div className={styles.actions}>
-                        <button
-                          onClick={() => abrirModalEditar(calificacion)}
-                          className={styles.editButton}
-                          title="Editar"
-                        >
-                          ✏️
-                        </button>
-                        <button
-                          onClick={() => eliminarCalificacion(calificacion.id)}
-                          className={styles.deleteButton}
-                          title="Eliminar"
-                        >
-                          🗑️
-                        </button>
+                      <div className={styles.studentGroup}>
+                        {calificacion.estudiante_matricula}
                       </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                    </div>
+                  </td>
+                  
+                  <td>
+                    <div className={styles.cellText}>
+                      <strong>{calificacion.asignatura_nombre}</strong>
+                      <br />
+                      <small>{calificacion.asignatura_codigo}</small>
+                    </div>
+                  </td>
+                  
+                  <td>
+                    <div className={styles.cellText}>
+                      {calificacion.grupo_codigo}
+                      <br />
+                      <small>{calificacion.carrera_nombre}</small>
+                    </div>
+                  </td>
+                  
+                  <td>
+                    <div className={styles.parcialesContainer}>
+                      {calificacion.detalle_parciales ? 
+                        JSON.parse(calificacion.detalle_parciales).map(parcial => (
+                          <div key={parcial.numero_parcial} className={styles.parcialBadge}>
+                            {obtenerIconoOportunidad(parcial.oportunidad)} P{parcial.numero_parcial}: {parcial.calificacion}
+                          </div>
+                        )) :
+                        <span className={styles.sinParciales}>Sin evaluaciones</span>
+                      }
+                      <div className={styles.parcialesAcciones}>
+                        {[1, 2, 3].map(parcial => (
+                          <button
+                            key={parcial}
+                            onClick={() => abrirModalEvaluar(calificacion, parcial)}
+                            className={styles.btnEvaluarParcial}
+                            title={`Evaluar Parcial ${parcial}`}
+                          >
+                            P{parcial}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </td>
+                  
+                  <td>
+                    <span className={`${styles.calificacionFinal} ${styles[obtenerColorCalificacion(calificacion.calificacion_final)]}`}>
+                      {calificacion.calificacion_final || 'Pendiente'}
+                    </span>
+                  </td>
+                  
+                  <td>
+                    <span className={`${styles.estatusBadge} ${styles[`estatus${calificacion.estatus}`]}`}>
+                      {calificacion.estatus}
+                    </span>
+                  </td>
+                  
+                  <td>
+                    <span className={styles.cellText}>
+                      {formatearFecha(calificacion.fecha_actualizacion)}
+                    </span>
+                  </td>
+                  
+                  <td>
+                    <div className={styles.actionsContainer}>
+                      <button
+                        onClick={() => abrirModalDetalle(calificacion)}
+                        className={`${styles.actionButton} ${styles.detailButton}`}
+                        title="Ver detalle"
+                      >
+                        👁️
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
-
-          {calificacionesFiltradas.length === 0 && (
+          
+          {calificaciones.length === 0 && (
             <div className={styles.emptyState}>
               <p>No hay calificaciones registradas</p>
+              <button onClick={abrirModalNuevo} className={styles.emptyStateButton}>
+                Crear primera evaluación
+              </button>
             </div>
           )}
         </div>
 
+        {/* ============================================ */}
+        {/* MODALES */}
+        {/* ============================================ */}
 
+        {mostrarModal && (
+          <div className={styles.modalOverlay} onClick={cerrarModal}>
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+              
+              {/* Modal: Nueva Evaluación */}
+              {modalTipo === 'nuevo' && (
+                <>
+                  <div className={styles.modalHeader}>
+                    <h3 className={styles.modalTitle}>➕ Nueva Evaluación</h3>
+                    <button className={styles.closeButton} onClick={cerrarModal}>✕</button>
+                  </div>
 
-{/* Modal para Agregar/Editar Calificación */}
-{mostrarModal && (
-  <div className={styles.modalOverlay} onClick={() => setMostrarModal(false)}>
-    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-      <div className={styles.modalHeader}>
-        <h3 className={styles.modalTitle}>
-          {modoEdicion ? '✏️ Editar Calificación' : '➕ Nueva Calificación'}
-        </h3>
-        <button 
-          className={styles.closeButton}
-          onClick={() => setMostrarModal(false)}
-          type="button"
-        >
-          ✕
-        </button>
-      </div>
+                  <form onSubmit={evaluarParcial} className={styles.modalForm}>
+                    <div className={styles.modalBody}>
+                      
+                      {/* Selección de materia y grupo */}
+                      <div className={styles.formSection}>
+                        <h4 className={styles.sectionTitle}>📚 Materia y Grupo</h4>
+                        <div className={styles.formGroup}>
+                          <label className={styles.formLabel}>Seleccionar asignación *</label>
+                          <select
+                            value={formulario.asignacion_id}
+                            onChange={(e) => manejarCambioAsignacion(e.target.value)}
+                            className={styles.formSelect}
+                            required
+                          >
+                            <option value="">Seleccionar materia y grupo</option>
+                            {asignacionesProfesor.map(asignacion => (
+                              <option key={asignacion.id} value={asignacion.id}>
+                                📖 {asignacion.asignatura_nombre} - 👥 {asignacion.grupo_codigo}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
 
-      <form onSubmit={guardarCalificacion} className={styles.modalForm}>
-        <div className={styles.modalBody}>
-          
-          {/* Selección de Materia-Grupo (combinado) */}
-          <div className={styles.formSection}>
-            <h4 className={styles.sectionTitle}>📚 Seleccionar Materia y Grupo</h4>
-            
-            <div className={styles.formGroup}>
-              <label className={styles.formLabel}>Materia y Grupo *</label>
-              <select
-                value={formularioCalificacion.asignacion_id || ''}
-                onChange={(e) => manejarCambioAsignacion(e.target.value)}
-                className={styles.formSelect}
-                required
-              >
-                <option value="">Seleccionar materia y grupo</option>
-                {asignacionesProfesor.map(asignacion => (
-                  <option key={asignacion.id} value={asignacion.id}>
-                    📖 {asignacion.asignatura_nombre} ({asignacion.asignatura_codigo}) - 
-                    👥 Grupo {asignacion.grupo_codigo} - 
-                    🎓 {asignacion.carrera_nombre} - 
-                    📅 {asignacion.ciclo_escolar}
-                    ({asignacion.total_estudiantes} estudiantes)
-                  </option>
-                ))}
-              </select>
-              <small className={styles.helpText}>
-                Solo se muestran las materias y grupos que tienes asignados
-              </small>
+                      {/* Selección de estudiante */}
+                      {asignacionSeleccionada && (
+                        <div className={styles.formSection}>
+                          <h4 className={styles.sectionTitle}>👤 Estudiante</h4>
+                          <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>Seleccionar estudiante *</label>
+                            <select
+                              value={formulario.alumno_id}
+                              onChange={(e) => setFormulario(prev => ({...prev, alumno_id: e.target.value}))}
+                              className={styles.formSelect}
+                              required
+                            >
+                              <option value="">Seleccionar estudiante</option>
+                              {estudiantesDelGrupo.map(estudiante => (
+                                <option key={estudiante.id} value={estudiante.id}>
+                                  {estudiante.nombre_completo} - {estudiante.matricula}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Evaluación */}
+                      {formulario.alumno_id && (
+                        <div className={styles.formSection}>
+                          <h4 className={styles.sectionTitle}>📊 Evaluación</h4>
+                          
+                          <div className={styles.formGrid}>
+                            <div className={styles.formGroup}>
+                              <label className={styles.formLabel}>Parcial *</label>
+                              <select
+                                value={formulario.numero_parcial}
+                                onChange={(e) => setFormulario(prev => ({...prev, numero_parcial: parseInt(e.target.value)}))}
+                                className={styles.formSelect}
+                                required
+                              >
+                                <option value={1}>Parcial 1</option>
+                                <option value={2}>Parcial 2</option>
+                                <option value={3}>Parcial 3</option>
+                              </select>
+                            </div>
+
+                            <div className={styles.formGroup}>
+                              <label className={styles.formLabel}>Oportunidad *</label>
+                              <select
+                                value={formulario.oportunidad}
+                                onChange={(e) => setFormulario(prev => ({...prev, oportunidad: e.target.value}))}
+                                className={styles.formSelect}
+                                required
+                              >
+                                <option value="ordinario">📘 Ordinario</option>
+                                <option value="remedial">📙 Remedial</option>
+                                <option value="extraordinario">📕 Extraordinario</option>
+                                <option value="ultima_oportunidad">🚨 Última Oportunidad</option>
+                              </select>
+                            </div>
+
+                            <div className={styles.formGroup}>
+                              <label className={styles.formLabel}>Calificación *</label>
+                              <select
+                                value={formulario.calificacion}
+                                onChange={(e) => setFormulario(prev => ({...prev, calificacion: e.target.value}))}
+                                className={styles.formSelect}
+                                required
+                              >
+                                <option value="">Seleccionar</option>
+                                <option value="NA">❌ NA (No Aprobó)</option>
+                                {['8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6', '8.7', '8.8', '8.9',
+                                  '9.0', '9.1', '9.2', '9.3', '9.4', '9.5', '9.6', '9.7', '9.8', '9.9', '10.0'].map(cal => (
+                                  <option key={cal} value={cal}>✅ {cal}</option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+
+                          <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>Observaciones</label>
+                            <textarea
+                              value={formulario.observaciones_parcial}
+                              onChange={(e) => setFormulario(prev => ({...prev, observaciones_parcial: e.target.value}))}
+                              className={styles.formTextarea}
+                              rows="3"
+                              placeholder="Comentarios sobre la evaluación..."
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className={styles.modalFooter}>
+                      <button type="button" className={styles.cancelButton} onClick={cerrarModal}>
+                        Cancelar
+                      </button>
+                      <button type="submit" className={styles.saveButton}>
+                        💾 Guardar Evaluación
+                      </button>
+                    </div>
+                  </form>
+                </>
+              )}
+
+              {/* Modal: Evaluar Parcial */}
+              {modalTipo === 'evaluar' && calificacionSeleccionada && (
+                <>
+                  <div className={styles.modalHeader}>
+                    <h3 className={styles.modalTitle}>
+                      📊 Evaluar Parcial {parcialSeleccionado} - {calificacionSeleccionada.estudiante_nombre}
+                    </h3>
+                    <button className={styles.closeButton} onClick={cerrarModal}>✕</button>
+                  </div>
+
+                  <form onSubmit={evaluarParcial} className={styles.modalForm}>
+                    <div className={styles.modalBody}>
+                      
+                      <div className={styles.infoEstudiante}>
+                        <h4>👤 {calificacionSeleccionada.estudiante_nombre}</h4>
+                        <p>📋 Matrícula: {calificacionSeleccionada.matricula}</p>
+                        <p>🚨 Última oportunidad usada: {calificacionSeleccionada.ultima_oportunidad_usada ? 'SÍ' : 'NO'}</p>
+                      </div>
+
+                      <div className={styles.formSection}>
+                        <h4 className={styles.sectionTitle}>📊 Nueva Evaluación</h4>
+                        
+                        <div className={styles.formGrid}>
+                          <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>Oportunidad</label>
+                            <input
+                              type="text"
+                              value={`${obtenerIconoOportunidad(formulario.oportunidad)} ${formulario.oportunidad}`}
+                              className={styles.formInput}
+                              readOnly
+                            />
+                          </div>
+
+                          <div className={styles.formGroup}>
+                            <label className={styles.formLabel}>Calificación *</label>
+                            <select
+                              value={formulario.calificacion}
+                              onChange={(e) => setFormulario(prev => ({...prev, calificacion: e.target.value}))}
+                              className={styles.formSelect}
+                              required
+                            >
+                              <option value="">Seleccionar</option>
+                              <option value="NA">❌ NA (No Aprobó)</option>
+                              {['8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6', '8.7', '8.8', '8.9',
+                                '9.0', '9.1', '9.2', '9.3', '9.4', '9.5', '9.6', '9.7', '9.8', '9.9', '10.0'].map(cal => (
+                                <option key={cal} value={cal}>✅ {cal}</option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className={styles.formGroup}>
+                          <label className={styles.formLabel}>Observaciones</label>
+                          <textarea
+                            value={formulario.observaciones_parcial}
+                            onChange={(e) => setFormulario(prev => ({...prev, observaciones_parcial: e.target.value}))}
+                            className={styles.formTextarea}
+                            rows="3"
+                            placeholder="Comentarios sobre esta evaluación..."
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={styles.modalFooter}>
+                      <button type="button" className={styles.cancelButton} onClick={cerrarModal}>
+                        Cancelar
+                      </button>
+                      <button type="submit" className={styles.saveButton}>
+                        💾 Guardar Evaluación
+                      </button>
+                    </div>
+                  </form>
+                </>
+              )}
+
+              {/* Modal: Ver Detalle */}
+              {modalTipo === 'detalle' && calificacionSeleccionada && (
+                <>
+                  <div className={styles.modalHeader}>
+                    <h3 className={styles.modalTitle}>
+                      👁️ Detalle - {calificacionSeleccionada.estudiante_nombre}
+                    </h3>
+                    <button className={styles.closeButton} onClick={cerrarModal}>✕</button>
+                  </div>
+
+                  <div className={styles.modalBody}>
+                    <div className={styles.detalleContainer}>
+                      <div className={styles.infoGeneral}>
+                        <h4>📋 Información General</h4>
+                        <p><strong>Estudiante:</strong> {calificacionSeleccionada.estudiante_nombre}</p>
+                        <p><strong>Matrícula:</strong> {calificacionSeleccionada.matricula}</p>
+                        <p><strong>Calificación Final:</strong> 
+                          <span className={`${styles.calificacionFinal} ${styles[obtenerColorCalificacion(calificacionSeleccionada.calificacion_final)]}`}>
+                            {calificacionSeleccionada.calificacion_final || 'Pendiente'}
+                          </span>
+                        </p>
+                        <p><strong>Estado:</strong> 
+                          <span className={`${styles.estatusBadge} ${styles[`estatus${calificacionSeleccionada.estatus}`]}`}>
+                            {calificacionSeleccionada.estatus}
+                          </span>
+                        </p>
+                        <p><strong>Última oportunidad usada:</strong> {calificacionSeleccionada.ultima_oportunidad_usada ? '🚨 SÍ' : '✅ NO'}</p>
+                      </div>
+
+                      <div className={styles.historialEvaluaciones}>
+                        <h4>📊 Historial de Evaluaciones</h4>
+                        {evaluacionesDelAlumno.length > 0 ? (
+                          <div className={styles.evaluacionesGrid}>
+                            {evaluacionesDelAlumno.map((evaluacion, index) => (
+                              <div key={index} className={`${styles.evaluacionCard} ${evaluacion.es_calificacion_final ? styles.evaluacionFinal : ''}`}>
+                                <div className={styles.evaluacionHeader}>
+                                  <span className={styles.parcialNumero}>Parcial {evaluacion.numero_parcial}</span>
+                                  <span className={`${styles.oportunidadBadge} ${styles[`oportunidad${evaluacion.oportunidad}`]}`}>
+                                    {obtenerIconoOportunidad(evaluacion.oportunidad)} {evaluacion.oportunidad}
+                                  </span>
+                                </div>
+                                <div className={styles.evaluacionBody}>
+                                  <div className={`${styles.calificacionEvaluacion} ${styles[obtenerColorCalificacion(evaluacion.calificacion)]}`}>
+                                    {evaluacion.calificacion}
+                                  </div>
+                                  <div className={styles.fechaEvaluacion}>
+                                    {formatearFecha(evaluacion.fecha_evaluacion)}
+                                  </div>
+                                  {evaluacion.es_calificacion_final && (
+                                    <div className={styles.evaluacionFinalBadge}>✅ Final</div>
+                                  )}
+                                </div>
+                                {evaluacion.observaciones_parcial && (
+                                  <div className={styles.observacionesEvaluacion}>
+                                    💭 {evaluacion.observaciones_parcial}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className={styles.sinEvaluaciones}>No hay evaluaciones registradas</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.modalFooter}>
+                    <button type="button" className={styles.cancelButton} onClick={cerrarModal}>
+                      Cerrar
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
+        )}
 
-          {/* Selección de Estudiante (se llena automáticamente según la asignación) */}
-          {formularioCalificacion.asignacion_id && (
-            <div className={styles.formSection}>
-              <h4 className={styles.sectionTitle}>👤 Seleccionar Estudiante</h4>
-              
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Estudiante *</label>
-                <select
-                  value={formularioCalificacion.alumno_id}
-                  onChange={(e) => setFormularioCalificacion({
-                    ...formularioCalificacion,
-                    alumno_id: e.target.value
-                  })}
-                  className={styles.formSelect}
-                  required
-                >
-                  <option value="">Seleccionar estudiante</option>
-                  {estudiantesDelGrupo.map(estudiante => (
-                    <option key={estudiante.id} value={estudiante.id}>
-                      {estudiante.nombre_completo} - {estudiante.matricula}
-                      {estudiante.tiene_calificacion && ' (⚠️ Ya tiene calificación)'}
-                    </option>
-                  ))}
-                </select>
-                {estudiantesDelGrupo.length === 0 && (
-                  <small className={styles.helpText} style={{ color: '#dc2626' }}>
-                    No hay estudiantes inscritos en este grupo
-                  </small>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Calificaciones (solo si ya seleccionó estudiante) */}
-          {/* Calificaciones (solo si ya seleccionó estudiante) */}
-{formularioCalificacion.alumno_id && (
-  <div className={styles.formSection}>
-    <h4 className={styles.sectionTitle}>📊 Calificaciones</h4>
-    
-    <div className={styles.calificacionesGrid}>
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Parcial 1</label>
-        <input
-          type="number"
-          min="0"
-          max="10"
-          step="0.1"
-          value={formularioCalificacion.parcial_1}
-          onChange={(e) => manejarCambioFormulario('parcial_1', e.target.value)}
-          className={styles.formInput}
-          placeholder="0.0"
-        />
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Parcial 2</label>
-        <input
-          type="number"
-          min="0"
-          max="10"
-          step="0.1"
-          value={formularioCalificacion.parcial_2}
-          onChange={(e) => manejarCambioFormulario('parcial_2', e.target.value)}
-          className={styles.formInput}
-          placeholder="0.0"
-        />
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Parcial 3</label>
-        <input
-          type="number"
-          min="0"
-          max="10"
-          step="0.1"
-          value={formularioCalificacion.parcial_3}
-          onChange={(e) => manejarCambioFormulario('parcial_3', e.target.value)}
-          className={styles.formInput}
-          placeholder="0.0"
-        />
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Ordinario</label>
-        <input
-          type="number"
-          min="0"
-          max="10"
-          step="0.1"
-          value={formularioCalificacion.calificacion_ordinario}
-          onChange={(e) => manejarCambioFormulario('calificacion_ordinario', e.target.value)}
-          className={styles.formInput}
-          placeholder="0.0"
-        />
-      </div>
-
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Extraordinario</label>
-        <input
-          type="number"
-          min="0"
-          max="10"
-          step="0.1"
-          value={formularioCalificacion.calificacion_extraordinario}
-          onChange={(e) => manejarCambioFormulario('calificacion_extraordinario', e.target.value)}
-          className={styles.formInput}
-          placeholder="0.0"
-        />
-        <small className={styles.helpText}>
-          Si hay extraordinario, esta será la calificación final
-        </small>
-      </div>
-
-      {/* ✅ CAMPO FINAL AUTOMÁTICO - Solo lectura */}
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Final (Automática)</label>
-        <input
-          type="text"
-          value={formularioCalificacion.calificacion_final}
-          className={`${styles.formInput} ${styles.inputReadonly}`}
-          placeholder="Se calcula automáticamente"
-          readOnly
-        />
-        <small className={styles.helpText}>
-          {formularioCalificacion.calificacion_final && 
-            `Promedio: ${formularioCalificacion.calificacion_final} - ${
-              parseFloat(formularioCalificacion.calificacion_final) >= 6 ? '✅ Aprobado' : '❌ Reprobado'
-            }`
-          }
-        </small>
-      </div>
-    </div>
-
-    {/* Explicación del cálculo */}
-    <div className={styles.calculoExplicacion}>
-      <h5>🧮 Cómo se calcula:</h5>
-      <ul>
-        <li><strong>Promedio normal:</strong> Se promedian los parciales y ordinario que tengan valor</li>
-        <li><strong>Con extraordinario:</strong> El extraordinario se convierte en la calificación final</li>
-        <li><strong>Estatus automático:</strong> ≥6.0 = Aprobado, &lt;6.0 = Reprobado</li>
-      </ul>
-    </div>
-  </div>
-)}
-
-{/* Estado y Observaciones - ✅ ESTATUS AUTOMÁTICO */}
-{formularioCalificacion.calificacion_final && (
-  <div className={styles.formSection}>
-    <h4 className={styles.sectionTitle}>📝 Estado y Observaciones</h4>
-    
-    <div className={styles.formGrid}>
-      {/* ✅ ESTATUS AUTOMÁTICO - Solo lectura */}
-      <div className={styles.formGroup}>
-        <label className={styles.formLabel}>Estado (Automático)</label>
-        <div className={`${styles.estatusDisplay} ${styles[`estatus${formularioCalificacion.estatus}`]}`}>
-          {formularioCalificacion.estatus === 'aprobado' && '✅ Aprobado'}
-          {formularioCalificacion.estatus === 'reprobado' && '❌ Reprobado'}
-          {formularioCalificacion.estatus === 'cursando' && '📚 Cursando'}
-          {formularioCalificacion.estatus === 'extraordinario' && '⚠️ Extraordinario'}
-        </div>
-        <small className={styles.helpText}>
-          Se determina automáticamente según la calificación final
-        </small>
-      </div>
-
-      <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
-        <label className={styles.formLabel}>Observaciones</label>
-        <textarea
-          value={formularioCalificacion.observaciones}
-          onChange={(e) => manejarCambioFormulario('observaciones', e.target.value)}
-          className={styles.formTextarea}
-          placeholder="Comentarios adicionales sobre el rendimiento del estudiante..."
-          rows="3"
-        />
-      </div>
-    </div>
-
-    {/* ✅ INFORMACIÓN ADICIONAL AUTOMÁTICA */}
-    <div className={styles.infoAutomatica}>
-      <h5>ℹ️ Información Automática:</h5>
-      <ul>
-        <li><strong>Materia:</strong> {asignacionSeleccionada?.asignatura_nombre}</li>
-        <li><strong>Grupo:</strong> {asignacionSeleccionada?.grupo_codigo}</li>
-        <li><strong>Carrera:</strong> {asignacionSeleccionada?.carrera_nombre}</li>
-        <li><strong>Ciclo Escolar:</strong> {asignacionSeleccionada?.ciclo_escolar}</li>
-        <li><strong>Calificación Final:</strong> {formularioCalificacion.calificacion_final || 'Pendiente'}</li>
-        <li><strong>Estado:</strong> {formularioCalificacion.estatus}</li>
-      </ul>
-    </div>
-  </div>
-)}
-        </div>
-
-        <div className={styles.modalFooter}>
-          <button 
-            type="button" 
-            className={styles.cancelButton}
-            onClick={() => setMostrarModal(false)}
-          >
-            Cancelar
-          </button>
-          <button 
-            type="submit" 
-            className={styles.saveButton}
-            disabled={!formularioCalificacion.alumno_id || !formularioCalificacion.calificacion_final}
-          >
-            {modoEdicion ? '💾 Actualizar' : '➕ Guardar Calificación'}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-)}
-      </div>
+      </main>
     </div>
   );
 };

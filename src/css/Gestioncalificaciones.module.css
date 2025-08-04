@@ -922,3 +922,256 @@
     background: linear-gradient(90deg, #10b981 var(--progreso, 0%), #e5e7eb var(--progreso, 0%));
     transition: --progreso 0.3s ease;
 }
+
+/* ✅ ESTILOS ADICIONALES para el nuevo sistema de calificaciones */
+/* Agregar a Gestioncalificaciones.module.css */
+
+/* ============================================ */
+/* CONTENEDORES DE PARCIALES */  
+/* ============================================ */
+
+.parcialesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.parcialBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #0369a1;
+    margin-right: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.sinParciales {
+    color: #6b7280;
+    font-style: italic;
+    font-size: 0.8rem;
+}
+
+.parcialesAcciones {
+    display: flex;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.btnEvaluarParcial {
+    padding: 0.25rem 0.5rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btnEvaluarParcial:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+/* ============================================ */
+/* CALIFICACIONES Y ESTADOS */
+/* ============================================ */
+
+.calificacionFinal {
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-align: center;
+    min-width: 60px;
+    display: inline-block;
+}
+
+.calificacionFinal.aprobado {
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.calificacionFinal.reprobado {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+.calificacionFinal.cursando {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    border: 1px solid #f59e0b;
+}
+
+/* Estados con mejor diseño */
+.estatuscursando {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #f59e0b;
+}
+
+.estatusaprobado {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #10b981;
+}
+
+.estatusreprobado {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #ef4444;
+}
+
+/* ============================================ */
+/* ESTADÍSTICAS MEJORADAS */
+/* ============================================ */
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.statUltimas {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border-left: 4px solid #ef4444;
+}
+
+.statUltimas .statContent h3 {
+    color: #991b1b;
+}
+
+.statUltimas .statContent p {
+    color: #dc2626;
+}
+
+.statUltimas .statIcon {
+    color: #ef4444;
+}
+
+/* ============================================ */
+/* BOTONES DE ACCIÓN */
+/* ============================================ */
+
+.detailButton {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.detailButton:hover {
+    background: #bae6fd;
+    color: #0c4a6e;
+}
+
+/* ============================================ */
+/* MODAL - INFORMACIÓN DEL ESTUDIANTE */
+/* ============================================ */
+
+.infoEstudiante {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.infoEstudiante h4 {
+    margin: 0 0 0.5rem 0;
+    color: #0369a1;
+    font-size: 1.1rem;
+}
+
+.infoEstudiante p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+/* ============================================ */
+/* MODAL - DETALLE DE EVALUACIONES */
+/* ============================================ */
+
+.detalleContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.infoGeneral {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+}
+
+.infoGeneral h4 {
+    margin: 0 0 1rem 0;
+    color: #1f2937;
+    font-size: 1.1rem;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 0.5rem;
+}
+
+.infoGeneral p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+.infoGeneral strong {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+.historialEvaluaciones h4 {
+    margin: 0 0 1rem 0;
+    color: #1f2937;
+    font-size: 1.1rem;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 0.5rem;
+}
+
+.evaluacionesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.evaluacionCard {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+}
+
+.evaluacionCard:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.evaluacionCard.evaluacionFinal {
+    border: 2px solid #10b981;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.evaluacionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.parcialNumero {
+    font-weight: 600;
+    color: #1f2937;
+}
