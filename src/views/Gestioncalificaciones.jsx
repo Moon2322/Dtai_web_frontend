@@ -1,6 +1,3 @@
-// ✅ COMPONENTE ACTUALIZADO: Gestioncalificaciones.jsx
-// Reemplazar completamente el archivo existente
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../css/Gestioncalificaciones.module.css';
@@ -28,18 +25,23 @@ const GestionCalificaciones = () => {
   const [modalTipo, setModalTipo] = useState(''); // 'nuevo' | 'evaluar' | 'detalle'
   const [calificacionSeleccionada, setCalificacionSeleccionada] = useState(null);
   const [asignacionSeleccionada, setAsignacionSeleccionada] = useState(null);
-/*   const [parcialSeleccionado, setParcialSeleccionado] = useState(1);
- */  const [evaluacionesDelAlumno, setEvaluacionesDelAlumno] = useState([]);
-  const [siguienteOportunidad, setSiguienteOportunidad] = useState(null);
-const [/* puedeEvaluar */, setPuedeEvaluar] = useState(false);
-const [motivoOportunidad, setMotivoOportunidad] = useState('');
-const [estadoParcial, setEstadoParcial] = useState('');
+  const [evaluacionesDelAlumno, setEvaluacionesDelAlumno] = useState([]);
+  const [parcialesDisponibles, setParcialesDisponibles] = useState([]);
 
+  
+  // Estados para sistema de escalera
+  const [siguienteOportunidad, setSiguienteOportunidad] = useState(null);
+  const [puedeEvaluar, setPuedeEvaluar] = useState(true);
+  const [motivoOportunidad, setMotivoOportunidad] = useState('');
+  const [estadoParcial, setEstadoParcial] = useState('');
   
   // Estado del formulario
   const [formulario, setFormulario] = useState({
     asignacion_id: '',
     alumno_id: '',
+    asignatura_id: '',
+    grupo_id: '',
+    calificacion_id: null,
     numero_parcial: 1,
     oportunidad: 'ordinario',
     calificacion: '',
@@ -69,100 +71,14 @@ const [estadoParcial, setEstadoParcial] = useState('');
   // FUNCIONES DE CARGA DE DATOS
   // ============================================
 
-
-  const obtenerSiguienteOportunidad = async (calificacionId, numeroParcial) => {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await fetch(
-      `http://localhost:5000/api/profesor/calificaciones/${calificacionId}/siguiente-oportunidad/${numeroParcial}`,
-      {
-        headers: { 'Authorization': `Bearer ${token}` }
-      }
-    );
-    
-    const data = await response.json();
-    if (data.success) {
-      console.log(`🎯 Siguiente oportunidad para parcial ${numeroParcial}:`, data.data);
-      return data.data;
-    } else {
-      console.error('❌ Error al obtener siguiente oportunidad:', data.message);
-      return null;
-    }
-  } catch (error) {
-    console.error('❌ Error en obtenerSiguienteOportunidad:', error);
-    return null;
-  }
-};
-
-  const mostrarParciales = (calificacion) => {
-  // Debug: ver qué datos llegan
-  console.log('🔍 Datos de parciales:', {
-    detalle_parciales: calificacion.detalle_parciales,
-    tipo: typeof calificacion.detalle_parciales,
-    es_null: calificacion.detalle_parciales === null
-  });
-
-  if (calificacion.detalle_parciales && calificacion.detalle_parciales !== null) {
-    try {
-      // Parsear el JSON si es string, o usar directamente si ya es objeto
-      const parciales = typeof calificacion.detalle_parciales === 'string' 
-        ? JSON.parse(calificacion.detalle_parciales) 
-        : calificacion.detalle_parciales;
-      
-      // Verificar que es un array y tiene elementos
-      if (Array.isArray(parciales) && parciales.length > 0) {
-        return parciales.map(parcial => (
-          <div key={parcial.numero_parcial} className={styles.parcialBadge}>
-            {obtenerIconoOportunidad(parcial.oportunidad)} P{parcial.numero_parcial}: {parcial.calificacion}
-          </div>
-        ));
-      }
-    } catch (error) {
-      console.error('❌ Error al parsear detalle_parciales:', error);
-    }
-  }
-  
-  // Si no hay parciales o hubo error
-  return <span className={styles.sinParciales}>Sin evaluaciones</span>;
-};
-
-
   const cargarDatos = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-
-      // Cargar calificaciones y estadísticas en paralelo
-      const [calificacionesRes, estadisticasRes, asignacionesRes] = await Promise.all([
-        fetch('http://localhost:5000/api/profesor/calificaciones', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }),
-        fetch('http://localhost:5000/api/profesor/calificaciones/estadisticas', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }),
-        fetch('http://localhost:5000/api/profesor/mis-asignaturas', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
+      await Promise.all([
+        cargarCalificaciones(),
+        cargarEstadisticas(),
+        cargarAsignacionesProfesor()
       ]);
-
-      const [calificacionesData, estadisticasData, asignacionesData] = await Promise.all([
-        calificacionesRes.json(),
-        estadisticasRes.json(),
-        asignacionesRes.json()
-      ]);
-
-      if (calificacionesData.success) {
-        setCalificaciones(calificacionesData.data);
-      }
-
-      if (estadisticasData.success) {
-        setEstadisticas(estadisticasData.data);
-      }
-
-      if (asignacionesData.success) {
-        setAsignacionesProfesor(asignacionesData.data);
-      }
-
     } catch (error) {
       console.error('Error al cargar datos:', error);
     } finally {
@@ -170,23 +86,90 @@ const [estadoParcial, setEstadoParcial] = useState('');
     }
   };
 
+  const cargarCalificaciones = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:5000/api/gestion-calificaciones/calificaciones', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        console.log('📊 Datos recibidos:', data.data);
+        setCalificaciones(data.data);
+      }
+    } catch (error) {
+      console.error('Error al cargar calificaciones:', error);
+    }
+  };
+
+  const cargarEstadisticas = async () => {
+    try {
+      const token = localStorage.getItem('token');
+const response = await fetch('http://localhost:5000/api/gestion-calificaciones/estadisticas', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        setEstadisticas(data.data);
+      }
+    } catch (error) {
+      console.error('Error al cargar estadísticas:', error);
+    }
+  };
+
+  const obtenerEstadoParciales = async (alumnoId, asignaturaId, grupoId) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(
+      `http://localhost:5000/api/gestion-calificaciones/estudiante/${alumnoId}/estado-parciales/${asignaturaId}/${grupoId}`,
+      {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }
+    );
+    
+    const data = await response.json();
+    if (data.success) {
+      return data.data;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error al obtener estado de parciales:', error);
+    return null;
+  }
+};
+
+  const cargarAsignacionesProfesor = async () => {
+    try {
+      const token = localStorage.getItem('token');
+const response = await fetch('http://localhost:5000/api/profesor/mis-asignaturas', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        setAsignacionesProfesor(data.data);
+      }
+    } catch (error) {
+      console.error('Error al cargar asignaciones:', error);
+    }
+  };
+
   const cargarEstudiantesDelGrupo = async (asignaturaId, grupoId) => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:5000/api/profesor/estudiantes-grupo/${grupoId}/asignatura/${asignaturaId}`, 
-        {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }
+        `http://localhost:5000/api/profesor/calificaciones/estudiantes/${grupoId}/${asignaturaId}`,
+        { headers: { 'Authorization': `Bearer ${token}` } }
       );
-
+      
       const data = await response.json();
       if (data.success) {
         setEstudiantesDelGrupo(data.data);
       }
     } catch (error) {
-      console.error('Error al cargar estudiantes del grupo:', error);
-      setEstudiantesDelGrupo([]);
+      console.error('Error al cargar estudiantes:', error);
     }
   };
 
@@ -195,29 +178,58 @@ const [estadoParcial, setEstadoParcial] = useState('');
       const token = localStorage.getItem('token');
       const response = await fetch(
         `http://localhost:5000/api/profesor/calificaciones/${calificacionId}/detalle`,
-        {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }
+        { headers: { 'Authorization': `Bearer ${token}` } }
       );
-
+      
       const data = await response.json();
       if (data.success) {
         setCalificacionSeleccionada(data.data.calificacion);
         setEvaluacionesDelAlumno(data.data.evaluaciones);
       }
     } catch (error) {
-      console.error('Error al cargar detalle de calificación:', error);
+      console.error('Error al cargar detalle:', error);
     }
   };
 
   // ============================================
-  // FUNCIONES DEL MODAL
+  // FUNCIONES DEL SISTEMA DE ESCALERA
+  // ============================================
+
+  const obtenerSiguienteOportunidad = async (calificacionId, numeroParcial) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(
+        `http://localhost:5000/api/profesor/calificaciones/${calificacionId}/siguiente-oportunidad/${numeroParcial}`,
+        {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }
+      );
+      
+      const data = await response.json();
+      if (data.success) {
+        console.log(`🎯 Siguiente oportunidad para parcial ${numeroParcial}:`, data.data);
+        return data.data;
+      } else {
+        console.error('❌ Error al obtener siguiente oportunidad:', data.message);
+        return null;
+      }
+    } catch (error) {
+      console.error('❌ Error en obtenerSiguienteOportunidad:', error);
+      return null;
+    }
+  };
+
+  // ============================================
+  // FUNCIONES DE MODAL
   // ============================================
 
   const abrirModalNuevo = () => {
     setFormulario({
       asignacion_id: '',
       alumno_id: '',
+      asignatura_id: '',
+      grupo_id: '',
+      calificacion_id: null,
       numero_parcial: 1,
       oportunidad: 'ordinario',
       calificacion: '',
@@ -232,64 +244,64 @@ const [estadoParcial, setEstadoParcial] = useState('');
 const abrirModalEvaluar = async (calificacion, parcial) => {
   console.log(`🎯 Abriendo modal para evaluar parcial ${parcial}`, calificacion);
   
-  // Obtener información de la siguiente oportunidad
-  const infoOportunidad = await obtenerSiguienteOportunidad(calificacion.id, parcial);
+  // Obtener el estado de todos los parciales del estudiante
+  const estadoParciales = await obtenerEstadoParciales(
+    calificacion.alumno_id, 
+    calificacion.asignatura_id, 
+    calificacion.grupo_id
+  );
   
-  if (!infoOportunidad) {
-    alert('❌ Error al obtener información de oportunidades');
+  if (!estadoParciales) {
+    alert('❌ Error al obtener información del estudiante');
     return;
   }
 
-  // Verificar si puede evaluar
-  if (!infoOportunidad.puede_evaluar) {
-    alert(`⚠️ No se puede evaluar: ${infoOportunidad.motivo}`);
+  const infoParcial = estadoParciales.parciales[parcial];
+  
+  if (infoParcial.estado === 'bloqueado') {
+    alert('⚠️ Este parcial está bloqueado. Debes aprobar el parcial anterior primero.');
+    return;
+  }
+  
+  if (infoParcial.estado === 'aprobado') {
+    alert(`✅ Este parcial ya está aprobado con ${infoParcial.calificacion_actual} en ${infoParcial.oportunidad_aprobada}`);
+    return;
+  }
+  
+  if (infoParcial.estado === 'reprobado_final') {
+    alert(`❌ Este parcial está reprobado final con ${infoParcial.calificacion_final}. No hay más oportunidades.`);
     return;
   }
 
   // Configurar estados para el modal
-  setSiguienteOportunidad(infoOportunidad.siguiente_oportunidad);
-  setPuedeEvaluar(infoOportunidad.puede_evaluar);
-  setMotivoOportunidad(infoOportunidad.motivo);
-  setEstadoParcial(infoOportunidad.estado_parcial);
+  setSiguienteOportunidad(infoParcial.siguiente_oportunidad);
+  setPuedeEvaluar(true);
+  
+  let motivo = '';
+  if (infoParcial.oportunidad_anterior) {
+    motivo = `Reprobó en ${infoParcial.oportunidad_anterior} (${infoParcial.calificacion_anterior}), puede tomar ${infoParcial.siguiente_oportunidad}`;
+  } else {
+    motivo = `Primera evaluación del parcial ${parcial}`;
+  }
+  
+  setMotivoOportunidad(motivo);
+  setEstadoParcial('disponible');
 
   // Configurar formulario
   setFormulario({
-    calificacion_id: calificacion.id,
-    alumno_id: null, // No necesario para evaluaciones existentes
+    calificacion_id: estadoParciales.calificacion_id,
+    alumno_id: estadoParciales.calificacion_id ? null : calificacion.alumno_id,
+    asignatura_id: estadoParciales.calificacion_id ? null : calificacion.asignatura_id,
+    grupo_id: estadoParciales.calificacion_id ? null : calificacion.grupo_id,
     numero_parcial: parcial,
-    oportunidad: infoOportunidad.siguiente_oportunidad, // ✅ Automático, no editable
+    oportunidad: infoParcial.siguiente_oportunidad,
     calificacion: '',
     observaciones_parcial: ''
   });
 
   setCalificacionSeleccionada(calificacion);
-  setModalTipo('evaluar'); // Tipo específico para evaluaciones
-/*   setBorrarEvaluaciones([]);
- */  setMostrarModal(true);
-};
-
-const obtenerTextoOportunidad = (oportunidad) => {
-  const textos = {
-    'ordinario': '📘 Evaluación Ordinaria',
-    'remedial': '📙 Evaluación Remedial', 
-    'extraordinario': '📕 Evaluación Extraordinaria',
-    'ultima_oportunidad': '🚨 Última Oportunidad (⚠️ Única en toda la carrera)'
-  };
-  return textos[oportunidad] || oportunidad;
-};
-
-// 5. NUEVA FUNCIÓN: Obtener color según el estado del parcial
-const obtenerColorEstadoParcial = (estado) => {
-  const colores = {
-    'pendiente': '#6b7280',
-    'remedial_pendiente': '#f59e0b', 
-    'extraordinario_pendiente': '#ef4444',
-    'ultima_oportunidad_disponible': '#dc2626',
-    'aprobado': '#10b981',
-    'reprobado_final': '#991b1b',
-    'baja_definitiva': '#7f1d1d'
-  };
-  return colores[estado] || '#6b7280';
+  setModalTipo(estadoParciales.calificacion_id ? 'evaluar' : 'nuevo');
+  setMostrarModal(true);
 };
 
   const abrirModalDetalle = async (calificacion) => {
@@ -298,45 +310,33 @@ const obtenerColorEstadoParcial = (estado) => {
     setMostrarModal(true);
   };
 
-  const cerrarModal = () => {
-    setMostrarModal(false);
-    setModalTipo('');
-    setCalificacionSeleccionada(null);
-    setAsignacionSeleccionada(null);
-    setEvaluacionesDelAlumno([]);
-    setFormulario({
-      asignacion_id: '',
-      alumno_id: '',
-      numero_parcial: 1,
-      oportunidad: 'ordinario',
-      calificacion: '',
-      observaciones_parcial: ''
-    });
-  };
+const cerrarModal = () => {
+  setMostrarModal(false);
+  setModalTipo('');
+  setCalificacionSeleccionada(null);
+  setAsignacionSeleccionada(null);
+  setEvaluacionesDelAlumno([]);
+  setParcialesDisponibles([]); // ✅ Limpiar parciales disponibles
+  setSiguienteOportunidad(null);
+  setPuedeEvaluar(true);
+  setMotivoOportunidad('');
+  setEstadoParcial('');
+  setFormulario({
+    asignacion_id: '',
+    alumno_id: '',
+    asignatura_id: '',
+    grupo_id: '',
+    calificacion_id: null,
+    numero_parcial: 1,
+    oportunidad: 'ordinario',
+    calificacion: '',
+    observaciones_parcial: ''
+  });
+};
 
   // ============================================
   // FUNCIONES DE NEGOCIO
   // ============================================
-
-/*   const obtenerSiguienteOportunidad = async (calificacionId, parcial) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(
-        `http://localhost:5000/api/profesor/calificaciones/${calificacionId}/siguiente-oportunidad/${parcial}`,
-        {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }
-      );
-
-      const data = await response.json();
-      if (data.success) {
-        return data.data.siguiente_oportunidad;
-      }
-    } catch (error) {
-      console.error('Error al obtener siguiente oportunidad:', error);
-    }
-    return 'ordinario';
-  }; */
 
   const manejarCambioAsignacion = async (asignacionId) => {
     if (!asignacionId) {
@@ -348,73 +348,180 @@ const obtenerColorEstadoParcial = (estado) => {
     const asignacion = asignacionesProfesor.find(a => a.id.toString() === asignacionId);
     setAsignacionSeleccionada(asignacion);
 
-    // Cargar estudiantes del grupo
     await cargarEstudiantesDelGrupo(asignacion.asignatura_id, asignacion.grupo_id);
     
     setFormulario(prev => ({
       ...prev,
       asignacion_id: asignacionId,
-      alumno_id: ''
+      alumno_id: '',
+      asignatura_id: asignacion.asignatura_id,
+      grupo_id: asignacion.grupo_id
     }));
   };
 
-  const evaluarParcial = async () => {
-  try {
-    if (!formulario.calificacion.trim()) {
-      alert('⚠️ La calificación es obligatoria');
-      return;
-    }
+  const manejarCambioEstudiante = async (alumnoId) => {
+  if (!alumnoId || !asignacionSeleccionada) {
+    setParcialesDisponibles([]);
+    setFormulario(prev => ({
+      ...prev,
+      alumno_id: '',
+      numero_parcial: 1
+    }));
+    return;
+  }
 
-    const token = localStorage.getItem('token');
+  // Cargar estado de parciales del estudiante seleccionado
+  const estadoParciales = await obtenerEstadoParciales(
+    alumnoId,
+    asignacionSeleccionada.asignatura_id,
+    asignacionSeleccionada.grupo_id
+  );
 
-    // ✅ VALIDACIÓN PREVIA: Verificar que aún puede evaluar en esta oportunidad
-    const infoOportunidad = await obtenerSiguienteOportunidad(formulario.calificacion_id, formulario.numero_parcial);
-    
-    if (!infoOportunidad || !infoOportunidad.puede_evaluar) {
-      alert(`❌ Ya no se puede evaluar: ${infoOportunidad?.motivo || 'Estado inválido'}`);
-      return;
-    }
-
-    if (infoOportunidad.siguiente_oportunidad !== formulario.oportunidad) {
-      alert(`❌ Error de sincronización. Debe evaluar en ${infoOportunidad.siguiente_oportunidad}, no en ${formulario.oportunidad}`);
-      return;
-    }
-
-    // Proceder con la evaluación
-    const body = {
-      numero_parcial: formulario.numero_parcial,
-      oportunidad: formulario.oportunidad,
-      calificacion: formulario.calificacion,
-      observaciones_parcial: formulario.observaciones_parcial
-    };
-
-    const response = await fetch(
-      `http://localhost:5000/api/profesor/calificaciones/${formulario.calificacion_id}/evaluar-parcial`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
+  if (estadoParciales) {
+    // Filtrar solo los parciales disponibles
+    const disponibles = [];
+    for (let parcial = 1; parcial <= 3; parcial++) {
+      const info = estadoParciales.parciales[parcial];
+      if (info.estado === 'disponible') {
+        disponibles.push({
+          numero: parcial,
+          siguiente_oportunidad: info.siguiente_oportunidad,
+          motivo: info.oportunidad_anterior 
+            ? `${info.oportunidad_anterior} (${info.calificacion_anterior}) → ${info.siguiente_oportunidad}`
+            : `Primera evaluación → ${info.siguiente_oportunidad}`
+        });
       }
-    );
-
-    const data = await response.json();
-    
-    if (data.success) {
-      alert('✅ ' + data.message);
-      cerrarModal();
-      await cargarDatos();
-    } else {
-      alert('❌ ' + data.message);
     }
-
-  } catch (error) {
-    console.error('Error al evaluar parcial:', error);
-    alert('❌ Error de conexión. Inténtalo de nuevo.');
+    
+    setParcialesDisponibles(disponibles);
+    
+    // Auto-seleccionar el primer parcial disponible
+    if (disponibles.length > 0) {
+      setFormulario(prev => ({
+        ...prev,
+        alumno_id: alumnoId,
+        numero_parcial: disponibles[0].numero,
+        oportunidad: disponibles[0].siguiente_oportunidad
+      }));
+    }
+  } else {
+    setParcialesDisponibles([]);
   }
 };
+  const evaluarParcial = async () => {
+    try {
+      if (!formulario.calificacion.trim()) {
+        alert('⚠️ La calificación es obligatoria');
+        return;
+      }
+
+      const token = localStorage.getItem('token');
+
+      // CASO 1: NUEVA EVALUACIÓN (sin calificacion_id)
+      if (modalTipo === 'nuevo' || !formulario.calificacion_id) {
+        console.log('🆕 Creando nueva calificación + evaluación');
+        
+        // Primero inicializar la calificación
+const initResponse = await fetch('http://localhost:5000/api/gestion-calificaciones/inicializar', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            alumno_id: formulario.alumno_id,
+            asignatura_id: formulario.asignatura_id,
+            grupo_id: formulario.grupo_id
+          })
+        });
+
+        const initData = await initResponse.json();
+        if (!initData.success) {
+          alert('❌ Error al inicializar: ' + initData.message);
+          return;
+        }
+
+        console.log('✅ Calificación inicializada:', initData.calificacion_id);
+
+        // Luego evaluar el parcial con el ID obtenido
+        const evalResponse = await fetch(
+  `http://localhost:5000/api/gestion-calificaciones/${initData.calificacion_id}/evaluar-parcial`,
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              numero_parcial: formulario.numero_parcial,
+              oportunidad: formulario.oportunidad,
+              calificacion: formulario.calificacion,
+              observaciones_parcial: formulario.observaciones_parcial
+            })
+          }
+        );
+
+        const evalData = await evalResponse.json();
+        if (evalData.success) {
+          alert('✅ ' + evalData.message);
+          cerrarModal();
+          await cargarDatos();
+        } else {
+          alert('❌ ' + evalData.message);
+        }
+        return;
+      }
+
+      // CASO 2: EVALUACIÓN EXISTENTE (con calificacion_id)
+      console.log('🔄 Evaluando parcial existente');
+
+      // Validación previa: Verificar que aún puede evaluar
+      const infoOportunidad = await obtenerSiguienteOportunidad(formulario.calificacion_id, formulario.numero_parcial);
+      
+      if (!infoOportunidad || !infoOportunidad.puede_evaluar) {
+        alert(`❌ Ya no se puede evaluar: ${infoOportunidad?.motivo || 'Estado inválido'}`);
+        return;
+      }
+
+      if (infoOportunidad.siguiente_oportunidad !== formulario.oportunidad) {
+        alert(`❌ Error de sincronización. Debe evaluar en ${infoOportunidad.siguiente_oportunidad}, no en ${formulario.oportunidad}`);
+        return;
+      }
+
+      // Proceder con la evaluación
+      const response = await fetch(
+  `http://localhost:5000/api/gestion-calificaciones/${formulario.calificacion_id}/evaluar-parcial`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            numero_parcial: formulario.numero_parcial,
+            oportunidad: formulario.oportunidad,
+            calificacion: formulario.calificacion,
+            observaciones_parcial: formulario.observaciones_parcial
+          })
+        }
+      );
+
+      const data = await response.json();
+      
+      if (data.success) {
+        alert('✅ ' + data.message);
+        cerrarModal();
+        await cargarDatos();
+      } else {
+        alert('❌ ' + data.message);
+      }
+
+    } catch (error) {
+      console.error('Error al evaluar parcial:', error);
+      alert('❌ Error de conexión. Inténtalo de nuevo.');
+    }
+  };
+
   // ============================================
   // FUNCIONES DE UTILIDAD
   // ============================================
@@ -422,7 +529,34 @@ const obtenerColorEstadoParcial = (estado) => {
   const obtenerColorCalificacion = (calificacion) => {
     if (calificacion === 'NA') return 'reprobado';
     if (calificacion === null || calificacion === '') return 'cursando';
-    return 'aprobado';
+    
+    // Solo 8+ es aprobado
+    const nota = parseFloat(calificacion);
+    if (nota >= 8) return 'aprobado';
+    return 'reprobado';
+  };
+
+  const obtenerTextoOportunidad = (oportunidad) => {
+    const textos = {
+      'ordinario': '📘 Evaluación Ordinaria',
+      'remedial': '📙 Evaluación Remedial', 
+      'extraordinario': '📕 Evaluación Extraordinaria',
+      'ultima_oportunidad': '🚨 Última Oportunidad (⚠️ Única en toda la carrera)'
+    };
+    return textos[oportunidad] || oportunidad;
+  };
+
+  const obtenerColorEstadoParcial = (estado) => {
+    const colores = {
+      'pendiente': '#6b7280',
+      'remedial_pendiente': '#f59e0b', 
+      'extraordinario_pendiente': '#ef4444',
+      'ultima_oportunidad_disponible': '#dc2626',
+      'aprobado': '#10b981',
+      'reprobado_final': '#991b1b',
+      'baja_definitiva': '#7f1d1d'
+    };
+    return colores[estado] || '#6b7280';
   };
 
   const obtenerIconoOportunidad = (oportunidad) => {
@@ -441,6 +575,34 @@ const obtenerColorEstadoParcial = (estado) => {
       month: '2-digit',
       year: 'numeric'
     });
+  };
+
+  const mostrarParciales = (calificacion) => {
+    console.log('🔍 Datos de parciales:', {
+      detalle_parciales: calificacion.detalle_parciales,
+      tipo: typeof calificacion.detalle_parciales,
+      es_null: calificacion.detalle_parciales === null
+    });
+
+    if (calificacion.detalle_parciales && calificacion.detalle_parciales !== null) {
+      try {
+        const parciales = typeof calificacion.detalle_parciales === 'string' 
+          ? JSON.parse(calificacion.detalle_parciales) 
+          : calificacion.detalle_parciales;
+        
+        if (Array.isArray(parciales) && parciales.length > 0) {
+          return parciales.map(parcial => (
+            <div key={parcial.numero_parcial} className={styles.parcialBadge}>
+              {obtenerIconoOportunidad(parcial.oportunidad)} P{parcial.numero_parcial}: {parcial.calificacion}
+            </div>
+          ));
+        }
+      } catch (error) {
+        console.error('❌ Error al parsear detalle_parciales:', error);
+      }
+    }
+    
+    return <span className={styles.sinParciales}>Sin evaluaciones</span>;
   };
 
   if (loading) {
@@ -496,24 +658,15 @@ const obtenerColorEstadoParcial = (estado) => {
             </div>
             <div className={styles.statIcon}>📈</div>
           </div>
-
-          <div className={`${styles.statCard} ${styles.statUltimas}`}>
-            <div className={styles.statContent}>
-              <h3>Últimas Oportunidades</h3>
-              <p>{estadisticas.ultimas_oportunidades_usadas}</p>
-            </div>
-            <div className={styles.statIcon}>🚨</div>
-          </div>
         </div>
 
-        {/* Botón agregar */}
-        <button 
-          className={styles.addButton}
-          onClick={abrirModalNuevo}
-        >
-          <span className={styles.addIcon}>+</span>
-          Nueva Evaluación
-        </button>
+        {/* Botones de acción */}
+        <div className={styles.actionsBar}>
+          <button onClick={abrirModalNuevo} className={styles.btnPrimary}>
+            ➕ Nueva Evaluación
+          </button>
+          
+        </div>
 
         {/* Tabla de calificaciones */}
         <div className={styles.tableContainer}>
@@ -561,22 +714,22 @@ const obtenerColorEstadoParcial = (estado) => {
                   </td>
                   
                   <td>
-  <div className={styles.parcialesContainer}>
-    {mostrarParciales(calificacion)}
-    <div className={styles.parcialesAcciones}>
-      {[1, 2, 3].map(parcial => (
-        <button
-          key={parcial}
-          onClick={() => abrirModalEvaluar(calificacion, parcial)}
-          className={styles.btnEvaluarParcial}
-          title={`Evaluar Parcial ${parcial}`}
-        >
-          P{parcial}
-        </button>
-      ))}
-    </div>
-  </div>
-</td>
+                    <div className={styles.parcialesContainer}>
+                      {mostrarParciales(calificacion)}
+                      <div className={styles.parcialesAcciones}>
+                        {[1, 2, 3].map(parcial => (
+                          <button
+                            key={parcial}
+                            onClick={() => abrirModalEvaluar(calificacion, parcial)}
+                            className={styles.btnEvaluarParcial}
+                            title={`Evaluar Parcial ${parcial}`}
+                          >
+                            P{parcial}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </td>
                   
                   <td>
                     <span className={`${styles.calificacionFinal} ${styles[obtenerColorCalificacion(calificacion.calificacion_final)]}`}>
@@ -630,248 +783,347 @@ const obtenerColorEstadoParcial = (estado) => {
           <div className={styles.modalOverlay} onClick={cerrarModal}>
             <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
               
-              {/* Modal: Nueva Evaluación */}
-              {modalTipo === 'nuevo' && (
-                <>
-                  <div className={styles.modalHeader}>
-                    <h3 className={styles.modalTitle}>➕ Nueva Evaluación</h3>
-                    <button className={styles.closeButton} onClick={cerrarModal}>✕</button>
-                  </div>
-
-                  <form onSubmit={evaluarParcial} className={styles.modalForm}>
-                    <div className={styles.modalBody}>
-                      
-                      {/* Selección de materia y grupo */}
-                      <div className={styles.formSection}>
-                        <h4 className={styles.sectionTitle}>📚 Materia y Grupo</h4>
-                        <div className={styles.formGroup}>
-                          <label className={styles.formLabel}>Seleccionar asignación *</label>
-                          <select
-                            value={formulario.asignacion_id}
-                            onChange={(e) => manejarCambioAsignacion(e.target.value)}
-                            className={styles.formSelect}
-                            required
-                          >
-                            <option value="">Seleccionar materia y grupo</option>
-                            {asignacionesProfesor.map(asignacion => (
-                              <option key={asignacion.id} value={asignacion.id}>
-                                📖 {asignacion.asignatura_nombre} - 👥 {asignacion.grupo_codigo}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-
-                      {/* Selección de estudiante */}
-                      {asignacionSeleccionada && (
-                        <div className={styles.formSection}>
-                          <h4 className={styles.sectionTitle}>👤 Estudiante</h4>
-                          <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>Seleccionar estudiante *</label>
-                            <select
-                              value={formulario.alumno_id}
-                              onChange={(e) => setFormulario(prev => ({...prev, alumno_id: e.target.value}))}
-                              className={styles.formSelect}
-                              required
-                            >
-                              <option value="">Seleccionar estudiante</option>
-                              {estudiantesDelGrupo.map(estudiante => (
-                                <option key={estudiante.id} value={estudiante.id}>
-                                  {estudiante.nombre_completo} - {estudiante.matricula}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Evaluación */}
-                      {formulario.alumno_id && (
-                        <div className={styles.formSection}>
-                          <h4 className={styles.sectionTitle}>📊 Evaluación</h4>
-                          
-                          <div className={styles.formGrid}>
-                            <div className={styles.formGroup}>
-                              <label className={styles.formLabel}>Parcial *</label>
-                              <select
-                                value={formulario.numero_parcial}
-                                onChange={(e) => setFormulario(prev => ({...prev, numero_parcial: parseInt(e.target.value)}))}
-                                className={styles.formSelect}
-                                required
-                              >
-                                <option value={1}>Parcial 1</option>
-                                <option value={2}>Parcial 2</option>
-                                <option value={3}>Parcial 3</option>
-                              </select>
-                            </div>
-
-                            <div className={styles.formGroup}>
-                              <label className={styles.formLabel}>Oportunidad *</label>
-                              <select
-                                value={formulario.oportunidad}
-                                onChange={(e) => setFormulario(prev => ({...prev, oportunidad: e.target.value}))}
-                                className={styles.formSelect}
-                                required
-                              >
-                                <option value="ordinario">📘 Ordinario</option>
-                                <option value="remedial">📙 Remedial</option>
-                                <option value="extraordinario">📕 Extraordinario</option>
-                                <option value="ultima_oportunidad">🚨 Última Oportunidad</option>
-                              </select>
-                            </div>
-
-                            <div className={styles.formGroup}>
-                              <label className={styles.formLabel}>Calificación *</label>
-                              <select
-                                value={formulario.calificacion}
-                                onChange={(e) => setFormulario(prev => ({...prev, calificacion: e.target.value}))}
-                                className={styles.formSelect}
-                                required
-                              >
-                                <option value="">Seleccionar</option>
-                                <option value="NA">❌ NA (No Aprobó)</option>
-                                {['8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6', '8.7', '8.8', '8.9',
-                                  '9.0', '9.1', '9.2', '9.3', '9.4', '9.5', '9.6', '9.7', '9.8', '9.9', '10.0'].map(cal => (
-                                  <option key={cal} value={cal}>✅ {cal}</option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-
-                          <div className={styles.formGroup}>
-                            <label className={styles.formLabel}>Observaciones</label>
-                            <textarea
-                              value={formulario.observaciones_parcial}
-                              onChange={(e) => setFormulario(prev => ({...prev, observaciones_parcial: e.target.value}))}
-                              className={styles.formTextarea}
-                              rows="3"
-                              placeholder="Comentarios sobre la evaluación..."
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className={styles.modalFooter}>
-                      <button type="button" className={styles.cancelButton} onClick={cerrarModal}>
-                        Cancelar
-                      </button>
-                      <button type="submit" className={styles.saveButton}>
-                        💾 Guardar Evaluación
-                      </button>
-                    </div>
-                  </form>
-                </>
-              )}
-
-              {/* Modal: Evaluar Parcial */}
-              {modalTipo === 'evaluar' && (
-  <div className={styles.modal}>
-    <div className={styles.modalContent}>
-      <div className={styles.modalHeader}>
-        <h3 className={styles.modalTitle}>
-          📝 Evaluar Parcial {formulario.numero_parcial} - {calificacionSeleccionada?.estudiante_nombre}
+{/* Modal: Nueva Evaluación - VERSIÓN SIMPLE */}
+{modalTipo === 'nuevo' && (
+  <div className={styles.modalOverlay} onClick={cerrarModal}>
+    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+      
+      {/* Header simple */}
+      <div className={styles.headerSimple}>
+        <h3 className={styles.tituloSimple}>
+          📝 Nueva Evaluación
         </h3>
         <button className={styles.closeButton} onClick={cerrarModal}>✕</button>
       </div>
-
-      <div className={styles.modalBody}>
-        {/* ✅ NUEVA SECCIÓN: Información del estado actual */}
-        <div className={styles.estadoActualContainer}>
-          <div className={styles.infoOportunidad}>
-            <h4 style={{ color: obtenerColorEstadoParcial(estadoParcial) }}>
-              🎯 {obtenerTextoOportunidad(siguienteOportunidad)}
-            </h4>
-            <p className={styles.motivoTexto}>
-              <strong>Estado:</strong> {motivoOportunidad}
-            </p>
-            
-            {siguienteOportunidad === 'ultima_oportunidad' && (
-              <div className={styles.alertaUltimaOportunidad}>
-                <h5>⚠️ ATENCIÓN: ÚLTIMA OPORTUNIDAD</h5>
-                <p>• Esta es la única oportunidad especial en toda la carrera</p>
-                <p>• Si no aprueba, será baja definitiva del programa</p>
-                <p>• Use esta oportunidad sabiamente</p>
-              </div>
-            )}
+      
+      <div className={styles.bodySimple}>
+        {/* Indicador de pasos simple */}
+        <div className={styles.pasosSimples}>
+          <div className={`${styles.pasoSimple} ${!formulario.asignacion_id ? styles.activo : styles.completado}`}>
+            📚 Asignación
+          </div>
+          <div className={`${styles.pasoSimple} ${formulario.asignacion_id && !formulario.alumno_id ? styles.activo : formulario.alumno_id ? styles.completado : ''}`}>
+            👨‍🎓 Estudiante
+          </div>
+          <div className={`${styles.pasoSimple} ${formulario.alumno_id && parcialesDisponibles.length > 0 ? styles.completado : ''}`}>
+            📊 Listo
           </div>
         </div>
 
-        {/* Formulario de evaluación */}
-        <div className={styles.formGroup}>
-          <label>Parcial</label>
-          <input
-            type="number"
-            value={formulario.numero_parcial}
-            readOnly
-            className={styles.inputReadonly}
-          />
-        </div>
-
-        <div className={styles.formGroup}>
-          <label>Tipo de Evaluación</label>
-          <input
-            type="text"
-            value={obtenerTextoOportunidad(formulario.oportunidad)}
-            readOnly
-            className={styles.inputReadonly}
-            style={{ 
-              fontWeight: 'bold',
-              color: obtenerColorEstadoParcial(estadoParcial)
-            }}
-          />
-          <small className={styles.helpText}>
-            ℹ️ La oportunidad se determina automáticamente según el sistema académico
-          </small>
-        </div>
-
-        <div className={styles.formGroup}>
-          <label>Calificación *</label>
+        {/* Formulario */}
+        <div className={styles.grupoSimple}>
+          <label className={`${styles.labelSimple} ${styles.requerido}`}>
+            Asignación
+          </label>
           <select
-            value={formulario.calificacion}
-            onChange={(e) => setFormulario({...formulario, calificacion: e.target.value})}
+            value={formulario.asignacion_id}
+            onChange={(e) => manejarCambioAsignacion(e.target.value)}
             required
+            className={styles.selectSimple}
           >
-            <option value="">Seleccionar calificación</option>
-            <optgroup label="✅ Calificaciones Aprobatorias">
-              <option value="10">10 - Excelente</option>
-              <option value="9">9 - Muy Bien</option>
-              <option value="8">8 - Aprobado</option>
-            </optgroup>
-            <optgroup label="❌ Calificación Reprobatoria">
-              <option value="NA">NA - No Aprobado</option>
-            </optgroup>
+            <option value="">Seleccionar materia y grupo</option>
+            {asignacionesProfesor.map(asignacion => (
+              <option key={asignacion.id} value={asignacion.id}>
+                {asignacion.asignatura_nombre} - {asignacion.grupo_codigo} ({asignacion.carrera_nombre})
+              </option>
+            ))}
           </select>
-          <small className={styles.helpText}>
-            ℹ️ Calificación mínima aprobatoria: 8. Todo lo demás es NA.
-          </small>
         </div>
 
-        <div className={styles.formGroup}>
-          <label>Observaciones</label>
-          <textarea
-            value={formulario.observaciones_parcial}
-            onChange={(e) => setFormulario({...formulario, observaciones_parcial: e.target.value})}
-            placeholder="Comentarios sobre la evaluación (opcional)"
-            rows="3"
-          />
-        </div>
+        {asignacionSeleccionada && (
+          <div className={styles.grupoSimple}>
+            <label className={`${styles.labelSimple} ${styles.requerido}`}>
+              Estudiante
+            </label>
+            <select
+              value={formulario.alumno_id}
+              onChange={(e) => manejarCambioEstudiante(e.target.value)}
+              required
+              className={styles.selectSimple}
+            >
+              <option value="">Seleccionar estudiante</option>
+              {estudiantesDelGrupo.map(estudiante => (
+                <option key={estudiante.alumno_id} value={estudiante.alumno_id}>
+                  {estudiante.estudiante} ({estudiante.matricula})
+                </option>
+              ))}
+            </select>
+            <small className={styles.ayudaSimple}>
+              {estudiantesDelGrupo.length} estudiantes en este grupo
+            </small>
+          </div>
+        )}
 
-        <div className={styles.modalActions}>
-          <button onClick={cerrarModal} className={styles.btnCancelar}>
+        {/* Info del parcial disponible */}
+        {formulario.alumno_id && parcialesDisponibles.length > 0 && (
+          <>
+            <div className={styles.infoParcialSimple}>
+              <div className={styles.tituloParcialSimple}>
+                🎯 Parcial a Evaluar
+              </div>
+              <div className={styles.motivoParcialSimple}>
+                Parcial {parcialesDisponibles[0].numero} - {parcialesDisponibles[0].motivo}
+              </div>
+            </div>
+
+            <div className={styles.grupoSimple}>
+              <label className={styles.labelSimple}>
+                Tipo de Evaluación
+              </label>
+              <input
+                type="text"
+                value={obtenerTextoOportunidad(formulario.oportunidad)}
+                readOnly
+                className={`${styles.inputSimple} ${styles.inputReadonly}`}
+              />
+            </div>
+
+            <div className={styles.grupoSimple}>
+              <label className={`${styles.labelSimple} ${styles.requerido}`}>
+                Calificación
+              </label>
+              
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'flex-end' }}>
+                <div style={{ flex: 1 }}>
+                  <select
+                    value={formulario.calificacion === 'NA' ? '' : formulario.calificacion}
+                    onChange={(e) => setFormulario({...formulario, calificacion: e.target.value})}
+                    required
+                    className={styles.selectSimple}
+                    style={{
+                      fontSize: '1.1rem',
+                      fontWeight: '600',
+                      textAlign: 'center',
+                      color: '#34495e'
+                    }}
+                  >
+                    <option value="">Seleccionar calificación</option>
+                    
+                    {/* ✅ Opciones aprobatorias */}
+                    <optgroup >
+                      <option value="10.0">10.0 - AU</option>
+                      <option value="9.9">9.9</option>
+                      <option value="9.8">9.8</option>
+                      <option value="9.7">9.7</option>
+                      <option value="9.6">9.6</option>
+                      <option value="9.5">9.5</option>
+                      <option value="9.4">9.4</option>
+                      <option value="9.3">9.3</option>
+                      <option value="9.2">9.2</option>
+                      <option value="9.1">9.1</option>
+                      <option value="9.0">9.0 - DE</option>
+                      <option value="8.9">8.9</option>
+                      <option value="8.8">8.8</option>
+                      <option value="8.7">8.7</option>
+                      <option value="8.6">8.6</option>
+                      <option value="8.5">8.5</option>
+                      <option value="8.4">8.4</option>
+                      <option value="8.3">8.3</option>
+                      <option value="8.2">8.2</option>
+                      <option value="8.1">8.1</option>
+                      <option value="8.0">8.0 - SA</option>
+                    </optgroup>
+                  </select>
+                  <small className={styles.ayudaSimple}>
+                    ✅ Solo calificaciones aprobatorias: 8.0 - 10.0
+                  </small>
+                </div>
+                
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setFormulario({...formulario, calificacion: 'NA'})}
+                    className={`${styles.btnSimple}`}
+                    style={{
+                      background: formulario.calificacion === 'NA' ? '#ef4444' : '#fef2f2',
+                      color: formulario.calificacion === 'NA' ? 'white' : '#dc2626',
+                      border: '2px solid #ef4444',
+                      padding: '0.75rem 1rem',
+                      fontSize: '0.875rem',
+                      fontWeight: '600'
+                    }}
+                  >
+                    NA
+                  </button>
+                  <small className={styles.ayudaSimple} style={{ textAlign: 'center', display: 'block' }}>
+                    ❌ No Aprobado
+                  </small>
+                </div>
+              </div>
+              
+              <small className={styles.ayudaSimple} style={{ marginTop: '0.75rem', display: 'block' }}>
+                💡 Solo hay dos opciones: Calificación aprobatoria (8.0-10.0) o NA (No Aprobado)
+              </small>
+            </div>
+
+            <div className={styles.grupoSimple}>
+              <label className={styles.labelSimple}>
+                Observaciones
+              </label>
+              <textarea
+                value={formulario.observaciones_parcial}
+                onChange={(e) => setFormulario({...formulario, observaciones_parcial: e.target.value})}
+                placeholder="Comentarios sobre la evaluación (opcional)"
+                className={styles.textareaSimple}
+              />
+            </div>
+          </>
+        )}
+
+        {/* Alerta cuando no hay parciales */}
+        {formulario.alumno_id && parcialesDisponibles.length === 0 && (
+          <div className={styles.alertaSimple}>
+            <div>⚠️</div>
+            <div>
+              <strong>Sin parciales disponibles</strong>
+              <br />
+              <small>Este estudiante debe aprobar parciales anteriores o ya completó todos.</small>
+            </div>
+          </div>
+        )}
+
+        {/* Acciones */}
+        <div className={styles.accionesSimples}>
+          <button 
+            onClick={cerrarModal} 
+            className={`${styles.btnSimple} ${styles.btnCancelar}`}
+          >
             Cancelar
           </button>
           <button 
             onClick={evaluarParcial} 
-            className={`${styles.btnGuardar} ${siguienteOportunidad === 'ultima_oportunidad' ? styles.btnUltimaOportunidad : ''}`}
+            className={`${styles.btnSimple} ${styles.btnGuardar}`}
+            disabled={!formulario.asignacion_id || !formulario.alumno_id || !formulario.calificacion || parcialesDisponibles.length === 0}
           >
-            {siguienteOportunidad === 'ultima_oportunidad' ? '🚨 Evaluar Última Oportunidad' : '💾 Guardar Evaluación'}
+            💾 Crear Evaluación
           </button>
         </div>
       </div>
     </div>
   </div>
 )}
+
+              {/* Modal: Evaluar Parcial Existente */}
+              {modalTipo === 'evaluar' && (
+                <>
+                  <div className={styles.modalHeader}>
+                    <h3 className={styles.modalTitle}>
+                      📝 Evaluar Parcial {formulario.numero_parcial} - {calificacionSeleccionada?.estudiante_nombre}
+                    </h3>
+                    <button className={styles.closeButton} onClick={cerrarModal}>✕</button>
+                  </div>
+
+                  <div className={styles.modalBody}>
+                    {/* Información del estado actual */}
+                    <div className={styles.estadoActualContainer}>
+                      <div className={styles.infoOportunidad}>
+                        <h4 style={{ color: obtenerColorEstadoParcial(estadoParcial) }}>
+                          🎯 {obtenerTextoOportunidad(siguienteOportunidad)}
+                        </h4>
+                        <p className={styles.motivoTexto}>
+                          <strong>Estado:</strong> {motivoOportunidad}
+                        </p>
+                        
+                        {siguienteOportunidad === 'ultima_oportunidad' && (
+                          <div className={styles.alertaUltimaOportunidad}>
+                            <h5>⚠️ ATENCIÓN: ÚLTIMA OPORTUNIDAD</h5>
+                            <p>• Esta es la única oportunidad especial en toda la carrera</p>
+                            <p>• Si no aprueba, será baja definitiva del programa</p>
+                            <p>• Use esta oportunidad sabiamente</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Información de no poder evaluar */}
+                    {!puedeEvaluar && (
+                      <div className={styles.alertaNoPermitido}>
+                        <h5>⚠️ No se puede evaluar</h5>
+                        <p>{motivoOportunidad}</p>
+                      </div>
+                    )}
+
+                    {/* Formulario de evaluación */}
+                    <div className={styles.formGroup}>
+                      <label>Parcial</label>
+                      <input
+                        type="number"
+                        value={formulario.numero_parcial}
+                        readOnly
+                        className={styles.inputReadonly}
+                      />
+                    </div>
+
+                    <div className={styles.formGroup}>
+                      <label>Tipo de Evaluación</label>
+                      <input
+                        type="text"
+                        value={obtenerTextoOportunidad(formulario.oportunidad)}
+                        readOnly
+                        className={styles.inputReadonly}
+                        style={{ 
+                          fontWeight: 'bold',
+                          color: obtenerColorEstadoParcial(estadoParcial)
+                        }}
+                      />
+                      <small className={styles.helpText}>
+                        ℹ️ La oportunidad se determina automáticamente según el sistema académico
+                      </small>
+                    </div>
+
+                    <div className={styles.formGroup}>
+                      <label>Calificación *</label>
+                      <select
+                        value={formulario.calificacion}
+                        onChange={(e) => setFormulario({...formulario, calificacion: e.target.value})}
+                        required
+                        disabled={!puedeEvaluar}
+                      >
+                        <option value="">Seleccionar calificación</option>
+                        <optgroup label="✅ Calificaciones Aprobatorias">
+                          <option value="10">10 - Excelente</option>
+                          <option value="9">9 - Muy Bien</option>
+                          <option value="8">8 - Aprobado</option>
+                        </optgroup>
+                        <optgroup label="❌ Calificación Reprobatoria">
+                          <option value="NA">NA - No Aprobado</option>
+                        </optgroup>
+                      </select>
+                      <small className={styles.helpText}>
+                        ℹ️ Calificación mínima aprobatoria: 8. Todo lo demás es NA.
+                      </small>
+                    </div>
+
+                    <div className={styles.formGroup}>
+                      <label>Observaciones</label>
+                      <textarea
+                        value={formulario.observaciones_parcial}
+                        onChange={(e) => setFormulario({...formulario, observaciones_parcial: e.target.value})}
+                        placeholder="Comentarios sobre la evaluación (opcional)"
+                        rows="3"
+                        disabled={!puedeEvaluar}
+                      />
+                    </div>
+
+                    <div className={styles.modalActions}>
+                      <button onClick={cerrarModal} className={styles.btnCancelar}>
+                        Cancelar
+                      </button>
+                      <button 
+                        onClick={evaluarParcial} 
+                        className={`${styles.btnGuardar} ${siguienteOportunidad === 'ultima_oportunidad' ? styles.btnUltimaOportunidad : ''}`}
+                        disabled={!puedeEvaluar || !formulario.calificacion}
+                        style={{
+                          opacity: puedeEvaluar ? 1 : 0.5,
+                          cursor: puedeEvaluar ? 'pointer' : 'not-allowed'
+                        }}
+                      >
+                        {siguienteOportunidad === 'ultima_oportunidad' ? '🚨 Evaluar Última Oportunidad' : '💾 Guardar Evaluación'}
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
 
               {/* Modal: Ver Detalle */}
               {modalTipo === 'detalle' && calificacionSeleccionada && (
@@ -888,7 +1140,7 @@ const obtenerColorEstadoParcial = (estado) => {
                       <div className={styles.infoGeneral}>
                         <h4>📋 Información General</h4>
                         <p><strong>Estudiante:</strong> {calificacionSeleccionada.estudiante_nombre}</p>
-                        <p><strong>Matrícula:</strong> {calificacionSeleccionada.matricula}</p>
+                        <p><strong>Matrícula:</strong> {calificacionSeleccionada.estudiante_matricula}</p>
                         <p><strong>Calificación Final:</strong> 
                           <span className={`${styles.calificacionFinal} ${styles[obtenerColorCalificacion(calificacionSeleccionada.calificacion_final)]}`}>
                             {calificacionSeleccionada.calificacion_final || 'Pendiente'}
@@ -907,50 +1159,45 @@ const obtenerColorEstadoParcial = (estado) => {
                         {evaluacionesDelAlumno.length > 0 ? (
                           <div className={styles.evaluacionesGrid}>
                             {evaluacionesDelAlumno.map((evaluacion, index) => (
-                              <div key={index} className={`${styles.evaluacionCard} ${evaluacion.es_calificacion_final ? styles.evaluacionFinal : ''}`}>
+                              <div key={index} className={`${styles.evaluacionCard} ${evaluacion.es_calificacion_final ? styles.evaluacionFinal : styles.evaluacionIntento}`}>
                                 <div className={styles.evaluacionHeader}>
-                                  <span className={styles.parcialNumero}>Parcial {evaluacion.numero_parcial}</span>
-                                  <span className={`${styles.oportunidadBadge} ${styles[`oportunidad${evaluacion.oportunidad}`]}`}>
-                                    {obtenerIconoOportunidad(evaluacion.oportunidad)} {evaluacion.oportunidad}
+                                  <span className={styles.parcialInfo}>
+                                    {obtenerIconoOportunidad(evaluacion.oportunidad)} Parcial {evaluacion.numero_parcial}
+                                  </span>
+                                  <span className={`${styles.oportunidadBadge} ${styles[evaluacion.oportunidad]}`}>
+                                    {evaluacion.oportunidad}
                                   </span>
                                 </div>
-                                <div className={styles.evaluacionBody}>
-                                  <div className={`${styles.calificacionEvaluacion} ${styles[obtenerColorCalificacion(evaluacion.calificacion)]}`}>
+                                <div className={styles.evaluacionCalificacion}>
+                                  <span className={`${styles.calificacionValor} ${evaluacion.aprobado ? styles.aprobado : styles.reprobado}`}>
                                     {evaluacion.calificacion}
-                                  </div>
-                                  <div className={styles.fechaEvaluacion}>
-                                    {formatearFecha(evaluacion.fecha_evaluacion)}
-                                  </div>
-                                  {evaluacion.es_calificacion_final && (
-                                    <div className={styles.evaluacionFinalBadge}>✅ Final</div>
-                                  )}
+                                  </span>
+                                  <span className={styles.estadoEvaluacion}>
+                                    {evaluacion.aprobado ? '✅ Aprobado' : '❌ Reprobado'}
+                                  </span>
+                                </div>
+                                <div className={styles.evaluacionFecha}>
+                                  {formatearFecha(evaluacion.fecha_evaluacion)}
                                 </div>
                                 {evaluacion.observaciones_parcial && (
-                                  <div className={styles.observacionesEvaluacion}>
-                                    💭 {evaluacion.observaciones_parcial}
+                                  <div className={styles.evaluacionObservaciones}>
+                                    💬 {evaluacion.observaciones_parcial}
                                   </div>
                                 )}
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <p className={styles.sinEvaluaciones}>No hay evaluaciones registradas</p>
+                          <p className={styles.noEvaluaciones}>No hay evaluaciones registradas</p>
                         )}
                       </div>
                     </div>
-                  </div>
-
-                  <div className={styles.modalFooter}>
-                    <button type="button" className={styles.cancelButton} onClick={cerrarModal}>
-                      Cerrar
-                    </button>
                   </div>
                 </>
               )}
             </div>
           </div>
         )}
-
       </main>
     </div>
   );

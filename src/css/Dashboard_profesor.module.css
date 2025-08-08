@@ -97,7 +97,7 @@ body{
 }
 
 .actionButton {
-  background: #3BA6FF;
+  background: #1C2A44;
   color: white;
   border: none;
   padding: 1.5rem;
@@ -117,7 +117,7 @@ body{
 }
 
 .actionButton:hover {
-  background: #2980b9;
+  background: #34495e;
   transform: translateY(-2px);
 }
 

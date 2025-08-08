@@ -56,8 +56,8 @@ const Foroprofesor = () => {
       });
       
       // Cargar categorías del foro
-      const categoriasRes = await fetch('http://localhost:5000/api/foro/categorias', {
-        headers: { 'Authorization': `Bearer ${token}` }
+const categoriasRes = await fetch('http://localhost:5000/api/profesor/foro/categorias', {
+          headers: { 'Authorization': `Bearer ${token}` }
       });
 
       const [postsData, categoriasData] = await Promise.all([
@@ -250,17 +250,7 @@ const Foroprofesor = () => {
   };
 
   // Obtener color de categoría
-  const obtenerColorCategoria = (categoria) => {
-    const colores = {
-      'Académico': '#3498db',
-      'Proyecto': '#e74c3c',
-      'Consulta': '#f39c12',
-      'Técnico': '#9b59b6',
-      'Sugerencia': '#27ae60',
-      'General': '#95a5a6'
-    };
-    return colores[categoria] || '#95a5a6';
-  };
+
 
   // Calcular estadísticas
   const estadisticas = {
@@ -414,14 +404,12 @@ const Foroprofesor = () => {
                   <div className={styles.postMeta}>
                     <span 
                       className={styles.categoryTag}
-                      style={{ backgroundColor: obtenerColorCategoria(post.categoria_nombre) }}
+                      style={{ backgroundColor: (post.categoria_nombre) }}
                     >
                       {post.categoria_nombre}
                     </span>
                     
-                    {post.es_fijado && (
-                      <span className={styles.pinnedTag}>📌 Fijado</span>
-                    )}
+                    
                   </div>
                 </div>
 

@@ -311,7 +311,7 @@ const abrirModalEditar = (estudiante) => {
         <Header />
         <div className={styles.loadingContainer}>
           <div className={styles.spinner}></div>
-          <p>Cargando estudiantes...</p>
+          <p>Cargando...</p>
         </div>
       </div>
     );

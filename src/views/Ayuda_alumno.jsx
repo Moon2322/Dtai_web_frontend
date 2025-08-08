@@ -524,7 +524,7 @@ const response = await fetch(`http://localhost:5000/api/profesor/solicitudes-ayu
             {/* Header del Modal */}
             <div className={styles.modalHeader}>
               <h3 className={styles.modalTitle}>
-                📋 Detalles de la Solicitud #{solicitudSeleccionada.id}
+                 Detalles de la Solicitud #{solicitudSeleccionada.id}
               </h3>
               <button
                 onClick={() => setMostrarModal(false)}
@@ -596,22 +596,21 @@ const response = await fetch(`http://localhost:5000/api/profesor/solicitudes-ayu
                 </div>
               </div>
 
-              {/* Sección de Chat */}
-<div className="chat-section">
+<div className={styles.chatSection}>
   <h4>Conversación</h4>
-  <div className="chat-messages">
+  <div className={styles.chatMessages}>
     {mensajesChat.map(mensaje => (
-      <div key={mensaje.id} className={`mensaje ${mensaje.tipo_usuario}`}>
-        <div className="mensaje-header">
+      <div key={mensaje.id} className={`${styles.mensaje} ${styles[mensaje.tipo_usuario]}`}>
+        <div className={styles.mensajeHeader}>
           <strong>{mensaje.nombre_usuario}</strong>
-          <span className="fecha">{new Date(mensaje.fecha_mensaje).toLocaleString()}</span>
+          <span className={styles.fecha}>{new Date(mensaje.fecha_mensaje).toLocaleString()}</span>
         </div>
-        <div className="mensaje-contenido">{mensaje.mensaje}</div>
+        <div className={styles.mensajeContenido}>{mensaje.mensaje}</div>
       </div>
     ))}
   </div>
   
-  <div className="chat-input">
+  <div className={styles.chatInput}>
     <textarea
       value={nuevoMensaje}
       onChange={(e) => setNuevoMensaje(e.target.value)}

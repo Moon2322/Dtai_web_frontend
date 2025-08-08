@@ -262,3 +262,337 @@
     outline: none;
     box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
 }
+
+/* ============================================ */
+/* NUEVOS ESTILOS PARA EL HEADER */
+/* ============================================ */
+
+.pageContainer {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+.loginPageHeader {
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.headerContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+}
+
+.logoSection {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logoIcon {
+    background: linear-gradient(135deg, #1C2A44 0%, #0F1B2E 100%);
+    padding: 0.75rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px -1px rgba(28, 42, 68, 0.25);
+}
+
+.logoIcon svg {
+    color: white;
+    width: 24px;
+    height: 24px;
+}
+
+.logoText h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.logoText p {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+    font-weight: 500;
+}
+
+.headerNav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.navButton {
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.navButton:hover {
+    color: #1C2A44;
+    background: #f3f4f6;
+    transform: translateY(-1px);
+}
+
+.navButton:active {
+    transform: translateY(0);
+}
+
+/* Efecto de línea bajo el botón activo */
+.navButton::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #1C2A44;
+    transition: width 0.3s ease;
+}
+
+.navButton:hover::after {
+    width: 80%;
+}
+
+/* ============================================ */
+/* MEJORAS AL CONTENEDOR DE LOGIN EXISTENTE */
+/* ============================================ */
+
+.loginContainer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.loginCard {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border: 1px solid #f1f5f9;
+    overflow: hidden;
+    max-width: 420px;
+    width: 100%;
+}
+
+.loginHeader {
+    background: linear-gradient(135deg, #1C2A44 0%, #0F1B2E 100%);
+    padding: 2.5rem 2rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+}
+
+/* Mejora al ícono de usuario */
+.userIcon {
+    background: rgba(255, 255, 255, 0.2);
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem auto;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loginHeader h2 {
+    color: white;
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.25px;
+}
+
+.loginHeader p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Mejoras al formulario */
+.loginForm {
+    padding: 2rem;
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.inputGroup {
+    position: relative;
+}
+
+.inputGroup input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    background: #fafbfc;
+}
+
+.inputGroup input:focus {
+    outline: none;
+    border-color: #1C2A44;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(28, 42, 68, 0.1);
+}
+
+.passwordToggle {
+    position: absolute;
+    right: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: color 0.2s ease;
+}
+
+.passwordToggle:hover {
+    color: #1C2A44;
+}
+
+/* Mejoras al botón de login */
+.loginButton {
+    width: 100%;
+    background: linear-gradient(135deg, #1C2A44 0%, #0F1B2E 100%);
+    color: white;
+    padding: 0.875rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(28, 42, 68, 0.25);
+    margin-top: 0.5rem;
+}
+
+.loginButton:hover:not(:disabled) {
+    background: linear-gradient(135deg, #0F1B2E 0%, #0A1323 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px -3px rgba(28, 42, 68, 0.4);
+}
+
+.loginButton:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.loginButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Mejoras al mensaje de error */
+.errorMessage {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    padding: 0.875rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.errorMessage svg {
+    flex-shrink: 0;
+    color: #ef4444;
+}
+
+/* ============================================ */
+/* RESPONSIVE DESIGN */
+/* ============================================ */
+
+@media (max-width: 768px) {
+    .headerNav {
+        display: none;
+    }
+    
+    .logoText h1 {
+        font-size: 1.5rem;
+    }
+    
+    .logoText p {
+        font-size: 0.8rem;
+    }
+    
+    .headerContent {
+        height: 60px;
+        padding: 0 0.75rem;
+    }
+    
+    .loginContainer {
+        padding: 1rem;
+    }
+    
+    .loginForm {
+        padding: 1.5rem;
+    }
+    
+    .loginHeader {
+        padding: 2rem 1.5rem 1.5rem 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logoSection {
+        gap: 0.5rem;
+    }
+    
+    .logoIcon {
+        padding: 0.5rem;
+    }
+    
+    .logoIcon svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .loginCard {
+        border-radius: 12px;
+        margin: 0.5rem;
+    }
+}
