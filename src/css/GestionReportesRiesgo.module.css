@@ -1,0 +1,798 @@
+/* src/css/GestionReportesRiesgo.module.css */
+
+/* ============== BASE STYLES (reutilizando tu estructura) ============== */
+.container {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell;
+}
+
+.mainContent {
+  padding: 1.5rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* ============== HEADER ============== */
+.pageHeader {
+  margin-bottom: 1.5rem;
+}
+
+.pageHeader h1 {
+  color: #2c3e50;
+  margin: 0 0 0.4rem 0;
+  font-size: 1.8rem;
+}
+
+.pageHeader p {
+  color: #7f8c8d;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* ============== LOADING Y ERROR ============== */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  color: #64748b;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ============== ALERTAS ============== */
+.alertError {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+
+.alertSuccess {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+
+.btnClose {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============== CONTROLES ============== */
+.controls {
+  background: white;
+  padding: 1.2rem;
+  border-radius: 8px;
+  margin-bottom: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 9px rgba(0, 0, 0, 0.09);
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.filters {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.filterSelect {
+  padding: 0.6rem 0.9rem;
+  border: 2px solid #e1e8ed;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.addButton {
+  background: #1C2A44;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.addButton:hover:not(:disabled) {
+  background: #34495e;
+  transform: translateY(-2px);
+}
+
+.addButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ============== TABLA ============== */
+.tableContainer {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 9px rgba(0, 0, 0, 0.09);
+  overflow-x: auto;
+}
+
+.studentsTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.studentsTable th {
+  background: #1C2A44;
+  color: white;
+  padding: 0.8rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.45px;
+}
+
+.studentsTable td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #e1e8ed;
+  font-size: 0.9rem;
+  vertical-align: top;
+}
+
+.studentsTable tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.studentInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.studentName {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.2rem;
+}
+
+.studentInfo small {
+  color: #6c757d;
+  font-size: 0.8rem;
+}
+
+.noResults {
+  text-align: center;
+  padding: 2.2rem;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+/* ============== BADGES Y TAGS ============== */
+.statusBadge {
+  padding: 0.35rem 0.7rem;
+  border-radius: 13px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.45px;
+  display: inline-block;
+}
+
+/* Tags de tipo de riesgo */
+.tipoAcademico { background-color: #e3f2fd; color: #1565c0; }
+.tipoAsistencia { background-color: #fff3e0; color: #ef6c00; }
+.tipoConducta { background-color: #fce4ec; color: #c2185b; }
+.tipoEconomico { background-color: #e8f5e8; color: #2e7d32; }
+.tipoPersonal { background-color: #f3e5f5; color: #7b1fa2; }
+
+/* Tags de nivel de riesgo */
+.nivelBajo { background-color: #e8f5e8; color: #2e7d32; }
+.nivelMedio { background-color: #fff3e0; color: #ef6c00; }
+.nivelAlto { background-color: #ffebee; color: #d32f2f; }
+.nivelCritico { background-color: #ffcdd2; color: #b71c1c; font-weight: 700; }
+
+/* Tags de estado */
+.estadoAbierto { background-color: #ffebee; color: #d32f2f; }
+.estadoProceso { background-color: #fff3e0; color: #ef6c00; }
+.estadoResuelto { background-color: #e8f5e8; color: #2e7d32; }
+.estadoCerrado { background-color: #f5f5f5; color: #616161; }
+
+/* ============== ACCIONES ============== */
+.actionsCell {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.editButton, .deleteButton {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.editButton:hover {
+  background: #e3f2fd;
+}
+
+.deleteButton:hover {
+  background: #ffebee;
+}
+
+/* ============== PAGINACIÓN ============== */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+}
+
+.paginationButton {
+  background: #1C2A44;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background: #34495e;
+}
+
+.paginationButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.paginationInfo {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+/* ============== MODALES ============== */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 600px;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+.modalLarge {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 900px;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid #dee2e6;
+  background-color: #1C2A44;
+  border-radius: 12px 12px 0 0;
+}
+
+.modalHeader h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.modalCloseButton {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.modalCloseButton:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.modalForm {
+  padding: 25px;
+}
+
+/* ============== FORMULARIOS ============== */
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 14px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #495057;
+  background-color: white;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.textArea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #495057;
+  background-color: white;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.textArea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* ============== BÚSQUEDA DE ALUMNO ============== */
+.busquedaAlumno {
+  position: relative;
+}
+
+.listaAlumnos {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 2px solid #e9ecef;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.alumnoItem {
+  padding: 12px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f3f4;
+  transition: background-color 0.2s ease;
+}
+
+.alumnoItem:hover {
+  background-color: #f8f9fa;
+}
+
+.alumnoItem:last-child {
+  border-bottom: none;
+}
+
+.alumnoItem strong {
+  color: #2c3e50;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.alumnoItem small {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+/* ============== ACCIONES DEL MODAL ============== */
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px 25px;
+  border-top: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+  border-radius: 0 0 12px 12px;
+  margin: 0 -25px -25px -25px;
+}
+
+.saveButton {
+  background: #1C2A44;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #2980b9;
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.cancelButton:hover {
+  background: #545b62;
+}
+
+/* ============== DETALLE DEL REPORTE ============== */
+.detalleReporte {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.infoPrincipal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.infoAlumno,
+.infoReporte {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.infoAlumno h3,
+.infoReporte h3 {
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.infoAlumno p,
+.infoReporte p {
+  margin: 8px 0;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.infoAlumno strong,
+.infoReporte strong {
+  color: #2c3e50;
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.contenidoReporte .seccion {
+  margin-bottom: 25px;
+}
+
+.contenidoReporte .seccion h4 {
+  margin: 0 0 10px 0;
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+}
+
+.contenidoReporte .seccion p {
+  color: #495057;
+  line-height: 1.6;
+  margin: 0;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+}
+
+/* ============== SEGUIMIENTO / TIMELINE ============== */
+.seguimiento {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+}
+
+.seguimiento h3 {
+  margin: 0 0 20px 0;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #dee2e6;
+}
+
+.timelineItem {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.timelineMarker {
+  position: absolute;
+  left: -24px;
+  top: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #007bff;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #007bff;
+}
+
+.timelineContent {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-left: 15px;
+}
+
+.timelineHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.timelineHeader .accion {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.timelineHeader .fecha {
+  color: #6c757d;
+  font-size: 12px;
+}
+
+.timelineBody p {
+  margin: 5px 0;
+  color: #495057;
+  font-size: 14px;
+}
+
+.timelineBody strong {
+  color: #2c3e50;
+}
+
+/* ============== RESPONSIVE ============== */
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 0.8rem;
+  }
+  
+  .pageHeader h1 {
+    font-size: 1.5rem;
+  }
+  
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filters {
+    justify-content: stretch;
+  }
+  
+  .filters > * {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .studentsTable {
+    font-size: 0.8rem;
+  }
+  
+  .studentsTable th,
+  .studentsTable td {
+    padding: 0.5rem 0.3rem;
+  }
+  
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+  
+  .infoPrincipal {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .modal,
+  .modalLarge {
+    margin: 10px;
+    max-height: 95vh;
+    max-width: none;
+  }
+  
+  .modalForm {
+    padding: 20px;
+  }
+  
+  .timeline {
+    padding-left: 20px;
+  }
+  
+  .timelineMarker {
+    left: -18px;
+    width: 8px;
+    height: 8px;
+  }
+  
+  .actionsCell {
+    flex-direction: column;
+    gap: 3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .modalHeader {
+    padding: 15px 20px;
+  }
+  
+  .modalForm {
+    padding: 15px 20px;
+  }
+  
+  .modalActions {
+    padding: 15px 20px;
+    flex-direction: column;
+    margin: 0 -20px -20px -20px;
+  }
+  
+  .studentsTable th,
+  .studentsTable td {
+    padding: 0.4rem 0.2rem;
+    font-size: 0.7rem;
+  }
+}

@@ -116,6 +116,9 @@ const Header = () => {
         <NavLink to="/profesor/Ayuda_alumno" className={styles.navButton}>
           Centro de Ayuda
         </NavLink>
+        <NavLink to="/profesor/reportes-riesgo" className={styles.navButton}>
+          Reportes de Riesgo
+        </NavLink>
       </nav>
 
       {/* Usuario y logout */}

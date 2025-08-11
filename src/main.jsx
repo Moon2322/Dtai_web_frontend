@@ -31,6 +31,8 @@ import Gestioncalifaciones from './views/Gestioncalificaciones.jsx';
 import Nueva_asignatura from './views/Nueva_asignatura.jsx';
 import Ayuda_alumno from './views/Ayuda_alumno.jsx';
 import AsignacionTutores from './views/AsignacionTutores.jsx';
+import GestionReportesRiesgo from './views/GestionReportesRiesgo.jsx';
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -47,6 +49,7 @@ root.render(
     <Route path="/profesor/Gestion_calificaciones" element={<Gestioncalifaciones />} />
     <Route path="/profesor/Nueva_asignatura" element={<Nueva_asignatura />} />
     <Route path="/profesor/Ayuda_alumno" element={<Ayuda_alumno />} />
+    <Route path="/profesor/reportes-riesgo" element={<GestionReportesRiesgo />} />
 
 
       <Route path="/dashboard-directivo" element={<DashboardDirectivo />} />
